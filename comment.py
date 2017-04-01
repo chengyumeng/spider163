@@ -80,7 +80,7 @@ while cnt > 0 :
             try:
                 req = requests.post(url, headers=headers, data=data)
             except:
-                exsql = "insert into ceception(eid,table,scene) values (" + str(result[0]) + ",'music163','Connection reset by peer')"
+                exsql = "insert into exception (eid,tb,scene) values (" + str(result[0]) + ",'music163','Connection reset by peer')"
                 insertSQL(cursor,exsql)
             try:
                 for comment in req.json()['comments']:
@@ -88,7 +88,7 @@ while cnt > 0 :
                 for comment in req.json()['hotComments']: 
                     insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
             except:
-                exsql = "insert into ceception(eid,table,scene) values (" + str(result[0]) + ",'music163','No Comments Key')"
+                exsql = "insert into exception (eid,tb,scene) values (" + str(result[0]) + ",'music163','No Comments Key')"
                 insertSQL(cursor,exsql)
              #   print(exsql)
             print req.json()['total']
