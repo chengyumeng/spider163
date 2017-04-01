@@ -39,6 +39,7 @@ def insertSQL(cursor,sql):
     except:
         db.rollback()
 
+
 url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_293940/?csrf_token='
 headers = {
     'Cookie': 'appver=1.5.0.75771;',
@@ -77,10 +78,15 @@ while cnt > 0 :
         for result in results:
             url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + str(result[0])+"/?csrf_token="
             req = requests.post(url, headers=headers, data=data)
-            for comment in req.json()['comments']:
-                insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
-            for comment in req.json()['hotComments']: 
-                insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+            try:
+                for comment in req.json()['comments']:
+                    insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+                for comment in req.json()['hotComments']: 
+                    insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+            except:
+                exsql = "insert into ceception(eid,table,scene) values (" + str(result[0]) + ",'music163','No Comments Key')"
+                insertSQL(cursor,exsql)
+             #   print(exsql)
             print req.json()['total']
             insertSQL(cursor,"update music163 set over ='Y',comment="+ str(req.json()['total'])+ " where song_id = " + str(result[0]))
 db.close()
