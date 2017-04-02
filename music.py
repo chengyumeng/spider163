@@ -13,6 +13,14 @@ def querySQL(cursor,sql):
     cursor.execute(sql)
     results = cursor.fetchall()
     return results
+def isSingle(cursor,song_id):
+    sql = "select song_id from music163 where song_id =" + str(song_id)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    if len(results) == 0 :
+        return True
+    else :
+        return False
 
 def insertSQL(cursor,sql):
     try:
@@ -24,16 +32,19 @@ def execData(cursor,url):
     s = requests.session()
     s = BeautifulSoup(s.get(play_url,headers = headers).content)
     musics = json.loads(s.find('textarea',{'style':'display:none;'}).text)
-    for music in musics:
-        print(music['id'])
-        cursor.execute("select * from music163 where song_id=" + str(music['id']))
-        results = cursor.fetchall()
-        if len(results) == 0 :
+    try :
+        for music in musics:
             name   = MySQLdb.escape_string(music['name'].encode('utf-8'))
             author = MySQLdb.escape_string(music['artists'][0]['name'].encode('utf-8'))
             sql = "insert into music163 (song_id,song_name,author) values (" + str(music['id']) + ",'" + name + "','"+ author + "')"
-            cursor.execute(sql)
-            db.commit()
+            if isSingle(cursor,music['id']) == True:
+                print('{} : {}'.format(name,music['id']))
+                cursor.execute(sql)
+                db.commit()
+            else :
+                print('{} : {}'.format(name,"Not Single"))
+    except :
+        print('{}:{}'.format("Unexcept Error",url))
 
 
 play_url = "http://music.163.com/playlist?id="    
