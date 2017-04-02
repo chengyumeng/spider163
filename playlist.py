@@ -15,18 +15,32 @@ def insertSQL(cursor,sql):
         db.commit()
     except:
         db.rollback()
+def queryLink(cursor,link):
+    sql = "select * from playlist163 where link = '" + MySQLdb.escape_string(link) + "'"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    if len(results) > 0 :
+        return True
+    else :
+        return False
 
 def execData(url,cursor):
     s = requests.session()
     s = BeautifulSoup(s.get(play_url,headers = headers).content)
     lst = s.find('ul',{'class':'m-cvrlst f-cb'})
-    for play in lst.find_all('div',{'class':'u-cover u-cover-1'}):
-        title = MySQLdb.escape_string(play.find('a',{'class':'msk'})['title'].encode('utf-8'))
-        link  = MySQLdb.escape_string(play.find('a',{'class':'msk'})['href'].encode('utf-8'))
-        cnt   = MySQLdb.escape_string(play.find('span',{'class':'nb'}).text.encode('utf-8'))
-        sql   = "insert into playlist163 (title,link,cnt) values ('"+ title + "','" + link + "','" + cnt + "')";
-        insertSQL(cursor,sql)
-        print('{} : {} :{}'.format(title,link,cnt))
+    try :
+        for play in lst.find_all('div',{'class':'u-cover u-cover-1'}):
+            title = MySQLdb.escape_string(play.find('a',{'class':'msk'})['title'].encode('utf-8'))
+            link  = MySQLdb.escape_string(play.find('a',{'class':'msk'})['href'].encode('utf-8'))
+            cnt   = MySQLdb.escape_string(play.find('span',{'class':'nb'}).text.encode('utf-8'))
+            sql   = "insert into playlist163 (title,link,cnt) values ('"+ title + "','" + link + "','" + cnt + "')";
+            if queryLink(cursor,link) == False :
+                insertSQL(cursor,sql)
+                print('{} : {} :{}'.format(title,link,cnt))
+            else :
+                print('{} : {}'.format(link,"Same"))
+    except:
+        print('{} : {}'.format(play_url, "Trouble"))
 
 
 
@@ -50,6 +64,15 @@ if len(sys.argv) == 3 :
     end   = int(sys.argv[2])
     while start<= end:
         play_url = "http://music.163.com/discover/playlist/?order=hot&cat=全部&limit=35&offset=" + str(start*35)
+        start = start + 1
+        execData(play_url,cursor)
+elif len(sys.argv) == 4 :
+    global play_url
+    cat   = sys.argv[1]
+    start = int(sys.argv[2])
+    end   = int(sys.argv[3])
+    while start<=end:
+        play_url = "http://music.163.com/discover/playlist/?order=hot&cat=" + cat + "&limit=35&offset=" + str(start*35)
         start = start + 1
         execData(play_url,cursor)
 else :
