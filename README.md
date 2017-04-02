@@ -19,7 +19,7 @@ $ python music.py playlist 376259016
 $ # 抓取编号为 376259016 的歌单
 ```
 
-```cocnsole
+```console
 $ python music.py database
 $ # 抓取存储的热门歌单里面的歌曲，批量抓取
 ```
