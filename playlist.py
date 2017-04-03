@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # -*- coding: utf-8 -*-
 
 import requests
@@ -8,6 +8,7 @@ from pprint import pprint
 import MySQLdb
 import sys
 import ConfigParser
+from progressbar import ProgressBar
 
 def insertSQL(cursor,sql):
     try:
@@ -26,9 +27,9 @@ def queryLink(cursor,link):
 
 def execData(url,cursor):
     s = requests.session()
-    s = BeautifulSoup(s.get(play_url,headers = headers).content)
-    lst = s.find('ul',{'class':'m-cvrlst f-cb'})
     try :
+        s = BeautifulSoup(s.get(play_url,headers = headers).content)
+        lst = s.find('ul',{'class':'m-cvrlst f-cb'})
         for play in lst.find_all('div',{'class':'u-cover u-cover-1'}):
             title = MySQLdb.escape_string(play.find('a',{'class':'msk'})['title'].encode('utf-8'))
             link  = MySQLdb.escape_string(play.find('a',{'class':'msk'})['href'].encode('utf-8'))
@@ -36,9 +37,9 @@ def execData(url,cursor):
             sql   = "insert into playlist163 (title,link,cnt) values ('"+ title + "','" + link + "','" + cnt + "')";
             if queryLink(cursor,link) == False :
                 insertSQL(cursor,sql)
-                print('{} : {} :{}'.format(title,link,cnt))
-            else :
-                print('{} : {}'.format(link,"Same"))
+                # print('{} : {} :{}'.format(title,link,cnt))
+            # else :
+               # print('{} : {}'.format(link,"Same"))
     except:
         print('{} : {}'.format(play_url, "Trouble"))
 
@@ -71,10 +72,14 @@ elif len(sys.argv) == 4 :
     cat   = sys.argv[1]
     start = int(sys.argv[2])
     end   = int(sys.argv[3])
+    pbar  = ProgressBar( maxval = (end - start + 1))
+    pbar.start()
     while start<=end:
         play_url = "http://music.163.com/discover/playlist/?order=hot&cat=" + cat + "&limit=35&offset=" + str(start*35)
-        start = start + 1
         execData(play_url,cursor)
+        pbar.update(start)
+        start = start + 1
+    pbar.finish()
 else :
     play_url = "http://music.163.com/discover/playlist/?order=hot&cat=全部&limit=35&offset=0"
     execData(play_url,cursor)
