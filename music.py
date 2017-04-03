@@ -31,8 +31,8 @@ def insertSQL(cursor,sql):
 def execData(cursor,url):
     s = requests.session()
     s = BeautifulSoup(s.get(play_url,headers = headers).content)
-    musics = json.loads(s.find('textarea',{'style':'display:none;'}).text)
-    try :
+    try:
+        musics = json.loads(s.find('textarea',{'style':'display:none;'}).text)
         for music in musics:
             name   = MySQLdb.escape_string(music['name'].encode('utf-8'))
             author = MySQLdb.escape_string(music['artists'][0]['name'].encode('utf-8'))
