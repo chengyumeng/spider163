@@ -91,7 +91,7 @@ $ 4 rows in set (0.00 sec)
 
 # TODO
 - 增加抓取歌单页面个性推荐歌单
-- 增加抓取排行榜
+- 增加抓取排行榜 ✔️
 - 严格去重复 ✔️
 - 优化代码结构，冗余代码过多
 
@@ -102,3 +102,5 @@ $ 4 rows in set (0.00 sec)
 # THANKS
 - 给网易一个大感谢！
 
+# 欢迎关注微信公众账号：程天写代码
+![guojingcoooool](https://github.com/Chengyumeng/spider163/blob/master/wechat.jpeg)
