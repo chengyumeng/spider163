@@ -69,28 +69,40 @@ user = cf.get("db", "user")
 pawd = cf.get("db", "pass")
 db = MySQLdb.connect(host,user,pawd,"spider" )
 cursor = db.cursor()
-cnt = 1024
-while cnt > 0 :
-    sql = "select song_id from music163 where over = 'N' limit 100"
-    results = querySQL(cursor,sql)
-    cnt = len(results)
-    if cnt > 0 :
-        for result in results:
-            url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + str(result[0])+"/?csrf_token="
-            try:
-                req = requests.post(url, headers=headers, data=data)
-            except:
-                exsql = "insert into exception (eid,tb,scene) values (" + str(result[0]) + ",'music163','Connection reset by peer')"
-                insertSQL(cursor,exsql)
-            try:
-                for comment in req.json()['comments']:
-                    insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
-                for comment in req.json()['hotComments']: 
-                    insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
-            except:
-                exsql = "insert into exception (eid,tb,scene) values (" + str(result[0]) + ",'music163','No Comments Key')"
-                insertSQL(cursor,exsql)
-             #   print(exsql)
-            print req.json()['total']
-            insertSQL(cursor,"update music163 set over ='Y',comment="+ str(req.json()['total'])+ " where song_id = " + str(result[0]))
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        for idx in range(len(sys.argv)):
+            if idx > 0:
+                song_id = sys.argv[idx]
+                dele = "delete from comment163 where song_id=" + song_id
+                url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + song_id + "/?csrf_token="
+                insertSQL(cursor,dele)
+                try:
+                    req = requests.post(url, headers=headers, data=data)
+                    for comment in req.json()['comments']:
+                        insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + song_id + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+                    for comment in req.json()['hotComments']:
+                        insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + song_id + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+                except:
+                    print "ERROR" + song_id
+                insertSQL(cursor,"update music163 set over = 'Y',comment=" + str(req.json()['total']) + " where song_id=" + song_id)
+    else:
+        cnt = 1024
+        while cnt > 0 :
+            sql = "select song_id from music163 where over = 'N' limit 100"
+            results = querySQL(cursor,sql)
+            cnt = len(results)
+            if cnt > 0 :
+                for result in results:
+                    url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + str(result[0])+"/?csrf_token="
+                    try:
+                        req = requests.post(url, headers=headers, data=data)
+                        for comment in req.json()['comments']:
+                            insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+                        for comment in req.json()['hotComments']: 
+                            insertSQL(cursor,"insert into comment163 (song_id,txt,author,liked) values (" + str(result[0]) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" )
+                    except:
+                        print "ERROR" + str(result[0])
+                    print req.json()['total']
+                    insertSQL(cursor,"update music163 set over ='Y',comment="+ str(req.json()['total'])+ " where song_id = " + str(result[0]))
 db.close()
