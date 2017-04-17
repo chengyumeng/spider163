@@ -30,7 +30,7 @@ def insertSQL(cursor,sql):
         db.rollback()
 def execData(cursor,url):
     s = requests.session()
-    s = BeautifulSoup(s.get(play_url,headers = headers).content)
+    s = BeautifulSoup(s.get(url,headers = headers).content)
     try:
         musics = json.loads(s.find('textarea',{'style':'display:none;'}).text)
         for music in musics:
