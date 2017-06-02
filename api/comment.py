@@ -90,7 +90,6 @@ class Comment:
         except KeyboardInterrupt :
             print("INFO : 解释器请求退出")
         except :
-            print("Unexpected error:", sys.exc_info()[0])
             print("ERROR : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
             self.viewsCapture(song_id,page,page + 1)
 
