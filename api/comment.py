@@ -18,6 +18,7 @@ class Comment:
     def __init__(self):
         self.__db = db.MySQLDB()
         self.__headers = {
+        'User-Agent':'android',
         'Cookie': 'appver=1.5.0.75771;',
         'Referer': 'http://music.163.com/'
         }
@@ -58,10 +59,8 @@ class Comment:
     def createSecretKey(self,size):
         return (''.join(map(lambda xx: (hex(ord(xx))[2:]), os.urandom(size))))[0:16]
 
-    def viewsCapture(self,song_id,full = True):
-        if full == True:
-            pages = 1024
-            page  = 1
+    def viewsCapture(self,song_id,page = 1,pages = 1024):
+        if pages > 1:   
             while page < pages:
                 pages = self.viewCapture(song_id,page)
                 page = page + 1
@@ -74,25 +73,30 @@ class Comment:
             self.__db.insertSQL(dql)
         data = {'params':self.createParams(page),'encSecKey':self.__encSecKey}
         url  = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + str(song_id) + "/?csrf_token="
+        # url = "http://music.163.com/eapi/v1/resource/hotcomments/R_SO_4_" + str(song_id)
         try:
-           req = requests.post(url,headers = self.__headers ,data = data)
+           req = requests.post(url,headers = self.__headers ,data = data,timeout = 10)
            for comment in req.json()['comments']:
                if comment['likedCount'] > 30 :
-                   sql = "insert into comment163 (song_id,txt,author,liked) values (" + str(song_id) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" 
+                   sql = "insert into comment163 (song_id,txt,author,liked) values (" + str(song_id) + ",\"" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "\",\"" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "\"," + str(comment['likedCount']) +")" 
                    self.__db.insertSQL(sql)
            if page == 1 :
                for comment in req.json()['hotComments']:
-                   sql = "insert into comment163 (song_id,txt,author,liked) values (" + str(song_id) + ",'" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "','" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "'," + str(comment['likedCount']) +")" 
+                   sql = "insert into comment163 (song_id,txt,author,liked) values (" + str(song_id) + ",\"" + MySQLdb.escape_string(comment['content'].encode('utf-8')) + "\",\"" + MySQLdb.escape_string(comment['user']['nickname'].encode('utf-8')) + "\"," + str(comment['likedCount']) +")" 
                    self.__db.insertSQL(sql)
            upd = "update music163 set over ='Y',comment="+ str(req.json()['total'])+ " where song_id = " + str(song_id)
            self.__db.insertSQL(upd)
-           return req.json()['total']
-        except:
+           return req.json()['total']/20
+        except KeyboardInterrupt :
+            print("INFO : 解释器请求退出")
+        except :
+            print("Unexpected error:", sys.exc_info()[0])
             print("ERROR : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
+            self.viewsCapture(song_id,page,page + 1)
 
 
 
 if __name__ == "__main__":
     tmp = Comment()
-    tmp.viewsCapture(28793140,True)
-
+    tmp.viewsCapture(28793140,1,2)
+    tmp.viewsCapture(28793142,1,2)
