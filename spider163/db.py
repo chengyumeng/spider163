@@ -61,7 +61,7 @@ class MySQLDB:
         self.__db.close()
         print("-- [MySQL] | Has Been Closed --")
 
-if __name__ == "__main__":
-    tmp = MySQLDB()
-    tmp.createTables()
-    print("创建相应数据库表")
+# if __name__ == "__main__":
+#     tmp = MySQLDB()
+#     tmp.createTables()
+#     print("创建相应数据库表")

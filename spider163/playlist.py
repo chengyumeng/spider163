@@ -49,7 +49,7 @@ class Playlist:
         else :
             return False
 
-if __name__ == "__main__":
-	tmp = Playlist()
-	tmp.viewCapture(1)
+# if __name__ == "__main__":
+# 	tmp = Playlist()
+# 	tmp.viewCapture(1)
         

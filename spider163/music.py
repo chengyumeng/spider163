@@ -49,6 +49,6 @@ class Music:
             return True
 
 
-if __name__ == "__main__":
-    tmp = Music()
-    tmp.viewCapture("/playlist?id=739396417")
+# if __name__ == "__main__":
+#     tmp = Music()
+#     tmp.viewCapture("/playlist?id=739396417")
