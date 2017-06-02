@@ -13,7 +13,7 @@ import ConfigParser
 
 class Music:
     
-    def __init__(self):
+    def __init__(self,config = "spider163.conf"):
         self.__headers = {
         'Referer':'http://music.163.com/',
         'Host':'music.163.com',
@@ -21,6 +21,8 @@ class Music:
         'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
         }
         self.__db  = db.MySQLDB()
+        if config != "spider163.conf":
+            self.__db.setConfig()
         self.__url = "http://music.163.com"
 
     def viewCapture(self,link):

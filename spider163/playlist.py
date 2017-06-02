@@ -15,7 +15,7 @@ class Playlist:
     __db = None
     __play_url = None
     __headers  = None
-    def __init__(self):
+    def __init__(self,config = "spider163.conf"):
         self.__headers = {
         'Referer':'http://music.163.com/',
         'Host':'music.163.com',
@@ -23,6 +23,8 @@ class Playlist:
         'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
         }
         self.__db = db.MySQLDB()
+        if config != "spider163.conf":
+            self.__db.setConfig()
         self.__play_url = "http://music.163.com/discover/playlist/?order=hot&cat=全部&limit=35&offset="
 
     def viewCapture(self,page):
