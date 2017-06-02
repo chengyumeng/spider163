@@ -4,19 +4,27 @@
 import ConfigParser
 import MySQLdb
 
-def singletan(cls):
+def singleton1(cls):
     instance = cls()
     instance.__call__ = lambda : instance
     return instance
 
-@singletan
+def singleton(cls, *args, **kw):
+    instances = {}
+    def _singleton():
+        if cls not in instances:
+            instances[cls] = cls(*args, **kw)
+        return instances[cls]
+    return _singleton
+
+@singleton
 class MySQLDB:
     __db     = None
     __cursor = None
 
-    def __init__(self):
+    def __init__(self,config = 'spider163.conf'):
         cf = ConfigParser.ConfigParser()
-        cf.read('../spider163.conf')
+        cf.read(config)
         host = cf.get("mysql", "host")
         username = cf.get("mysql", "username")
         password = cf.get("mysql", "password")
@@ -25,6 +33,29 @@ class MySQLDB:
         self.__cursor = self.__db.cursor()
         self.__cursor.execute("SET NAMES utf8mb4")
         self.__db.commit()
+        self.__config = config
+
+    def setConfig(self,config) :
+        cf = ConfigParser.ConfigParser()
+        cf.read(config)
+        host = cf.get("mysql", "host")
+        username = cf.get("mysql", "username")
+        password = cf.get("mysql", "password")
+        database = cf.get("mysql", "database")
+        self.__db     = MySQLdb.connect(host,username,password,database)
+        self.__cursor = self.__db.cursor()
+        self.__cursor.execute("SET NAMES utf8mb4")
+        self.__db.commit()
+        self.__config = config
+
+    def displayConfig(self):
+        print("Config Name " + str(self.__config))
+        cf = ConfigParser.ConfigParser()
+        cf.read(self.__config)
+        print("Host " + cf.get("mysql", "host"))
+        print("User " + cf.get("mysql", "username"))
+        print("Pass " + cf.get("mysql", "password"))
+        print("DB   " + cf.get("mysql", "database"))
 
     def createTables(self):
         playlist = "CREATE TABLE `playlist1631` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` varchar(150) DEFAULT '',`link` varchar(120) DEFAULT '',`cnt` varchar(20) DEFAULT '0',`dsc` varchar(50) DEFAULT 'all',`create_time` datetime DEFAULT CURRENT_TIMESTAMP,`over` varchar(20) DEFAULT 'N',PRIMARY KEY (`id`),KEY `over_link` (`over`,`link`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4"

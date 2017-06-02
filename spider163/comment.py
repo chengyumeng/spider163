@@ -15,8 +15,10 @@ import db
 
 class Comment:
     
-    def __init__(self):
+    def __init__(self,config = "spider163.conf"):
         self.__db = db.MySQLDB()
+        if config != "spider163.conf":
+            self.__db.setConfig()
         self.__headers = {
         'User-Agent':'android',
         'Cookie': 'appver=1.5.0.75771;',
