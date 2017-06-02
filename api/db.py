@@ -23,6 +23,8 @@ class MySQLDB:
         database = cf.get("mysql", "database")
         self.__db     = MySQLdb.connect(host,username,password,database)
         self.__cursor = self.__db.cursor()
+        self.__cursor.execute("SET NAMES utf8mb4")
+        self.__db.commit()
 
     def createTables(self):
         playlist = "CREATE TABLE `playlist1631` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` varchar(150) DEFAULT '',`link` varchar(120) DEFAULT '',`cnt` varchar(20) DEFAULT '0',`dsc` varchar(50) DEFAULT 'all',`create_time` datetime DEFAULT CURRENT_TIMESTAMP,`over` varchar(20) DEFAULT 'N',PRIMARY KEY (`id`),KEY `over_link` (`over`,`link`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8"
