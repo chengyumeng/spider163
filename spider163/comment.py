@@ -95,7 +95,7 @@ class Comment:
 
 
 
-if __name__ == "__main__":
-    tmp = Comment()
-    tmp.viewsCapture(28793140,1,2)
-    tmp.viewsCapture(28793142,1,2)
+# if __name__ == "__main__":
+#     tmp = Comment()
+#     tmp.viewsCapture(28793140,1,2)
+#     tmp.viewsCapture(28793142,1,2)
