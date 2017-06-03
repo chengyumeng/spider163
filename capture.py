@@ -91,7 +91,10 @@ def captureComment(config,source,mid,maxval,page,module = 'comment'):
                 pbar.update(scss)
                 scss = scss + 1
             step = len(ids)
-            maxval = maxval -step
+            if step == 0:
+                maxval = 0
+            else:
+                maxval = maxval -step
         pbar.finish()
     elif str(source) == "cmd":
         pbar = ProgressBar(maxval = page + 5)
