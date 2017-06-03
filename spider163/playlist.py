@@ -38,18 +38,18 @@ class Playlist:
                 link  = MySQLdb.escape_string(play.find('a',{'class':'msk'})['href'].encode('utf-8'))
                 cnt   = MySQLdb.escape_string(play.find('span',{'class':'nb'}).text.encode('utf-8'))
                 sql   = "insert into playlist163 (title,link,cnt) values ('"+ title + "','" + link + "','" + cnt + "')";
-                if self.queryLink(link) == False :
+                if self.isSinglePlaylist(link) == True :
                     self.__db.insertSQL(sql)
         except:
             print('{} : {}'.format(play_url, "Trouble"))
 
-    def queryLink(self,link):
+    def isSinglePlaylist(self,link):
     	sql = "select * from playlist163 where link = '" + MySQLdb.escape_string(link) + "'"
         results = self.__db.querySQL(sql)
         if len(results) > 0 :
-            return True
-        else :
             return False
+        else :
+            return True
 
 # if __name__ == "__main__":
 # 	tmp = Playlist()
