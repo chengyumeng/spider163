@@ -60,6 +60,11 @@ class Comment:
 
     def createSecretKey(self,size):
         return (''.join(map(lambda xx: (hex(ord(xx))[2:]), os.urandom(size))))[0:16]
+    
+    def getSongIDs(self,maxval = 100):
+        sql = "select song_id from music163 where over = 'N'  limit " + str(maxval)
+        rts = self.__db.querySQL(sql)
+        return rts
 
     def viewsCapture(self,song_id,page = 1,pages = 1024):
         if pages > 1:   
@@ -68,7 +73,7 @@ class Comment:
                 page = page + 1
         else :
             self.viewCapture(song_id,1)
-
+    
     def viewCapture(self,song_id,page = 1):
         if page == 1:
             dql = "delete from comment163 where song_id = " + str(song_id)

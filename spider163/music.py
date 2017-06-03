@@ -25,7 +25,14 @@ class Music:
             self.__db.setConfig()
         self.__url = "http://music.163.com"
 
+    def viewsCapture(self):
+        urls = self.__db.querySQL("select link from playlist163 where over = 'N' limit 10")
+        for url in urls:
+            self.viewCapture(url[0])
+        return len(urls)
+
     def viewCapture(self,link):
+        self.__db.insertSQL("update playlist163 set over = 'N' where link = '" + link + "'")
         url = self.__url + str(link)
         s = requests.session()
         s = BeautifulSoup(s.get(url,headers = self.__headers).content,"lxml")
@@ -38,7 +45,8 @@ class Music:
                 if self.isSingle(music['id']) == True:
                     self.__db.insertSQL(sql)
                 else :
-                    print('{}:{}'.format(name,"Not Single"))
+                    pass
+                    # print('{}:{}'.format(name,"Not Single"))
         except:
             print('{} : {}'.format("Unexcept Error",url))
 
@@ -49,6 +57,10 @@ class Music:
             return False
         else :
             return True
+
+    def getPlaylistRange(self):
+        rts = self.__db.querySQL("select count(*) from playlist163 where over = 'N'")
+        return rts[0][0]
 
 
 # if __name__ == "__main__":
