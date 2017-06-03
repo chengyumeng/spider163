@@ -10,6 +10,7 @@ import MySQLdb
 import sys
 import ConfigParser
 from progressbar import ProgressBar
+import common as c
 
 class Playlist:
     __db = None
@@ -41,7 +42,7 @@ class Playlist:
                 if self.isSinglePlaylist(link) == True :
                     self.__db.insertSQL(sql)
         except:
-            print('{} : {}'.format(play_url, "Trouble"))
+            c.Log('{} : {} {}'.format("ERROR 104 ", "URL",link))
 
     def isSinglePlaylist(self,link):
     	sql = "select * from playlist163 where link = '" + MySQLdb.escape_string(link) + "'"
