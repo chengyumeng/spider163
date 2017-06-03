@@ -69,6 +69,7 @@ class MySQLDB:
         self.__cursor.execute(playlist)
         self.__cursor.execute(music)
         self.__cursor.execute(comment)
+        print("TABLES RECREATE SUCCESS")
 
     
     def querySQL(self,sql):
@@ -95,7 +96,6 @@ class MySQLDB:
 
     def __del__(self):
         self.__db.close()
-        c.Log("-- [MySQL] | Has Been Closed --")
 
 # if __name__ == "__main__":
 #     tmp = MySQLDB()
