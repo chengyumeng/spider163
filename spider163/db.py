@@ -3,6 +3,7 @@
 
 import ConfigParser
 import MySQLdb
+import common as c
 
 def singleton1(cls):
     instance = cls()
@@ -81,7 +82,7 @@ class MySQLDB:
             self.__db.commit()
         except:
             self.__db.rollback()
-            print("SQL ERROR |" + sql)
+            c.Log("ERROR 909 : SQL " + sql)
 
     def getRange(self,table,column = "id"):
         sql = "select min(" + column + "),max(" + column + ") from " + table 
@@ -94,7 +95,7 @@ class MySQLDB:
 
     def __del__(self):
         self.__db.close()
-        print("-- [MySQL] | Has Been Closed --")
+        c.Log("-- [MySQL] | Has Been Closed --")
 
 # if __name__ == "__main__":
 #     tmp = MySQLDB()

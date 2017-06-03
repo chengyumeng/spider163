@@ -9,7 +9,7 @@ import MySQLdb
 import db
 import sys
 import ConfigParser
-
+import common as c
 
 class Music:
     
@@ -45,10 +45,9 @@ class Music:
                 if self.isSingle(music['id']) == True:
                     self.__db.insertSQL(sql)
                 else :
-                    pass
-                    # print('{}:{}'.format(name,"Not Single"))
+                    c.Log('{} : {} {}'.format("ERROR 103",name,"Not Single"))
         except:
-            print('{} : {}'.format("Unexcept Error",url))
+            c.Log('{} : {}'.format("Error 901",url))
 
     def isSingle(self,song_id):
         sql = "select song_id from music163 where song_id =" + str(song_id)

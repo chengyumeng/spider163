@@ -12,6 +12,7 @@ import MySQLdb
 import sys
 import ConfigParser
 import db
+import common as c
 
 class Comment:
     
@@ -96,8 +97,10 @@ class Comment:
            return req.json()['total']/20
         except KeyboardInterrupt :
             print("INFO : 解释器请求退出")
+            c.Log("ERROR 107 : 解释器请求退出")
+            exit()
         except :
-            print("ERROR : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
+            c.Log("ERROR 910 : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
             self.viewsCapture(song_id,page,page + 1)
 
 
