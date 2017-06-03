@@ -46,6 +46,7 @@ class Music:
                     self.__db.insertSQL(sql)
                 else :
                     c.Log('{} : {} {}'.format("ERROR 103",name,"Not Single"))
+                self.__db.insertSQL("update playlist163 set over = 'Y' where link = '" + str(link) + "'")
         except:
             c.Log('{} : {}'.format("Error 901",url))
 

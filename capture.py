@@ -63,6 +63,7 @@ def captureMusic(config,source,playlist,module = 'music'):
             print("unaailable playlist id : -1")
         else:
             msc.viewCapture("/playlist?id=" + str(playlist))
+            print("歌单 " + str(playlist) + " 下载完成！")
     else:
         print("unavailable value of source " + str(source))
 
@@ -83,13 +84,14 @@ def captureComment(config,source,mid,maxval,page,module = 'comment'):
             step = maxval
         else:
             step = 100
-        while step > 0 :
+        while maxval > 0 :
             ids = cmt.getSongIDs(step)
             for item in ids :
                 cmt.viewsCapture(item[0],1,page)
                 pbar.update(scss)
-                scc = scss + 1
+                scss = scss + 1
             step = len(ids)
+            maxval = maxval -step
         pbar.finish()
     elif str(source) == "cmd":
         pbar = ProgressBar(maxval = page + 5)
@@ -117,7 +119,7 @@ def cmd(module,start,end,source,playlist,mid,maxval,page,config):
     if module == "createdb":
         createDB()
     elif module == "playlist":
-        capturePlaylis()
+        capturePlaylist()
     elif module == "music":
         captureMusic()
     elif module == "comment":
@@ -125,7 +127,7 @@ def cmd(module,start,end,source,playlist,mid,maxval,page,config):
     elif module == "config":
         displayConfig()
     else :
-        print("ERROR")
+        print("ERROR 101 : UNDEFINED COMMAND")
 
 
 
