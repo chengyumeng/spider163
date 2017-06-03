@@ -1,6 +1,11 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
 # 抓取网易云音乐 spider163 v2.0
 
+## 安装模块
+```
+$ python setup.py install
+```
+
 ## 查看帮助
 ```console
 $ python capture.py --help
