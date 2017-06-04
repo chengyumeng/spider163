@@ -51,7 +51,7 @@ def captureMusic(config,source,playlist,module = 'music'):
         rng  = msc.getPlaylistRange() 
         step = 1024
         scss = 0
-        pbar = ProgressBar(maxval = rng + 1)
+        pbar = ProgressBar(maxval = rng + 11)
         pbar.start()
         while step > 0 :
             step = msc.viewsCapture()

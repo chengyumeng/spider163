@@ -29,14 +29,17 @@ class Music:
         urls = self.__db.querySQL("select link from playlist163 where over = 'N' limit 10")
         for url in urls:
             self.viewCapture(url[0])
+        for url in urls:
+            self.__db.insertSQL("update playlist163 set over = 'Y' where link = '" + str(url[0]) + "'")
         return len(urls)
 
     def viewCapture(self,link):
         self.__db.insertSQL("update playlist163 set over = 'N' where link = '" + link + "'")
         url = self.__url + str(link)
+        
         s = requests.session()
-        s = BeautifulSoup(s.get(url,headers = self.__headers).content,"lxml")
         try:
+            s = BeautifulSoup(s.get(url,headers = self.__headers).content,"lxml")
             musics = json.loads(s.find('textarea',{'style':'display:none;'}).text)
             for music in musics:
                 name   = MySQLdb.escape_string(music['name'].encode('utf-8'))
