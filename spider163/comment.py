@@ -13,6 +13,7 @@ import sys
 import ConfigParser
 import db
 import common as c
+from bs4 import BeautifulSoup
 
 class Comment:
     
@@ -74,6 +75,7 @@ class Comment:
                 page = page + 1
         else :
             self.viewCapture(song_id,1)
+        self.viewLinks(song_id)
     
     def viewCapture(self,song_id,page = 1):
         if page == 1:
@@ -103,9 +105,49 @@ class Comment:
             c.Log("ERROR 910 : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
             self.viewsCapture(song_id,page,page + 1)
 
+    def viewLinks(self,song_id):
+        url = "http://music.163.com/song?id=" + str(song_id)
+        data = {'id':str(song_id)}
+        headers = {'Cookie':'MUSIC_U=e45797021db3403ab9fffb11c0f70a7994f71177b26efb5169b46948f2f9a60073d23a2665346106c9295f8f6dbb6c7731b299d667364ed3;'}
+        req = requests.get(url,headers = headers,data = data ,timeout = 100)
+        sup = BeautifulSoup(req.content,"lxml")
+        for link in sup.find_all('li',class_= "f-cb"):
+            html = link.find('a','s-fc1')
+            if html != None:
+                title = html.get('title').encode('utf-8')
+                song_id = html.get('href')[9:]
+                author  = link.find('div','f-thide s-fc4').find('span').get('title').encode('utf-8')
+                sql = "insert into music163 (song_id,song_name,author) values(" + str(song_id) + ",'" + MySQLdb.escape_string(title) + "','" + MySQLdb.escape_string(author) + "')"
+                if self.isSingle(song_id) == True:
+                     self.__db.insertSQL(sql)
+        for link in sup.find_all('a','sname f-fs1 s-fc0'):
+            play_link = link.get("href")
+            play_name = link.get("title").encode('utf-8')
+            sql = "insert into playlist163 (title,link,cnt) values ('" + MySQLdb.escape_string(play_name) + "','" + MySQLdb.escape_string(play_link) + "','unknown')"
+            if self.isSingleList(play_link) == True:
+                self.__db.insertSQL(sql)
+            
+    
+    def isSingleList(self,href):
+        sql = "select id from playlist163 where link='" + str(href) + "'"
+        rts = self.__db.querySQL(sql)
+        if len(rts) > 0 :
+            return False
+        else :
+            return True
+
+    def isSingle(self,song_id):
+        sql = "select song_id from music163 where song_id =" + str(song_id)
+        rts = self.__db.querySQL(sql)
+        if len(rts) > 0 :
+            return False
+        else :
+            return True
 
 
-# if __name__ == "__main__":
-#     tmp = Comment()
+
+#if __name__ == "__main__":
+#    tmp = Comment()
+#    tmp.viewLinks(165367)
 #     tmp.viewsCapture(28793140,1,2)
 #     tmp.viewsCapture(28793142,1,2)
