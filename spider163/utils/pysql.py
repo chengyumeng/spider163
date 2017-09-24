@@ -3,10 +3,9 @@
 
 from sqlalchemy import Column, Integer, String, DateTime, Index
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
-import config
+from spider163 import settings
 
 Base = declarative_base()
 
@@ -57,15 +56,13 @@ class Lyric163(Base):
     key_song_id = Index("song_id", song_id)
 
 
-engine = create_engine(config.get_db(), convert_unicode=True, echo=True)
-
-
 def single(table, k, v):
-    cnt = engine.execute('select count(*) from ' + table + ' where ' + k + '="' + v + '"').fetchone()
+    cnt = settings.engine.execute('select count(*) from ' + table + ' where ' + k + '=\'' + str(v) + '\'').fetchone()
     if cnt[0] == 0:
         return True
     else:
         return False
+
 
 
 if __name__ == "__main__":
