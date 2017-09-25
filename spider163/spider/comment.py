@@ -75,14 +75,14 @@ class Comment:
                     author = comment['user']['nickname'].encode('utf-8')
                     liked = comment['likedCount']
                     self.session.add(pysql.Comment163(song_id=song_id, txt=txt, author=author, liked=liked))
-                    self.session.commit()
+                    self.session.flush()
             if page == 1:
                 for comment in req.json()['hotComments']:
                     txt = comment['content'].encode('utf-8')
                     author = comment['user']['nickname'].encode('utf-8')
                     liked = comment['likedCount']
                     self.session.add(pysql.Comment163(song_id=song_id, txt=txt, author=author, liked=liked))
-                    self.session.commit()
+                    self.session.flush()
             cnt = int(req.json()['total'])
             self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({'over': 'Y', 'comment': cnt})
             self.session.commit()
@@ -92,29 +92,52 @@ class Comment:
             pylog.Log("ERROR 107 : 解释器请求退出")
             exit()
         except:
+            self.session.rollback()
             pylog.Log("ERROR 910 : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
 
     def view_links(self, song_id):
         url = "http://music.163.com/song?id=" + str(song_id)
         data = {'id': str(song_id)}
         headers = {'Cookie': 'MUSIC_U=e45797021db3403ab9fffb11c0f70a7994f71177b26efb5169b46948f2f9a60073d23a2665346106c9295f8f6dbb6c7731b299d667364ed3;'}
-        req = requests.get(url, headers=headers, data=data, timeout=100)
-        sup = BeautifulSoup(req.content, "html.parser")
-        for link in sup.find_all('li', class_="f-cb"):
-            html = link.find('a', 's-fc1')
-            if html != None:
-                title = html.get('title').encode('utf-8')
-                song_id = html.get('href')[9:]
-                author = link.find('div', 'f-thide s-fc4').find('span').get('title').encode('utf-8')
-                if pysql.single("music163","song_id",song_id) == True:
-                    self.session.add(pysql.Music163(song_id=song_id, song_name=title, author=author))
-                    self.session.commit()
-        for link in sup.find_all('a', 'sname f-fs1 s-fc0'):
-            play_link = link.get("href").replace("/playlist?id=", "")
-            play_name = link.get("title").encode('utf-8')
-            if pysql.single("playlist163","link",play_link) == True:
-                self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1))
-                self.session.commit()
+        try:
+            req = requests.get(url, headers=headers, data=data, timeout=100)
+            sup = BeautifulSoup(req.content, "html.parser")
+            for link in sup.find_all('li', class_="f-cb"):
+                html = link.find('a', 's-fc1')
+                if html != None:
+                    title = html.get('title').encode('utf-8')
+                    song_id = html.get('href')[9:]
+                    author = link.find('div', 'f-thide s-fc4').find('span').get('title').encode('utf-8')
+                    if pysql.single("music163","song_id",song_id) == True:
+                        self.session.add(pysql.Music163(song_id=song_id, song_name=title, author=author))
+                        self.session.flush()
+            for link in sup.find_all('a', 'sname f-fs1 s-fc0'):
+                play_link = link.get("href").replace("/playlist?id=", "")
+                play_name = link.get("title").encode('utf-8')
+                if pysql.single("playlist163","link",play_link) == True:
+                    self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1))
+                    self.session.flush()
+        except:
+            self.session.rollback()
+            pylog.Log("ERROR 917 : VIEW LINK SONG_ID-" + str(song_id))
+
+    def auto_view(self, count=1):
+        try:
+            if count < 10:
+                msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count)
+                for m in msc:
+                    self.views_capture(m.song_id, 1, 1)
+            else:
+                for i in range(count / 10 + 1):
+                    msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
+                    for m in msc:
+                        self.views_capture(m.song_id, 1, 1)
+        except:
+            pylog.Log("ERROR 918 : AUTO VIEW")
+
+
+
+
 
 
 if __name__ == "__main__":
