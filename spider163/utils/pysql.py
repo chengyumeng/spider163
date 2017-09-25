@@ -30,6 +30,7 @@ class Music163(Base):
     song_name = Column(String(300), server_default="No Name")
     author = Column(String(300), server_default="No Author")
     over = Column(String(255), server_default="N")
+    has_lyric = Column(String(255), server_default="N")
     create_time = Column(DateTime, server_default=func.now())
     comment = Column(Integer(), server_default="-1")
     over_id = Index("over_id", over,id)
@@ -64,7 +65,14 @@ def single(table, k, v):
         return False
 
 
+def initdb():
+    Base.metadata.create_all(settings.engine)
+
+
+def dropdb():
+    Base.metadata.drop_all(settings.engine)
+
 
 if __name__ == "__main__":
-    Base.metadata.create_all(engine)
+    Base.metadata.create_all(settings.engine)
     print(single("playlist163", "link", "sd"))
