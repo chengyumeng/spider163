@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import cli
+from spider163.bin import cli
 if __name__ == '__main__':
     with cli.App() as app:
         app.run()
