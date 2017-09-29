@@ -17,17 +17,22 @@ class Lyric:
         self.__headers = default.header
         self.session = settings.Session()
 
-    def view_lyric(self,song_id):
+    def view_lyric(self, song_id):
         url = default.lyric_url.format(str(song_id))
         s = requests.session()
         try:
             s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
             lrc = json.loads(s.text)['lrc']['lyric']
-            if pysql.single("lyric163","song_id",song_id):
-                self.session.add(pysql.Lyric163(song_id=song_id,txt=lrc))
+            if pysql.single("lyric163", "song_id", song_id):
+                self.session.add(pysql.Lyric163(song_id=song_id, txt=lrc))
                 self.session.commit()
         except:
             pylog.Log("抓取歌词出现问题，歌曲ID：" + str(song_id))
+
+    def get_lyric(self, song_id):
+        self.view_lyric(song_id)
+        lrc = self.session.query(pysql.Lyric163).filter(pysql.Lyric163.song_id == song_id)
+        print(lrc[0].txt)
 
 
 if __name__ == "__main__":

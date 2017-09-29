@@ -7,11 +7,14 @@ import os
 import base64
 from Crypto.Cipher import AES
 from bs4 import BeautifulSoup
+from terminaltables import AsciiTable
+import json
 
 import default
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
+
 
 
 class Comment:
@@ -93,6 +96,7 @@ class Comment:
             exit()
         except:
             self.session.rollback()
+            raise
             pylog.Log("ERROR 910 : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
 
     def view_links(self, song_id):
@@ -134,6 +138,47 @@ class Comment:
                         self.views_capture(m.song_id, 1, 1)
         except:
             pylog.Log("ERROR 918 : AUTO VIEW")
+
+    # TODO：这是一个假函数，请在10月份以前完成修改
+    def get_music(self, music_id):
+        self.view_capture(int(music_id), 1)
+        url = default.music_api.format(music_id, music_id)
+        s = requests.session()
+        s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
+        music = json.loads(s.text)['songs']
+        print("《" + music[0]['name'].encode('utf-8') + "》")
+        author = []
+        for a in music[0]['artists']:
+            author.append(a['name'].encode('utf-8'))
+        album = str(music[0]['album']['name'].encode('utf-8'))
+        print("演唱：{}     专辑：{}".format("，".join(author), album))
+        comments = self.session.query(pysql.Comment163).filter(pysql.Comment163.song_id == int(music_id))
+        tb = AsciiTable([["序号", "作者", "评论", "点赞"]])
+        max_width = tb.column_max_width(2) - tb.column_max_width(2) % 3
+        cnt = 0
+        try:
+            for cmt in comments:
+                cnt = cnt + 1
+                au = cmt.author.encode("utf-8")
+                txt = ""
+                length = 0
+                for u in cmt.txt:
+                    txt = txt + u
+                    if ord(u) < 128:
+                        length = length + 3
+                    else:
+                        length = length + 1
+                    if length == max_width:
+                        txt = txt + "\n"
+                        length = 0
+                liked = str(cmt.liked)
+                tb.table_data.append([str(cnt), str(au), str(txt), liked])
+            print(tb.table)
+        except UnicodeEncodeError:
+            for cmt in comments:
+                print("评论： {}".format(cmt.txt.encode("utf-8")))
+                print("作者： {}   点赞：  {}".format(cmt.author.encode("utf-8"),str(cmt.liked)))
+        print("")
 
 
 

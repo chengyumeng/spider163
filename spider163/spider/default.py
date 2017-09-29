@@ -19,3 +19,9 @@ comment_url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_{}/?csrf_t
 lyric_url = "http://music.163.com/api/song/lyric?os=pc&id={}&lv=-1&kv=-1&tv=-1"
 play_url = "http://music.163.com/discover/playlist/?order=hot&cat=全部&limit=35&offset="
 music_url = "http://music.163.com/api/playlist/detail?id="
+
+playlist_api = "http://music.163.com/api/playlist/detail?id={}&upd"
+
+music_api = "http://music.163.com/api/song/detail/?id={}&ids=[{}]"
+
+search_api = "http://music.163.com/api/search/pc"
