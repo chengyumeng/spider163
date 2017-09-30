@@ -1,16 +1,13 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
 # 抓取网易云音乐 spider163 v2.4
 
-## 安装模块
-```
-$ python setup.py install
-```
 
-## 查看帮助
-```console
-$ spider163 --help
-$ # 命令帮助相关内容
-```
+## 安装模块
+- 第一步：使用pip install -r requirements.txt安装第三方依赖
+- 第二步：使用Python setup.py install 安装爬虫模块
+- 第三步：指定SPIDER163_PATH环境变量，缺省情况下为$HOME/spider163
+- 第四步：把默认配置文件spider163.conf拷贝到SPIDER163_PATH下，并配置数据库
+- spider163 --help
 
 ## 功能模块
 - initdb
