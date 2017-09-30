@@ -132,14 +132,16 @@ class Comment:
                 for m in msc:
                     self.views_capture(m.song_id, 1, 1)
             else:
-                for i in range(count / 10 + 1):
+                for i in range(count / 10):
                     msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
                     for m in msc:
                         self.views_capture(m.song_id, 1, 1)
+                msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count % 10)
+                for m in msc:
+                    self.views_capture(m.song_id, 1, 1)
         except:
             pylog.Log("ERROR 918 : AUTO VIEW")
 
-    # TODO：这是一个假函数，请在10月份以前完成修改
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)
         url = default.music_api.format(music_id, music_id)
@@ -178,7 +180,7 @@ class Comment:
             for cmt in comments:
                 print("评论： {}".format(cmt.txt.encode("utf-8")))
                 print("作者： {}   点赞：  {}".format(cmt.author.encode("utf-8"),str(cmt.liked)))
-        print("")
+                print("")
 
 
 

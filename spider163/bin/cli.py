@@ -54,21 +54,27 @@ class SpiderController(CementBaseController):
 
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
     def music(self):
+        msc = music.Music()
+        if self.app.pargs.count  == None:
+            msc.views_capture()
+            return
         cnt = int(self.app.pargs.count)
         if cnt <= 0:
             print ("~")
         else:
-            msc = music.Music()
             for i in range(cnt):
                 print msc.views_capture()
 
-    @expose(help="通过音乐列表抓取网易云音乐热评，单次抓取音乐1首(-c --count)")
+    @expose(help="通过音乐列表抓取网易云音乐热评，单次抓取音乐1首(-c --count),也可以指定歌曲ID(-s --song)")
     def comment(self):
         cmt = comment.Comment()
         if self.app.pargs.song != None:
             cmt.view_capture(int(self.app.pargs.song), 1)
-        else:
+            return
+        if self.app.pargs.count != None:
             cmt.auto_view(int(self.app.pargs.count))
+        else:
+            cmt.auto_view(1)
 
 
 class QueryController(CementBaseController):
