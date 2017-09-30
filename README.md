@@ -26,7 +26,7 @@ $ spider163 initdb
 $ # 根据配置文件的数据库信息自动创建数据库表，删除全部数据通过resetdb实现
 ```
 ```console
-$ python capture.py --module=createdb --config=spider163.conf
+$ spider163 resetdb
 $ # 重建相关数据库
 ```
 ```console
