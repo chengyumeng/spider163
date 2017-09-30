@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*
 
 from setuptools import setup, find_packages
-
+from spider163.bin import cli
 setup(
-      version="2.1",
+      version=cli.VERSION,
       name='spider163',
       author='Chengyumeng',
       url='https://github.com/Chengyumeng/spider163',

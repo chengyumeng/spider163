@@ -9,11 +9,28 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 
+VERSION = '2.4.0'
+
+BANNER = """
+Spider163 Application v%s
+Copyright (c) 2017 Cheng Tian Enterprises
+Welcome to Follow My 【微信公众账号】"程天写代码"
+""" % VERSION
+
+
+class VersionController(CementBaseController):
+    class Meta:
+        label = 'base'
+        description = 'Spider163是Github上最流行的网易云音乐爬虫系统'
+        arguments = [
+            (['-v', '--version'], dict(action='version', version=BANNER)),
+            ]
+
 
 class DatabaseController(CementBaseController):
     class Meta:
-        label = "base"
-        description = "Github上最好用的网易云音乐爬虫"
+        label = "database"
+        description = "数据库相关操作"
         arguments = []
 
     @expose(help="自动生成数据库相关依赖")
@@ -112,7 +129,7 @@ class App(CementApp):
     class Meta:
         label = "Spider163"
         base_controller = "base"
-        handlers = [DatabaseController, SpiderController, QueryController]
+        handlers = [VersionController, DatabaseController, SpiderController, QueryController]
 
 
 
