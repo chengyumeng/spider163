@@ -13,7 +13,7 @@ from spider163.spider import search
 class DatabaseController(CementBaseController):
     class Meta:
         label = "base"
-        description = "创建数据库依赖等相关操作"
+        description = "Github上最好用的网易云音乐爬虫"
         arguments = []
 
     @expose(help="自动生成数据库相关依赖")
