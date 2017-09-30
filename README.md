@@ -1,5 +1,5 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
-# 抓取网易云音乐 spider163 v2.0
+# 抓取网易云音乐 spider163 v2.4
 
 ## 安装模块
 ```
@@ -8,53 +8,59 @@ $ python setup.py install
 
 ## 查看帮助
 ```console
-$ python capture.py --help
+$ spider163 --help
 $ # 命令帮助相关内容
 ```
 
 ## 功能模块
-- config
-- createdb
+- initdb
+- resetdb
 - playlist
 - music
 - comment
+- search
+- get
+
 
 ## 使用指南
 
 ```console
-$ python capture.py --module=config --config=spider163.conf
-$ # 查看配置文件配置数据的详情和联通性
+$ spider163 initdb
+$ # 根据配置文件的数据库信息自动创建数据库表，删除全部数据通过resetdb实现
 ```
 ```console
 $ python capture.py --module=createdb --config=spider163.conf
 $ # 重建相关数据库
 ```
 ```console
-$ python capture.py --module=playlist --config=spider163.conf --start=0 --end=39
-$ # 指定起止页数下载歌单
+$ spider163 playlist
+$ # 默认下载全部推荐歌单（1000+），也可以通过指定页码去下载（-p=1）
 ```
 ```console
-$ python capture.py --module=music --config=spider163.conf --source=db
-$ # 从数据库导入歌单信息抓取音乐链接
+$ spider163 music
+$ # 默认下载10个歌单的歌曲数据，也可以通过指定循环大小（-c=2）来下载10 * c 个歌单内歌曲
 ```
 ```console
-$ python capture.py --module=music --config=spider163.conf --source=cmd --playlist=720308660
-$ # 下载歌单720308660
+$ spider163 comment
+$ # 默认根据数据库存储的未下载歌曲随机下载一首单曲的评论，也可以通过-c指定需要下载的单曲数量和-s强制指定歌曲id
+$ # spider163 comment -c 10 | spider163 comment -s 209115
 ```
 ```console
-$ python capture.py --module=comment --config=spider163.conf --source=db --maxval=10 --page=1
-$ # 从数据库获取10首音乐的链接，抓取其首页的热评
+$ spider163 search -q="林依晨"
+$ # 搜索功能（待完善，暂支持歌曲搜索）
 ```
 ```console
-$ python capture.py --module=comment --config=spider163.conf --source=cmd --mid=28793140 --page=100
-$ # 抓取歌曲28793140的一百页评论内的热评
+$ spider163 get -s 209115
+$ # 阅读歌曲基本信息、歌词、热评
+```
+```console
+$ spider163 get --playlist 922064582
+$ # 获取歌单的基本信息、歌曲等
 ```
 
-## 过往版本
-- [v0.9](https://github.com/Chengyumeng/spider163/tree/master/v0.9)
 
 ## TODO
-- 撰写使用脚本等
+- [2017 Q4](https://github.com/Chengyumeng/spider163/blob/master/TODO.md)
 - ...
 
 # 欢迎关注微信公众账号：程天写代码
