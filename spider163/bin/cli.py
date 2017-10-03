@@ -93,6 +93,16 @@ class SpiderController(CementBaseController):
         else:
             cmt.auto_view(1)
 
+    @expose(help="通过音乐列表抓取网易云音乐歌词,可以指定抓取歌曲数量（-c --count），也可以指定歌曲ID（-s --song）")
+    def lyric(self):
+        lrc = lyric.Lyric()
+        if self.app.pargs.song != None:
+            lrc.view_lyric(self.app.pargs.song)
+        elif self.app.pargs.count != None:
+            lrc.view_lyrics(int(self.app.pargs.count))
+        else:
+            print("您至少指定--song或者--count一个参数")
+
 
 class QueryController(CementBaseController):
     class Meta:
