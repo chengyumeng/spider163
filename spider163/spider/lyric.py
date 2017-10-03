@@ -25,7 +25,9 @@ class Lyric:
             lrc = json.loads(s.text)['lrc']['lyric']
             if pysql.single("lyric163", "song_id", song_id):
                 self.session.add(pysql.Lyric163(song_id=song_id, txt=lrc))
+                self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "Y"})
                 self.session.commit()
+
         except:
             pylog.Log("抓取歌词出现问题，歌曲ID：" + str(song_id))
 
@@ -34,7 +36,18 @@ class Lyric:
         lrc = self.session.query(pysql.Lyric163).filter(pysql.Lyric163.song_id == song_id)
         print(lrc[0].txt)
 
+    def view_lyrics(self, count):
+        for i in range(count/10):
+            ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(10)
+            for m in ms:
+                print("歌曲ID " + str(m.song_id))
+                self.view_lyric(m.song_id)
+        ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(count%10)
+        for m in ms:
+            self.view_lyric(m.song_id)
+
 
 if __name__ == "__main__":
-    tmp = Lyric()
-    tmp.view_lyric(506092019)
+    # tmp = Lyric()
+    # tmp.view_lyric(506092019)
+    Lyric().view_lyrics(19)
