@@ -130,11 +130,6 @@ class QueryController(CementBaseController):
             search.searchSong(self.app.pargs.query)
 
 
-
-
-
-
-
 class App(CementApp):
     class Meta:
         label = "Spider163"

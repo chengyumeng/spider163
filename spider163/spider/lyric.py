@@ -27,9 +27,9 @@ class Lyric:
                 self.session.add(pysql.Lyric163(song_id=song_id, txt=lrc))
                 self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "Y"})
                 self.session.commit()
-
-        except:
-            pylog.Log("抓取歌词出现问题，歌曲ID：" + str(song_id))
+        except Exception:
+            pylog.log.error("抓取歌词出现问题，歌曲ID：" + str(song_id))
+            raise
 
     def get_lyric(self, song_id):
         self.view_lyric(song_id)
