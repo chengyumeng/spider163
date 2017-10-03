@@ -37,8 +37,9 @@ class Playlist:
                     pl = pysql.Playlist163(title=title, link=link, cnt=int(cnt))
                     self.session.add(pl)
                     self.session.commit()
-        except:
-            pylog.Log("抓取歌单出现问题，歌单页码：" + page)
+        except Exception:
+            pylog.log.error("抓取歌单出现问题，歌单页码：" + page)
+            raise
 
 
 if __name__ == "__main__":

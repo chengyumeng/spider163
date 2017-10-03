@@ -28,7 +28,8 @@ setup(
             "shellescape==3.4.1",
             "SQLAlchemy==1.1.14",
             "terminaltables==3.1.0",
-            "urllib3==1.22"
+            "urllib3==1.22",
+            "Logbook==1.1.0"
       ]
 
 )

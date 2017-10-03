@@ -42,9 +42,10 @@ class Music:
                     self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author))
                     self.session.commit()
                 else:
-                    pylog.Log('{} : {} {}'.format("ERROR 103",name,"Not Single"))
-        except:
-            pylog.Log('{} : {}'.format("Error 901", url))
+                    pylog.log.info('{} : {} {}'.format("重复抓取歌曲", name, "取消持久化"))
+        except Exception:
+            pylog.log.error('{} : {}'.format("抓取歌单页面存在问题", url))
+            raise
 
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))

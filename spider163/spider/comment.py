@@ -90,14 +90,10 @@ class Comment:
             self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({'over': 'Y', 'comment': cnt})
             self.session.commit()
             return cnt / 20
-        except KeyboardInterrupt:
-            print("INFO : 解释器请求退出")
-            pylog.Log("ERROR 107 : 解释器请求退出")
-            exit()
-        except:
+        except Exception:
             self.session.rollback()
+            pylog.log.error("解释歌曲评论的时候出现问题，歌曲ID：" + str(song_id) + "  页码：" + str(page))
             raise
-            pylog.Log("ERROR 910 : SONG_ID-" + str(song_id) + " PAGE-" + str(page))
 
     def view_links(self, song_id):
         url = "http://music.163.com/song?id=" + str(song_id)
@@ -123,7 +119,8 @@ class Comment:
                     self.session.flush()
         except:
             self.session.rollback()
-            pylog.Log("ERROR 917 : VIEW LINK SONG_ID-" + str(song_id))
+            pylog.log.error("解析页面推荐时出现问题，歌曲ID：" + str(song_id))
+            raise
 
     def auto_view(self, count=1):
         try:
@@ -140,7 +137,9 @@ class Comment:
                 for m in msc:
                     self.views_capture(m.song_id, 1, 1)
         except:
-            pylog.Log("ERROR 918 : AUTO VIEW")
+            self.session.rollback()
+            pylog.log.error("自动抓取热评出现异常，歌曲ID：" + str(m.song_id))
+            raise
 
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)
@@ -177,10 +176,13 @@ class Comment:
                 tb.table_data.append([str(cnt), str(au), str(txt), liked])
             print(tb.table)
         except UnicodeEncodeError:
+            pylog.log.info("获取歌曲详情编码存在问题，转为非表格形式，歌曲ID：" + str(music_id))
             for cmt in comments:
                 print("评论： {}".format(cmt.txt.encode("utf-8")))
                 print("作者： {}   点赞：  {}".format(cmt.author.encode("utf-8"),str(cmt.liked)))
                 print("")
+        except Exception:
+            raise
 
 
 
