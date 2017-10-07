@@ -4,6 +4,7 @@ cement==2.10.2
 certifi==2017.7.27.1
 chardet==3.0.4
 click==6.7
+colorama==0.3.9
 idna==2.6
 Logbook==1.1.0
 MySQL-python==1.2.5
