@@ -2,6 +2,8 @@
 
 from cement.core.foundation import CementApp
 from cement.core.controller import CementBaseController, expose
+from colorama import Fore
+from colorama import init
 from spider163.utils import pysql
 from spider163.spider import playlist
 from spider163.spider import music
@@ -9,7 +11,7 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 
-VERSION = '2.4.1'
+VERSION = '2.4.3'
 
 BANNER = """
 Spider163 Application v%s
@@ -17,6 +19,7 @@ Copyright (c) 2017 Cheng Tian Enterprises
 Welcome to Follow My 【微信公众账号】"程天写代码"
 """ % VERSION
 
+init(autoreset=True)
 
 class VersionController(CementBaseController):
     class Meta:
@@ -63,10 +66,11 @@ class SpiderController(CementBaseController):
         pg = self.app.pargs.page
         pl = playlist.Playlist()
         if pg != None:
+            print(Fore.GREEN + '正在抓取第 {} 页歌单……'.format(pg))
             pl.view_capture(int(pg))
         else:
             for i in range(36):
-                print('正在抓取第 {} 页歌单……'.format(i + 1))
+                print(Fore.GREEN + '正在抓取第 {} 页歌单……'.format(i + 1))
                 pl.view_capture(i + 1)
 
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
@@ -77,18 +81,22 @@ class SpiderController(CementBaseController):
             return
         cnt = int(self.app.pargs.count)
         if cnt <= 0:
-            print ("~")
+            print ("不合法的--count -c 变量（ > 0 ）")
         else:
             for i in range(cnt):
-                print msc.views_capture()
+                print(Fore.GREEN + '正在执行第 {} 批抓取计划，本次抓取歌单歌曲 10 个\r\n'.format(i + 1))
+                msc.views_capture()
 
     @expose(help="通过音乐列表抓取网易云音乐热评，单次抓取音乐1首(-c --count),也可以指定歌曲ID(-s --song)")
     def comment(self):
         cmt = comment.Comment()
         if self.app.pargs.song != None:
+            print(Fore.BLUE + '正在执行抓取歌曲 {} 热门评论计划'.format(self.app.pargs.song))
             cmt.view_capture(int(self.app.pargs.song), 1)
+            print(Fore.GREEN + '抓取完成\r\n')
             return
         if self.app.pargs.count != None:
+            print(Fore.GREEN + '正在执行批量抓取热门评论计划，本次计划抓取歌曲 {} 首\r\n'.format(self.app.pargs.count))
             cmt.auto_view(int(self.app.pargs.count))
         else:
             cmt.auto_view(1)
@@ -97,8 +105,11 @@ class SpiderController(CementBaseController):
     def lyric(self):
         lrc = lyric.Lyric()
         if self.app.pargs.song != None:
+            print(Fore.BLUE + '正在执行抓取歌曲 {} 歌词的计划'.format(self.app.pargs.song))
             lrc.view_lyric(self.app.pargs.song)
+            print(Fore.GREEN + '抓取完成\r\n')
         elif self.app.pargs.count != None:
+            print(Fore.GREEN + '正在执行批量抓取歌词计划，本次计划抓取歌曲 {} 首\r\n'.format(self.app.pargs.count))
             lrc.view_lyrics(int(self.app.pargs.count))
         else:
             print("您至少指定--song或者--count一个参数")

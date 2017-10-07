@@ -16,5 +16,5 @@ if __name__ == '__main__':
             pylog.log.warn("控制台异常:"+ str(e))
             exit()
         except Exception:
-            pass
+            raise
 

@@ -40,10 +40,11 @@ class Lyric:
         for i in range(count/10):
             ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(10)
             for m in ms:
-                print("歌曲ID " + str(m.song_id))
+                print("正在抓取歌曲 {} 的歌词……".format(m.song_name.encode("utf-8")))
                 self.view_lyric(m.song_id)
         ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(count%10)
         for m in ms:
+            print("正在抓取歌曲 {} 的歌词……".format(m.song_name.encode("utf-8")))
             self.view_lyric(m.song_id)
 
 
