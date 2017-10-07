@@ -22,6 +22,7 @@ class Music:
     def views_capture(self):
         urls = self.session.query(pysql.Playlist163).filter(pysql.Playlist163.over == 'N').limit(10)
         for url in urls:
+            print("正在抓取歌单《{}》的歌曲……".format(url.title.encode("utf-8")))
             self.view_capture(url.link)
         for url in urls:
             self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url.link).update({'over': 'Y'})
@@ -35,14 +36,17 @@ class Music:
         try:
             s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
             musics = json.loads(s.text)['result']['tracks']
+            exist = 0
             for music in musics:
                 name = music['name'].encode('utf-8')
                 author = music['artists'][0]['name'].encode('utf-8')
                 if pysql.single("music163", "song_id", (music['id'])) == True:
                     self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author))
                     self.session.commit()
+                    exist = exist + 1
                 else:
                     pylog.log.info('{} : {} {}'.format("重复抓取歌曲", name, "取消持久化"))
+            print("歌单包含歌曲 {} 首,数据库 merge 歌曲 {} 首 \r\n".format(len(musics), exist))
         except Exception:
             pylog.log.error('{} : {}'.format("抓取歌单页面存在问题", url))
             raise

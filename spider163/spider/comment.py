@@ -127,14 +127,17 @@ class Comment:
             if count < 10:
                 msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count)
                 for m in msc:
+                    print("抓取歌曲 {} 热评中……".format(m.song_name.encode('utf-8')))
                     self.views_capture(m.song_id, 1, 1)
             else:
                 for i in range(count / 10):
                     msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
                     for m in msc:
+                        print("抓取歌曲 {} 热评中……".format(m.song_name.encode('utf-8')))
                         self.views_capture(m.song_id, 1, 1)
                 msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count % 10)
                 for m in msc:
+                    print("抓取歌曲 {} 热评中……".format(m.song_name.encode('utf-8')))
                     self.views_capture(m.song_id, 1, 1)
         except:
             self.session.rollback()
