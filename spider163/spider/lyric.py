@@ -28,8 +28,10 @@ class Lyric:
                 self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "Y"})
                 self.session.commit()
         except Exception:
+            self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "E"})
+            self.session.commit()
             pylog.log.error("抓取歌词出现问题，歌曲ID：" + str(song_id))
-            raise
+
 
     def get_lyric(self, song_id):
         self.view_lyric(song_id)
@@ -40,11 +42,11 @@ class Lyric:
         for i in range(count/10):
             ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(10)
             for m in ms:
-                print("正在抓取歌曲 {} 的歌词……".format(m.song_name.encode("utf-8")))
+                print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode("utf-8"))))
                 self.view_lyric(m.song_id)
         ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(count%10)
         for m in ms:
-            print("正在抓取歌曲 {} 的歌词……".format(m.song_name.encode("utf-8")))
+            print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode("utf-8"))))
             self.view_lyric(m.song_id)
 
 

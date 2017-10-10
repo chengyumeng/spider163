@@ -81,7 +81,7 @@ class SpiderController(CementBaseController):
             return
         cnt = int(self.app.pargs.count)
         if cnt <= 0:
-            print ("不合法的--count -c 变量（ > 0 ）")
+            print(Fore.RED + "不合法的--count -c 变量（ > 0 ）")
         else:
             for i in range(cnt):
                 print(Fore.GREEN + '正在执行第 {} 批抓取计划，本次抓取歌单歌曲 10 个\r\n'.format(i + 1))
