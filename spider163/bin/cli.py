@@ -11,7 +11,7 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 
-VERSION = '2.4.3'
+VERSION = '2.4.4'
 
 BANNER = """
 Spider163 Application v%s
