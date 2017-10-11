@@ -15,6 +15,9 @@ def searchSong(key):
     url = default.search_api
     data = {'s': key, 'offset': 0, 'limit': 20, 'type': "1"}
     req = requests.post(url, headers=default.header, data=data, timeout=10)
+    if req.json()["result"]['songCount'] == 0:
+        pylog.log.warn("关键词 {} 没有可搜索歌曲".format(key))
+        return
     songs = req.json()["result"]['songs']
     song_table = AsciiTable([["ID", "歌曲", "专辑", "演唱"]])
     for item in songs:
@@ -32,6 +35,9 @@ def searchAlbum(key):
     url = default.search_api
     data = {'s': key, 'offset': 0, 'limit': 20, 'type': "10"}
     req = requests.post(url, headers=default.header, data=data, timeout=10)
+    if req.json()["result"]['albumCount'] == 0:
+        pylog.log.warn("关键词 {} 没有可搜索专辑".format(key))
+        return
     albums = req.json()["result"]['albums']
     song_table = AsciiTable([["ID", "专辑", "演唱","发行方"]])
     for item in albums:
@@ -51,6 +57,9 @@ def searchSinger(key):
     url = default.search_api
     data = {'s': key, 'offset': 0, 'limit': 10, 'type': "100"}
     req = requests.post(url, headers=default.header, data=data, timeout=10)
+    if req.json()["result"]['artistCount'] == 0:
+        pylog.log.warn("关键词 {} 没有可搜索艺术家".format(key))
+        return
     artists = req.json()["result"]['artists']
     song_table = AsciiTable([["ID", "姓名", "专辑数量", "MV数量"]])
     for item in artists:
@@ -66,6 +75,9 @@ def searchPlaylist(key):
     url = default.search_api
     data = {'s': key, 'offset': 0, 'limit': 5, 'type': "1000"}
     req = requests.post(url, headers=default.header, data=data, timeout=10)
+    if req.json()["result"]['playlistCount'] == 0:
+        pylog.log.warn("关键词 {} 没有可搜索歌单".format(key))
+        return
     playlists = req.json()["result"]['playlists']
     song_table = AsciiTable([["ID", "歌单", "维护者", "播放数量", "收藏数量"]])
     for item in playlists:
