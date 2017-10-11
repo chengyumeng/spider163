@@ -139,6 +139,7 @@ class QueryController(CementBaseController):
     def search(self):
         if self.app.pargs.query != None:
             search.searchSong(self.app.pargs.query)
+            search.searchAlbum(self.app.pargs.query)
 
 
 class App(CementApp):
