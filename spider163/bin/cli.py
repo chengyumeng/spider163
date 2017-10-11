@@ -11,7 +11,7 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 
-VERSION = '2.4.4'
+VERSION = '2.4.5'
 
 BANNER = """
 Spider163 Application v%s
@@ -141,6 +141,7 @@ class QueryController(CementBaseController):
             search.searchSong(self.app.pargs.query)
             search.searchAlbum(self.app.pargs.query)
             search.searchSinger(self.app.pargs.query)
+            search.searchPlaylist(self.app.pargs.query)
 
 
 class App(CementApp):
