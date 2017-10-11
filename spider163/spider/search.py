@@ -47,6 +47,38 @@ def searchAlbum(key):
     print(pylog.Blue("与 \"{}\" 有关的专辑".format(key)))
     print(song_table.table)
 
+def searchSinger(key):
+    url = default.search_api
+    data = {'s': key, 'offset': 0, 'limit': 10, 'type': "100"}
+    req = requests.post(url, headers=default.header, data=data, timeout=10)
+    artists = req.json()["result"]['artists']
+    song_table = AsciiTable([["ID", "姓名", "专辑数量", "MV数量"]])
+    for item in artists:
+        id = str(item['id'])
+        name = item['name'].encode("utf-8")
+        acount = str(item['albumSize'])
+        mcount = str(item['mvSize'])
+        song_table.table_data.append([id, name, acount, mcount])
+    print(pylog.Blue("与 \"{}\" 有关的歌手".format(key)))
+    print(song_table.table)
+
+def searchPlaylist(key):
+    url = default.search_api
+    data = {'s': key, 'offset': 0, 'limit': 5, 'type': "1000"}
+    req = requests.post(url, headers=default.header, data=data, timeout=10)
+    playlists = req.json()["result"]['playlists']
+    song_table = AsciiTable([["ID", "歌单", "维护者", "播放数量", "收藏数量"]])
+    for item in playlists:
+        id = str(item['id'])
+        name = item['name'].encode("utf-8")
+        creator = item['creator']['nickname'].encode("utf-8")
+        pcount = str(item['playCount'])
+        bcount = str(item['bookCount'])
+        song_table.table_data.append([id, name, creator, pcount, bcount])
+    print(pylog.Blue("与 \"{}\" 有关的歌单".format(key)))
+    print(song_table.table)
+
+
 
 
 if __name__ == "__main__":
