@@ -31,6 +31,7 @@ def searchSong(key):
     print(pylog.Blue("与 \"{}\" 有关的歌曲".format(key)))
     print(song_table.table)
 
+
 def searchAlbum(key):
     url = default.search_api
     data = {'s': key, 'offset': 0, 'limit': 20, 'type': "10"}
@@ -53,6 +54,7 @@ def searchAlbum(key):
     print(pylog.Blue("与 \"{}\" 有关的专辑".format(key)))
     print(song_table.table)
 
+
 def searchSinger(key):
     url = default.search_api
     data = {'s': key, 'offset': 0, 'limit': 10, 'type': "100"}
@@ -70,6 +72,7 @@ def searchSinger(key):
         song_table.table_data.append([id, name, acount, mcount])
     print(pylog.Blue("与 \"{}\" 有关的歌手".format(key)))
     print(song_table.table)
+
 
 def searchPlaylist(key):
     url = default.search_api
@@ -89,8 +92,6 @@ def searchPlaylist(key):
         song_table.table_data.append([id, name, creator, pcount, bcount])
     print(pylog.Blue("与 \"{}\" 有关的歌单".format(key)))
     print(song_table.table)
-
-
 
 
 if __name__ == "__main__":
