@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
 import json
 
-import default
+import settings as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
@@ -20,12 +20,12 @@ from spider163.utils import pylog
 class Comment:
 
     def __init__(self):
-        self.__headers = default.header
+        self.__headers = uapi.header
         self.session = settings.Session()
-        text = default.comment_text
-        modulus = default.comment_module
-        pubKey = default.pubKey
-        secKey = default.secKey
+        text = uapi.comment_text
+        modulus = uapi.comment_module
+        pubKey = uapi.pubKey
+        secKey = uapi.secKey
         self.__encSecKey = self.rsaEncrypt(secKey, pubKey, modulus)
 
     def createParams(self, page=1):
@@ -69,7 +69,7 @@ class Comment:
             self.session.query(pysql.Comment163).filter(pysql.Comment163.song_id == song_id).delete()
             self.session.commit()
         data = {'params': self.createParams(page), 'encSecKey': self.__encSecKey}
-        url = default.comment_url.format(str(song_id))
+        url = uapi.comment_url.format(str(song_id))
         try:
             req = requests.post(url, headers=self.__headers, data=data, timeout=10)
             for comment in req.json()['comments']:
@@ -146,7 +146,7 @@ class Comment:
 
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)
-        url = default.music_api.format(music_id, music_id)
+        url = uapi.music_api.format(music_id, music_id)
         s = requests.session()
         s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
         music = json.loads(s.text)['songs']
