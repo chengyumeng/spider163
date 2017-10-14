@@ -5,7 +5,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
-import default
+import settings as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
@@ -14,11 +14,11 @@ from spider163.utils import pylog
 class Lyric:
 
     def __init__(self):
-        self.__headers = default.header
+        self.__headers = uapi.header
         self.session = settings.Session()
 
     def view_lyric(self, song_id):
-        url = default.lyric_url.format(str(song_id))
+        url = uapi.lyric_url.format(str(song_id))
         s = requests.session()
         try:
             s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")

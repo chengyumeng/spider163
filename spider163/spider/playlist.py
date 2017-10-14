@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import default
+import settings as uapi
 import requests
 from bs4 import BeautifulSoup
 
@@ -15,8 +15,8 @@ class Playlist:
     __headers = None
 
     def __init__(self):
-        self.__headers = default.header
-        self.__play_url = default.play_url
+        self.__headers = uapi.header
+        self.__play_url = uapi.play_url
         self.session = settings.Session()
 
     def view_capture(self, page):

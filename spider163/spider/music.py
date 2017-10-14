@@ -5,7 +5,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
-import default
+import settings as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
@@ -15,8 +15,8 @@ from terminaltables import AsciiTable
 class Music:
     
     def __init__(self):
-        self.__headers = default.header
-        self.__url = default.music_url
+        self.__headers = uapi.header
+        self.__url = uapi.music_url
         self.session = settings.Session()
 
     def views_capture(self):
@@ -53,7 +53,7 @@ class Music:
 
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))
-        url = default.playlist_api.format(playlist_id)
+        url = uapi.playlist_api.format(playlist_id)
         s = requests.session()
         s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
         playlist = json.loads(s.text)['result']

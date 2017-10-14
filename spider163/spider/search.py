@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import default
+import settings as uapi
 import requests
 from terminaltables import AsciiTable
 from spider163.utils import pylog
@@ -12,9 +12,9 @@ type = {1: "歌曲", 10: "专辑", 100: "歌手", 1000: "歌单"}
 
 
 def searchSong(key):
-    url = default.search_api
+    url = uapi.search_api
     data = {'s': key, 'offset': 0, 'limit': 20, 'type': "1"}
-    req = requests.post(url, headers=default.header, data=data, timeout=10)
+    req = requests.post(url, headers=uapi.header, data=data, timeout=10)
     if req.json()["result"]['songCount'] == 0:
         pylog.log.warn("关键词 {} 没有可搜索歌曲".format(key))
         return
@@ -33,9 +33,9 @@ def searchSong(key):
 
 
 def searchAlbum(key):
-    url = default.search_api
+    url = uapi.search_api
     data = {'s': key, 'offset': 0, 'limit': 20, 'type': "10"}
-    req = requests.post(url, headers=default.header, data=data, timeout=10)
+    req = requests.post(url, headers=uapi.header, data=data, timeout=10)
     if req.json()["result"]['albumCount'] == 0:
         pylog.log.warn("关键词 {} 没有可搜索专辑".format(key))
         return
@@ -56,9 +56,9 @@ def searchAlbum(key):
 
 
 def searchSinger(key):
-    url = default.search_api
+    url = uapi.search_api
     data = {'s': key, 'offset': 0, 'limit': 10, 'type': "100"}
-    req = requests.post(url, headers=default.header, data=data, timeout=10)
+    req = requests.post(url, headers=uapi.header, data=data, timeout=10)
     if req.json()["result"]['artistCount'] == 0:
         pylog.log.warn("关键词 {} 没有可搜索艺术家".format(key))
         return
@@ -75,9 +75,9 @@ def searchSinger(key):
 
 
 def searchPlaylist(key):
-    url = default.search_api
+    url = uapi.search_api
     data = {'s': key, 'offset': 0, 'limit': 5, 'type': "1000"}
-    req = requests.post(url, headers=default.header, data=data, timeout=10)
+    req = requests.post(url, headers=uapi.header, data=data, timeout=10)
     if req.json()["result"]['playlistCount'] == 0:
         pylog.log.warn("关键词 {} 没有可搜索歌单".format(key))
         return
