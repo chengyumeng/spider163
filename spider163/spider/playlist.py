@@ -53,7 +53,7 @@ class Playlist:
                     self.session.add(pl)
                     self.session.commit()
         except Exception:
-            pylog.log.error("抓取歌单出现问题，歌单页码：" + page)
+            pylog.log.error("抓取歌单出现问题，歌单页码：" + str(page))
             raise
 
 
