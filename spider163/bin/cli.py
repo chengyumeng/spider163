@@ -12,7 +12,7 @@ from spider163.spider import lyric
 from spider163.spider import search
 import time
 
-VERSION = '2.4.7'
+VERSION = '2.4.8'
 
 BANNER = """
 Spider163 Application v%s
