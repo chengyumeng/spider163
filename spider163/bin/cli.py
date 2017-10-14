@@ -10,6 +10,7 @@ from spider163.spider import music
 from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
+import time
 
 VERSION = '2.4.7'
 
@@ -153,11 +154,26 @@ class QueryController(CementBaseController):
             search.searchPlaylist(self.app.pargs.query)
 
 
+class WebController(CementBaseController):
+    class Meta:
+        label = "web"
+        stacked_on = 'base'
+        description = "网络平台"
+        arguments = [
+        ]
+
+    @expose(help="测试-未开放")
+    def webserver(self):
+        while True:
+            time.sleep(5)
+            print("该功能尚未完成")
+
+
 class App(CementApp):
     class Meta:
         label = "Spider163"
         base_controller = "base"
-        handlers = [VersionController, DatabaseController, SpiderController, QueryController]
+        handlers = [VersionController, DatabaseController, SpiderController, QueryController, WebController]
 
 
 
