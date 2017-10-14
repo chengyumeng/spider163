@@ -11,7 +11,7 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 
-VERSION = '2.4.6'
+VERSION = '2.4.7'
 
 BANNER = """
 Spider163 Application v%s
@@ -59,19 +59,28 @@ class SpiderController(CementBaseController):
              dict(help="")),
             (['-s', '--song'],
              dict(help="歌曲ID")),
+            (['--classify'],
+             dict(help="风格")),
         ]
 
-    @expose(help="根据推荐歌单抓取网易云音乐歌单数据(-p --page)")
+    @expose(help="获取全部歌曲风格列表(作为抓取歌单的参照)")
+    def classify(self):
+        playlist.Playlist().get_classify()
+
+    @expose(help="根据推荐歌单抓取网易云音乐歌单数据(-p --page | --classify)")
     def playlist(self):
         pg = self.app.pargs.page
+        cf = "全部"
         pl = playlist.Playlist()
+        if self.app.pargs.classify !=None:
+            cf = self.app.pargs.classify
         if pg != None:
-            print(Fore.GREEN + '正在抓取第 {} 页歌单……'.format(pg))
-            pl.view_capture(int(pg))
+            print(Fore.GREEN + '正在抓取 曲风为 {} 的第 {} 页歌单……'.format(cf, pg))
+            pl.view_capture(int(pg), cf)
         else:
             for i in range(36):
-                print(Fore.GREEN + '正在抓取第 {} 页歌单……'.format(i + 1))
-                pl.view_capture(i + 1)
+                print(Fore.GREEN + '正在抓取 曲风为 {} 的第 {} 页歌单……'.format(cf ,i + 1))
+                pl.view_capture(i + 1, cf)
 
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
     def music(self):

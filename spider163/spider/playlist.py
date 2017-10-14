@@ -4,6 +4,7 @@
 import settings as uapi
 import requests
 from bs4 import BeautifulSoup
+from terminaltables import AsciiTable
 
 from spider163.utils import pysql
 from spider163.utils import pylog
@@ -19,9 +20,23 @@ class Playlist:
         self.__play_url = uapi.play_url
         self.session = settings.Session()
 
-    def view_capture(self, page):
+    def get_classify(self):
+        table = [["类别", "风格列表"]]
+        for k, v in uapi.classify.items():
+            c = 0
+            lst = ""
+            for v in v:
+                c = c + 1
+                if c % 5 == 0:
+                    lst = lst + v + "\n"
+                else:
+                    lst = lst + v + ","
+            table.append([k, lst])
+        print(AsciiTable(table).table)
+
+    def view_capture(self, page, type="全部"):
         s = requests.session()
-        play_url = self.__play_url + str(page * 35)
+        play_url = self.__play_url.format(type, page * 35)
         try:
             acmsk = {'class': 'msk'}
             scnb = {'class': 'nb'}
@@ -34,7 +49,7 @@ class Playlist:
                 link = play.find('a', acmsk)['href'].encode('utf-8').replace("/playlist?id=", "")
                 cnt = play.find('span', scnb).text.encode('utf-8').replace('万', '0000')
                 if pysql.single("playlist163","link",link) == True:
-                    pl = pysql.Playlist163(title=title, link=link, cnt=int(cnt))
+                    pl = pysql.Playlist163(title=title, link=link, cnt=int(cnt), dsc="曲风：{}".format(type))
                     self.session.add(pl)
                     self.session.commit()
         except Exception:

@@ -1,5 +1,5 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
-# 抓取网易云音乐 spider163 v2.4.6
+# 抓取网易云音乐 spider163 v2.4.7
 
 
 ## 安装模块
@@ -12,6 +12,7 @@
 ## 功能模块
 - initdb
 - resetdb
+- classify
 - playlist
 - music
 - comment
@@ -31,8 +32,12 @@ $ spider163 resetdb
 $ # 重建相关数据库
 ```
 ```console
+$ spider163 classify
+$ # 获取已知曲风列表
+```
+```console
 $ spider163 playlist
-$ # 默认下载全部推荐歌单（1000+），也可以通过指定页码去下载（-p=1）
+$ # 默认下载全部推荐歌单（1000+），也可以通过指定页码去下载（-p=1）,以及歌曲风格（--classify=小语种，默认为全部）
 ```
 ```console
 $ spider163 music

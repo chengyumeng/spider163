@@ -196,4 +196,3 @@ if __name__ == "__main__":
     tmp = Comment()
     tmp.view_links(326735)
     tmp.views_capture(28793140, 1, 1)
-    # tmp.viewsCapture(28793142,1,2)
