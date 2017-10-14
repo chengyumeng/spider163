@@ -1,8 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Command
 from spider163.bin import cli
+import os
+
+
+class CleanCommand(Command):
+    """Custom clean command to tidy up the project root."""
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        os.system('rm -vrf ./build ./dist ./*.pyc ./*.tgz ./*.egg-info')
+
+
 setup(
       version=cli.VERSION,
       name='spider163',
@@ -30,6 +47,8 @@ setup(
             "terminaltables==3.1.0",
             "urllib3==1.22",
             "Logbook==1.1.0"
-      ]
-
+      ],
+      cmdclass={
+            'clean': CleanCommand,
+      },
 )
