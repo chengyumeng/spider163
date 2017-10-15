@@ -30,8 +30,10 @@ setup(
       url='https://github.com/Chengyumeng/spider163',
       author_email='792400644@qq.com',
       packages=find_packages(),
+      include_package_data=True,
       scripts=['spider163/bin/spider163'],
       license='MIT License',
+      zip_safe=False,
       install_requires=[
             "beautifulsoup4==4.6.0",
             "bs4==0.0.1",
@@ -53,6 +55,7 @@ setup(
             "urllib3==1.22",
             "Logbook==1.1.0",
             "colorama==0.3.9",
+            "Flask==0.12.2",
 
       ],
       cmdclass={
