@@ -1,5 +1,6 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
-# 抓取网易云音乐 spider163 v2.4.12
+# spider163 v2.4.12
+###### 抓取网易云音乐热评、歌词、歌曲等数据
 
 
 ## 安装模块
