@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request
+from flask import render_template
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def index():
-    return "聚合网易云音乐热评"
+    return render_template('index.html')
 
 
