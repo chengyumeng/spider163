@@ -18,3 +18,6 @@ def configure_orm():
             sessionmaker(autocommit=False, autoflush=False, bind=engine))
     except:
         pass
+
+
+VERSION = "2.4.10"
