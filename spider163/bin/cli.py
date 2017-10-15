@@ -10,7 +10,7 @@ from spider163.spider import music
 from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
-from spider163 import settings
+from spider163 import version
 import time
 
 
@@ -18,7 +18,7 @@ BANNER = """
 Spider163 Application v%s
 Copyright (c) 2017 Cheng Tian Enterprises
 Welcome to Follow My 【微信公众账号】"程天写代码"
-""" % settings.VERSION
+""" % version.VERSION
 
 init(autoreset=True)
 
