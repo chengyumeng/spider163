@@ -19,5 +19,3 @@ def configure_orm():
     except:
         pass
 
-
-VERSION = "2.4.10"

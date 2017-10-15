@@ -21,7 +21,7 @@ class CleanCommand(Command):
 
 
 version = imp.load_source(
-    'spider163.settings', os.path.join('spider163', 'settings.py')).VERSION
+    'spider163.version', os.path.join('spider163', 'version.py')).VERSION
 
 setup(
       version=version,
@@ -52,7 +52,8 @@ setup(
             "terminaltables==3.1.0",
             "urllib3==1.22",
             "Logbook==1.1.0",
-            "colorama-0.3.9"
+            "colorama==0.3.9",
+
       ],
       cmdclass={
             'clean': CleanCommand,
