@@ -35,5 +35,8 @@ def get_mysql():
     uri = re.search('.*(?=/)', link).group(0)
     return {"db": db, "uri": uri}
 
+def get_port():
+    return cf.get("core", "port")
+
 
 

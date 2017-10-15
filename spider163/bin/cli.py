@@ -11,7 +11,8 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 from spider163 import version
-import time
+from spider163.www import web
+from spider163.utils import config
 
 
 BANNER = """
@@ -61,7 +62,7 @@ class SpiderController(CementBaseController):
             (['-s', '--song'],
              dict(help="歌曲ID")),
             (['--classify'],
-             dict(help="风格")),
+             dict(help="歌曲风格")),
         ]
 
     @expose(help="获取全部歌曲风格列表(作为抓取歌单的参照)")
@@ -162,11 +163,13 @@ class WebController(CementBaseController):
         arguments = [
         ]
 
-    @expose(help="测试-未开放")
+    @expose(help="Spider163管理Web平台")
     def webserver(self):
-        while True:
-            time.sleep(5)
-            print("该功能尚未完成")
+        try:
+            webport = config.get_port()
+            web.app.run("0.0.0.0", webport)
+        except Exception:
+            print("正在退出web服务……")
 
 
 class App(CementApp):

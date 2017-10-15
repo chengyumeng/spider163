@@ -2,3 +2,4 @@
 # 请修改相关配置为本地可用配置
 [core]
 db=mysql://[user]:[password]@[ip]/[database]?charset=utf8mb4
+port=1630
