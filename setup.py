@@ -23,11 +23,12 @@ class CleanCommand(Command):
 setup(
       version=cli.VERSION,
       name='spider163',
-      author='Chengyumeng',
+      author='ChengTian',
       url='https://github.com/Chengyumeng/spider163',
-      author_email='doublexuan.top@gmail.com',
+      author_email='792400644@qq.com',
       packages=find_packages(),
       scripts=['spider163/bin/spider163'],
+      license='MIT License',
       install_requires=[
             "beautifulsoup4==4.6.0",
             "bs4==0.0.1",
