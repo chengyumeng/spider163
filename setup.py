@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*
 
 from setuptools import setup, find_packages, Command
-from spider163.bin import cli
 import os
+import imp
 
 
 class CleanCommand(Command):
@@ -20,8 +20,11 @@ class CleanCommand(Command):
         os.system('rm -vrf ./build ./dist ./*.pyc ./*.tgz ./*.egg-info')
 
 
+version = imp.load_source(
+    'spider163.settings', os.path.join('spider163', 'settings.py')).VERSION
+
 setup(
-      version=cli.VERSION,
+      version=version,
       name='spider163',
       author='ChengTian',
       url='https://github.com/Chengyumeng/spider163',
@@ -48,7 +51,8 @@ setup(
             "SQLAlchemy-Utils==0.32.18",
             "terminaltables==3.1.0",
             "urllib3==1.22",
-            "Logbook==1.1.0"
+            "Logbook==1.1.0",
+            "colorama-0.3.9"
       ],
       cmdclass={
             'clean': CleanCommand,
