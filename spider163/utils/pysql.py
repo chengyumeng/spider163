@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import Column, Integer, String, DateTime, Index
+from sqlalchemy import Column, Integer, String, DateTime, Index, extract
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
 from spider163 import settings
+
 import re
 
 Base = declarative_base()
@@ -64,6 +65,31 @@ def single(table, k, v):
         return True
     else:
         return False
+
+
+def stat_playlist():
+    data = {}
+    data["gdType"] = settings.Session.query(func.substring(Playlist163.dsc, 4, 2).label('type'), func.count('*').label('count')).group_by("type").all()
+    data["gdOver"] = settings.Session.query(Playlist163.over.label('over'), func.count('*').label('count')).group_by("over").all()
+    return data
+
+
+def stat_music():
+    data = {"author-comment-count": []}
+    cd = settings.Session.query(Music163.author.label('author'), func.sum(Music163.comment).label('count')).group_by("author").order_by(func.sum(Music163.comment).label('count').label('count').desc()).limit(30).all()
+    for m in cd:
+        data["author-comment-count"].append([m[0], int(m[1])])
+    data["music-comment-count"] = settings.Session.query(Music163.song_name, Music163.comment.label("count")).order_by(Music163.comment.label("count").desc()).limit(30).all()
+    return data
+
+
+def stat_data():
+    data = {}
+    data["countPlaylist"] = int(settings.engine.execute("select(select count(*) from playlist163 where over = 'Y')*100 / count(*) from playlist163").fetchone()[0]);
+    data["countComment"] = int(settings.engine.execute("select(select count(*) from music163 where over = 'Y')*100 / count(*) from music163").fetchone()[0]);
+    data["countLyric"] = int(settings.engine.execute("select(select count(*) from music163 where has_lyric = 'Y')*100 / count(*) from music163").fetchone()[0]);
+    return data
+
 
 
 def initdb():

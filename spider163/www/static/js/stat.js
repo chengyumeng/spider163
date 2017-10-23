@@ -21,6 +21,32 @@ $(function () {
 	};
 
 	this.createCharts = function() {
+
+	        $.ajax({
+                url : "/stat/dataCount",
+                type:"get",
+                dataType : "json",
+                success : function (data) {
+                    var name = {"countPlaylist":"歌单抓取","countLyric":"歌词抓取","countComment":"评论抓取"};
+                    for (k in data){
+                        var chart = echarts.init(document.getElementById(k), 'macarons');
+                            var  option = {
+                                tooltip : {formatter: "{a} <br/>{b} : {c}%"},
+//                                toolbox: {feature: {restore: {},saveAsImage: {}}},
+                                series: [
+                                {
+                                    name: k,
+                                    type: 'gauge',
+                                    detail: {formatter:'{value}%'},
+                                    data: [{value: data[k], name: name[k]}]
+                                }
+                             ]};
+                        chart.setOption(option);
+                    }
+                },
+         });
+
+
 	     $.ajax({
                 url : "/stat/playlist",
                 type:"get",
