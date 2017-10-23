@@ -49,7 +49,6 @@ class Music:
             print("歌单包含歌曲 {} 首,数据库 merge 歌曲 {} 首 \r\n".format(len(musics), exist))
         except Exception:
             pylog.log.error('{} : {}'.format("抓取歌单页面存在问题", url))
-            raise
 
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))
@@ -64,11 +63,11 @@ class Music:
         sc = str(playlist['subscribedCount'])
         rc = str(playlist['shareCount'])
         cc = str(playlist['commentCount'])
-        print("维护者：{}  播放：{} 关注：{} 分享：{} 评论：{}".format(author,pc,sc,rc,cc))
+        print("维护者：{}  播放：{} 关注：{} 分享：{} 评论：{}".format(author, pc, sc, rc, cc))
         print("描述：{}".format(playlist['description'].encode('utf-8')))
         print("标签：{}".format(",".join(playlist['tags']).encode("utf-8")))
 
-        tb = [["ID", "歌曲名字","艺术家","唱片"]]
+        tb = [["ID", "歌曲名字", "艺术家", "唱片"]]
         for music in playlist['tracks']:
             artists = []
             for s in music['artists']:
