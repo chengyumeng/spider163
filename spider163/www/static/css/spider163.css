@@ -1,0 +1,119 @@
+.brand-intro {
+    text-align: center;
+    background-color: #a811b5;
+    color: #fff;
+    padding: 120px 0;
+    background-image: url(../imgs/grid.png);
+    background-image: url(../imgs/grid.png), -webkit-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
+    background-image: url(../imgs/grid.png), -webkit-linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
+    background-image: url(../imgs/grid.png), -moz-linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
+    background-image: url(../imgs/grid.png), -o-linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
+    background-image: url(../imgs/grid.png), linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.sui-btn {
+    display: inline-block;
+    padding: 2px 14px;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #333333;
+    background-color: #eeeeee;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    border: 1px solid #e1e1e1;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.btn-lead {
+    padding: 1em 4em;
+    border: 2px solid #fff;
+    opacity: .8;
+    background: transparent;
+    color: #fff;
+    font-size: 24px;
+    height: auto;
+}
+
+.footer {
+    border-top: 1px solid #aaa;
+    padding: 30px;
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    margin-top: 50px;
+}
+
+
+
+.index-body {
+    margin-top: 22px;
+    margin-bottom: 22px;
+}
+
+#index-group .i-c-p2 {
+    background: #e8b875 url(../pics/yue-sprit004.png) no-repeat 35px -47px;
+}
+
+#index-group .i-c-p7 {
+    background: #baa1e2 url(../pics/yue-sprit004.png) no-repeat 25px -260px;
+}
+
+
+#index-group .i-c-p {
+    height: 42px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+}
+
+#index-group .i-c-ph, #index-group .i-c-ph1 {
+    color: #fff;
+    font-size: 1.3em;
+    margin: 0;
+    text-align: center;
+    position: absolute;
+    z-index: 10;
+    font-weight: 400;
+    left: 0;
+    width: 100%;
+}
+
+
+.i-c-ph, .i-c-ph1 {
+    color: #fff;
+    font-size: 1.5em;
+    text-align: center;
+    position: absolute;
+    z-index: 10;
+    bottom: .7em;
+    font-weight: 400;
+    left: 0;
+    width: 100%;
+}
+
+.i-c-list li {
+    height: 2.5em;
+    line-height: 2.5em;
+    overflow: hidden;
+    border-bottom: 1px dashed #eaeaea;
+    list-style: none;
+    padding-left: 10px;
+    font-size: 1.1em;
+}
+
+.modals {
+margin-top:200px;
+}
