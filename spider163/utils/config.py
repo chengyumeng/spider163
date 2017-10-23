@@ -7,7 +7,7 @@ import re
 
 PATH = os.environ.get("HOME") + "/spider163"
 
-if os.environ.get("SPIDER163_PATH") != None:
+if os.environ.get("SPIDER163_PATH") is not None:
     PATH = os.environ.get("SPIDER163_PATH")
 
 if not os.path.exists(PATH):
@@ -34,6 +34,7 @@ def get_mysql():
     db = re.search('(?<=/)[^/]+(?=\?)', link).group(0)
     uri = re.search('.*(?=/)', link).group(0)
     return {"db": db, "uri": uri}
+
 
 def get_port():
     return cf.get("core", "port")

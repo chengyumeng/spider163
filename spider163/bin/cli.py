@@ -23,6 +23,7 @@ Welcome to Follow My 【微信公众账号】"程天写代码"
 
 init(autoreset=True)
 
+
 class VersionController(CementBaseController):
     class Meta:
         label = 'base'
