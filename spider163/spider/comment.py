@@ -16,7 +16,6 @@ from spider163.utils import pysql
 from spider163.utils import pylog
 
 
-
 class Comment:
 
     def __init__(self):
@@ -92,8 +91,10 @@ class Comment:
             return cnt / 20
         except Exception:
             self.session.rollback()
+            self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update(
+                {'over': 'Y', 'comment': -2})
+            self.session.commit()
             pylog.log.error("解释歌曲评论的时候出现问题，歌曲ID：" + str(song_id) + "  页码：" + str(page))
-            raise
 
     def view_links(self, song_id):
         url = "http://music.163.com/song?id=" + str(song_id)
@@ -114,7 +115,7 @@ class Comment:
             for link in sup.find_all('a', 'sname f-fs1 s-fc0'):
                 play_link = link.get("href").replace("/playlist?id=", "")
                 play_name = link.get("title").encode('utf-8')
-                if pysql.single("playlist163","link",play_link) == True:
+                if pysql.single("playlist163","link", play_link) == True:
                     self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1))
                     self.session.flush()
         except:
@@ -186,10 +187,6 @@ class Comment:
                 print("")
         except Exception:
             raise
-
-
-
-
 
 
 if __name__ == "__main__":
