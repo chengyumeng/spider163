@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
 from spider163 import settings
+import random
 
 import re
 
@@ -89,6 +90,17 @@ def stat_data():
     data["countComment"] = int(settings.engine.execute("select(select count(*) from music163 where over = 'Y')*100 / count(*) from music163").fetchone()[0]);
     data["countLyric"] = int(settings.engine.execute("select(select count(*) from music163 where has_lyric = 'Y')*100 / count(*) from music163").fetchone()[0]);
     return data
+
+
+def random_data():
+    rng = settings.Session.query(func.min(Comment163.id), func.max(Comment163.id)).all()[0]
+    data = {}
+    for i in range(12):
+        v = random.uniform(rng[0], rng[1])
+        d = settings.engine.execute("select txt,liked,a.author,song_name,a.song_id,b.author from comment163 a inner join music163 b on a.song_id= b.song_id where a.id>" +str(v) + " limit 1").fetchone()
+        data[d[3]] = [d[0], str(d[1]), d[2], str(d[4]), d[5]]
+    return data
+
 
 
 
