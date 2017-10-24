@@ -4,10 +4,9 @@
 
 
 ## 安装模块
-- 第一步：使用pip install -r requirements.txt安装第三方依赖
-- 第二步：使用Python setup.py install 安装爬虫模块
-- 第三步：指定SPIDER163_PATH环境变量，缺省情况下为$HOME/spider163
-- 第四步：把默认配置文件spider163.conf拷贝到SPIDER163_PATH下，并配置数据库
+- 第一步：指定SPIDER163_PATH环境变量，缺省情况下为$HOME/spider163
+- 第二步：把默认配置文件spider163.conf拷贝到SPIDER163_PATH下，并配置数据库
+- 第三步：pip install spider163
 - spider163 --help
 
 ## 功能模块
