@@ -17,20 +17,18 @@ def index():
 
 @app.route("/spider")
 def spider(type=None):
-    return make_response(open('templates/spider.html').read())
+    return render_template('spider.html')
 
 
 @app.route("/spider/getPlaylist", methods=['POST'])
 def get_playlist():
-    # return jsonify({"a": 1})
     pl = playlist.Playlist()
-
     return jsonify({"test": request.form["gdType"]})
 
 
 @app.route("/stat")
 def statistics():
-    return make_response(open('templates/stat.html').read())
+    return render_template('stat.html')
 
 
 @app.route("/stat/playlist")
@@ -50,7 +48,7 @@ def stat_data():
 
 @app.route("/scan")
 def scan():
-    return make_response(open('templates/scan.html').read())
+    return render_template('scan.html')
 
 
 @app.route("/scan/data")
