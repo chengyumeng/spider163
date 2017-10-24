@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="spider">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome To Spider163</title>
+    <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/spider163.css">
+
+</head>
+<body>
+<div class="container index-body">
+    <h2 class="m-h2 m-h2-mb">智能抓取 <i>用户需求 · 智能定制</i></h2>
+    <div class="row"><!-- i-c-g index contract group -->
+        <div class="i-c-g" id="index-group"><!-- 股权 -->
+            <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_interest">
+                <div class="i-c-item">
+                    <a id="gd" title="歌单"><div class="i-c-p i-c-p2"><h2 class="i-c-ph">歌单</h2></div></a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_cp">
+                <div class="i-c-item">
+                    <a id="gq" title="歌曲" data-toggle="modal" data-target="#gqModal" ><div class="i-c-p i-c-p7"><h2 class="i-c-ph">歌曲</h2></div></a>
+                </div>
+            </div>
+             <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_cp">
+                <div class="i-c-item">
+                    <a id="gc" title="歌词"><div class="i-c-p i-c-p7"><h2 class="i-c-ph">歌词</h2></div></a>
+                </div>
+            </div>
+             <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_cp">
+                <div class="i-c-item">
+                    <a id="rp" title="热评"><div class="i-c-p i-c-p7"><h2 class="i-c-ph">热评</h2></div></a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+   <div id="gdModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">抓取歌单数据</h4>
+        </div>
+        <div class="modal-body">
+          <h4>抓取条件</h4>
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">类型</span>
+                <input type="text" class="form-control" id="gdType" placeholder="歌单类型：等等" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon2">任务批量</span>
+                <input type="text" id="gdCount" class="form-control" placeholder="阿拉伯数字" aria-describedby="basic-addon2">
+            </div>
+        </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="spiderPlaylist">提交任务</button>
+          </div>
+      </div>
+    </div>
+   </div>
+
+
+    <div class="process"></div>
+</div>
+
+
+
+
+<div class="footer">
+      <ul class="unstyled">
+        <li>@time 2017.04.07</li>
+          <li>@author 程天
+              <a href="https://www.zhihu.com/people/toocooltohavefriends/activities" class="">知乎</a>
+              <a href="" class="">微信</a>
+              <a href="https://github.com/Chengyumeng" class="">GitHub</a></li>
+      </ul>
+    </div>
+
+
+</body>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>-->
+<script src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1.10.2_d88366fd.js"></script>
+<script src="/static/js/spider163.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+
+
+
+</html>

@@ -53,6 +53,11 @@ def scan():
     return make_response(open('templates/scan.html').read())
 
 
+@app.route("/scan/data")
+def scan_data():
+    return jsonify(pysql.random_data())
+
+
 @app.route("/business")
 def business():
     return make_response(open('templates/business.html').read())

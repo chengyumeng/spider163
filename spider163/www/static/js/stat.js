@@ -21,8 +21,24 @@ $(function () {
 	};
 
 	this.createCharts = function() {
+	      dataCount()
+	      playlist()
+	      music()
+          setInterval(dataCount,10000);
+          setInterval(playlist,10000);
+          setInterval(music,10000);
+	}
+	this.init = function() {
+	    this.createDom();
+	    this.documentEvent();
+	    this.createCharts();
+	}
+	this.init()
 
-	        $.ajax({
+});
+
+function dataCount() {
+    $.ajax({
                 url : "/stat/dataCount",
                 type:"get",
                 dataType : "json",
@@ -45,9 +61,10 @@ $(function () {
                     }
                 },
          });
+}
 
-
-	     $.ajax({
+function playlist() {
+    $.ajax({
                 url : "/stat/playlist",
                 type:"get",
                 dataType : "json",
@@ -73,7 +90,12 @@ $(function () {
                 },
          });
 
-         $.ajax({
+
+
+}
+
+function music() {
+    $.ajax({
                 url : "/stat/music",
                 type:"get",
                 dataType : "json",
@@ -104,12 +126,4 @@ $(function () {
                     }
                 },
          });
-	}
-	this.init = function() {
-	    this.createDom();
-	    this.documentEvent();
-	    this.createCharts();
-	}
-	this.init()
-
-});
+}
