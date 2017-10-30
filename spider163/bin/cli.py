@@ -75,9 +75,9 @@ class SpiderController(CementBaseController):
         pg = self.app.pargs.page
         cf = "全部"
         pl = playlist.Playlist()
-        if self.app.pargs.classify !=None:
+        if self.app.pargs.classify is not None:
             cf = self.app.pargs.classify
-        if pg != None:
+        if pg is not None:
             print(Fore.GREEN + '正在抓取 曲风为 {} 的第 {} 页歌单……'.format(cf, pg))
             pl.view_capture(int(pg), cf)
         else:
@@ -88,7 +88,7 @@ class SpiderController(CementBaseController):
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
     def music(self):
         msc = music.Music()
-        if self.app.pargs.count  == None:
+        if self.app.pargs.count is not None:
             msc.views_capture()
             return
         cnt = int(self.app.pargs.count)
@@ -102,12 +102,12 @@ class SpiderController(CementBaseController):
     @expose(help="通过音乐列表抓取网易云音乐热评，单次抓取音乐1首(-c --count),也可以指定歌曲ID(-s --song)")
     def comment(self):
         cmt = comment.Comment()
-        if self.app.pargs.song != None:
+        if self.app.pargs.song is not None:
             print(Fore.BLUE + '正在执行抓取歌曲 {} 热门评论计划'.format(self.app.pargs.song))
             cmt.view_capture(int(self.app.pargs.song), 1)
             print(Fore.GREEN + '抓取完成\r\n')
             return
-        if self.app.pargs.count != None:
+        if self.app.pargs.count is not None:
             print(Fore.GREEN + '正在执行批量抓取热门评论计划，本次计划抓取歌曲 {} 首\r\n'.format(self.app.pargs.count))
             cmt.auto_view(int(self.app.pargs.count))
         else:
@@ -116,11 +116,11 @@ class SpiderController(CementBaseController):
     @expose(help="通过音乐列表抓取网易云音乐歌词,可以指定抓取歌曲数量（-c --count），也可以指定歌曲ID（-s --song）")
     def lyric(self):
         lrc = lyric.Lyric()
-        if self.app.pargs.song != None:
+        if self.app.pargs.song is not None:
             print(Fore.BLUE + '正在执行抓取歌曲 {} 歌词的计划'.format(self.app.pargs.song))
             lrc.view_lyric(self.app.pargs.song)
             print(Fore.GREEN + '抓取完成\r\n')
-        elif self.app.pargs.count != None:
+        elif self.app.pargs.count is not None:
             print(Fore.GREEN + '正在执行批量抓取歌词计划，本次计划抓取歌曲 {} 首\r\n'.format(self.app.pargs.count))
             lrc.view_lyrics(int(self.app.pargs.count))
         else:
@@ -141,15 +141,15 @@ class QueryController(CementBaseController):
 
     @expose(help="通过歌单ID和歌曲ID获取歌单、歌曲相关信息（--song --playlist）")
     def get(self):
-        if self.app.pargs.song != None:
+        if self.app.pargs.song is not None:
             comment.Comment().get_music(self.app.pargs.song)
             lyric.Lyric().get_lyric(self.app.pargs.song)
-        if self.app.pargs.playlist != None:
+        if self.app.pargs.playlist is not None:
             music.Music().get_playlist(self.app.pargs.playlist)
 
     @expose(help="搜索功能(-q --query)")
     def search(self):
-        if self.app.pargs.query != None:
+        if self.app.pargs.query is not None:
             search.searchSong(self.app.pargs.query)
             search.searchAlbum(self.app.pargs.query)
             search.searchSinger(self.app.pargs.query)
@@ -170,7 +170,7 @@ class WebController(CementBaseController):
             webport = config.get_port()
             web.app.run("0.0.0.0", webport)
         except Exception:
-            print("正在退出web服务……")
+            print("{} 退出web服务".format(Fore.RED))
 
 
 class App(CementApp):

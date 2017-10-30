@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from flask import Flask, request, json, jsonify
 from flask import render_template,make_response
 
 from spider163.spider import playlist
 from spider163.utils import pysql
-import json
 
 app = Flask(__name__, static_path='/static')
+
 
 @app.route("/")
 def index():
@@ -59,11 +58,5 @@ def scan_data():
 @app.route("/business")
 def business():
     return make_response(open('templates/business.html').read())
-
-
-if __name__ == "__main__":
-    app.jinja_env.auto_reload = True
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run()
 
 
