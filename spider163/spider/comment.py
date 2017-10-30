@@ -116,7 +116,7 @@ class Comment:
                 play_link = link.get("href").replace("/playlist?id=", "")
                 play_name = link.get("title").encode('utf-8')
                 if pysql.single("playlist163","link", play_link) == True:
-                    self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1))
+                    self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1, dsc="来源：热评"))
                     self.session.flush()
         except:
             self.session.rollback()
