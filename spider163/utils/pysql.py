@@ -102,8 +102,6 @@ def random_data():
     return data
 
 
-
-
 def initdb():
     Base.metadata.create_all(settings.engine)
 
@@ -119,10 +117,7 @@ emoji_pattern = re.compile(
     u"(\ud83c[\udde0-\uddff])"  # flags (iOS)
     "+", flags=re.UNICODE)
 
+
 def remove_emoji(text):
     return emoji_pattern.sub(r'', text)
 
-
-if __name__ == "__main__":
-    Base.metadata.create_all(settings.engine)
-    print(single("playlist163", "link", "sd"))

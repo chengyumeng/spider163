@@ -14,11 +14,18 @@ log = Logger("")
 
 init(autoreset=True)
 
+
 def Log(msg):
     log.warn(msg)
+
 
 def Table(tb):
     print(AsciiTable(tb).table)
 
+
 def Blue(msg):
     return Fore.BLUE + msg
+
+
+def print_err(msg):
+    return Fore.RED + msg
