@@ -40,15 +40,15 @@ class Music:
             for music in musics:
                 name = music['name'].encode('utf-8')
                 author = music['artists'][0]['name'].encode('utf-8')
-                if pysql.single("music163", "song_id", (music['id'])) == True:
+                if pysql.single("music163", "song_id", (music['id'])) is True:
                     self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author))
                     self.session.commit()
                     exist = exist + 1
                 else:
                     pylog.log.info('{} : {} {}'.format("重复抓取歌曲", name, "取消持久化"))
             print("歌单包含歌曲 {} 首,数据库 merge 歌曲 {} 首 \r\n".format(len(musics), exist))
-        except Exception:
-            pylog.log.error('{} : {}'.format("抓取歌单页面存在问题", url))
+        except Exception as e:
+            pylog.log.error("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, url))
 
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))
@@ -79,7 +79,3 @@ class Music:
             tb.append([id, ms, ar, ab])
         print(AsciiTable(tb).table)
 
-
-if __name__ == "__main__":
-    tmp = Music()
-    print tmp.views_capture()

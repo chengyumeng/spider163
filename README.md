@@ -1,5 +1,5 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
-# spider163 v2.5.0
+# spider163 v2.5.1
 ###### GitHub上最易用的网易云音乐爬虫系统
 
 

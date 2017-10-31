@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import settings as uapi
 import requests
 from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
@@ -9,6 +7,7 @@ from terminaltables import AsciiTable
 from spider163.utils import pysql
 from spider163.utils import pylog
 from spider163 import settings
+import settings as uapi
 
 
 class Playlist:
@@ -48,16 +47,9 @@ class Playlist:
                 title = play.find('a', acmsk)['title'].encode('utf-8')
                 link = play.find('a', acmsk)['href'].encode('utf-8').replace("/playlist?id=", "")
                 cnt = play.find('span', scnb).text.encode('utf-8').replace('万', '0000')
-                if pysql.single("playlist163","link",link) == True:
+                if pysql.single("playlist163","link",link) is True:
                     pl = pysql.Playlist163(title=title, link=link, cnt=int(cnt), dsc="曲风：{}".format(type))
                     self.session.add(pl)
                     self.session.commit()
-        except Exception:
-            pylog.log.error("抓取歌单出现问题，歌单页码：" + str(page))
-            raise
-
-
-if __name__ == "__main__":
-    tmp = Playlist()
-    tmp.view_capture(2)
-
+        except Exception as e:
+            pylog.log.error("抓取歌单出现问题：{} 歌单类型：{} 页码：{}".format(e, type, page))
