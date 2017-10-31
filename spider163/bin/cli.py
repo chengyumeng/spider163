@@ -2,8 +2,10 @@
 
 from cement.core.foundation import CementApp
 from cement.core.controller import CementBaseController, expose
+from cement.core.exc import CaughtSignal
 from colorama import Fore
 from colorama import init
+
 from spider163.utils import pysql
 from spider163.spider import playlist
 from spider163.spider import music
@@ -13,6 +15,7 @@ from spider163.spider import search
 from spider163 import version
 from spider163.www import web
 from spider163.utils import config
+from spider163.utils import pylog
 
 
 BANNER = """
@@ -178,6 +181,16 @@ class App(CementApp):
         label = "Spider163"
         base_controller = "base"
         handlers = [VersionController, DatabaseController, SpiderController, QueryController, WebController]
+
+
+def main():
+    with App() as app:
+        try:
+            app.run()
+        except CaughtSignal as e:
+            pylog.print_warn("控制台异常：{}".format(e))
+        except Exception as e:
+            pylog.print_err("执行抓取任务遭遇配置异常： {}".format(e))
 
 
 
