@@ -27,6 +27,9 @@ setup(
       version=version,
       name='spider163',
       author='ChengTian',
+      entry_points={
+        "console_scripts": ["spider163=spider163.bin.cli:main"]
+      },
       url='https://github.com/Chengyumeng/spider163',
       author_email='792400644@qq.com',
       packages=find_packages(),
