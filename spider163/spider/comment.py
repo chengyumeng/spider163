@@ -94,7 +94,8 @@ class Comment:
             self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update(
                 {'over': 'Y', 'comment': -2})
             self.session.commit()
-            pylog.log.error("解释歌曲评论的时候出现问题:{} 歌曲ID：{} 页码：{}".format(e, song_id, page))
+            pylog.log.error("解析歌曲评论的时候出现问题:{} 歌曲ID：{} 页码：{}".format(e, song_id, page))
+            raise
 
     def view_links(self, song_id):
         url = "http://music.163.com/song?id=" + str(song_id)
@@ -141,6 +142,7 @@ class Comment:
         except Exception as e:
             self.session.rollback()
             pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
+            raise
 
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)

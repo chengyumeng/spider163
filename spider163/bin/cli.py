@@ -169,8 +169,8 @@ class WebController(CementBaseController):
         try:
             webport = config.get_port()
             web.app.run("0.0.0.0", webport)
-        except Exception:
-            print("{} 退出web服务".format(Fore.RED))
+        except Exception as e:
+            print("{} 退出web服务：{}".format(Fore.RED, e))
 
 
 class App(CementApp):

@@ -49,6 +49,7 @@ class Music:
             print("歌单包含歌曲 {} 首,数据库 merge 歌曲 {} 首 \r\n".format(len(musics), exist))
         except Exception as e:
             pylog.log.error("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, url))
+            raise
 
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))
