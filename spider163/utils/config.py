@@ -12,11 +12,11 @@ if os.environ.get("SPIDER163_PATH") is not None:
 
 if not os.path.exists(PATH):
     os.makedirs(PATH)
+cf = ConfigParser.ConfigParser()
 if not os.path.exists(PATH + "/spider163.conf"):
-    print("请在默认路径 " + PATH + " 下增加配置文件 spider.conf 格式参照官方")
-    cf = None
+    print("请在默认路径 " + PATH + " 下增加配置文件 spider163.conf 格式参照官方")
+    cf.read("data/spider163.conf")
 else:
-    cf = ConfigParser.ConfigParser()
     cf.read(PATH + "/spider163.conf")
 
 
