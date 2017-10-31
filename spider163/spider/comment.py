@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-
 import requests
 import os
 import base64
+import json
+
 from Crypto.Cipher import AES
 from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
-import json
+
 
 import settings as uapi
 from spider163 import settings
@@ -89,12 +89,12 @@ class Comment:
             self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({'over': 'Y', 'comment': cnt})
             self.session.commit()
             return cnt / 20
-        except Exception:
+        except Exception as e:
             self.session.rollback()
             self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update(
                 {'over': 'Y', 'comment': -2})
             self.session.commit()
-            pylog.log.error("解释歌曲评论的时候出现问题，歌曲ID：" + str(song_id) + "  页码：" + str(page))
+            pylog.log.error("解释歌曲评论的时候出现问题:{} 歌曲ID：{} 页码：{}".format(e, song_id, page))
 
     def view_links(self, song_id):
         url = "http://music.163.com/song?id=" + str(song_id)
@@ -105,23 +105,21 @@ class Comment:
             sup = BeautifulSoup(req.content, "html.parser")
             for link in sup.find_all('li', class_="f-cb"):
                 html = link.find('a', 's-fc1')
-                if html != None:
+                if html is not None:
                     title = html.get('title').encode('utf-8')
                     song_id = html.get('href')[9:]
                     author = link.find('div', 'f-thide s-fc4').find('span').get('title').encode('utf-8')
-                    if pysql.single("music163","song_id",song_id) == True:
+                    if pysql.single("music163","song_id",song_id) is True:
                         self.session.add(pysql.Music163(song_id=song_id, song_name=title, author=author))
                         self.session.flush()
             for link in sup.find_all('a', 'sname f-fs1 s-fc0'):
                 play_link = link.get("href").replace("/playlist?id=", "")
                 play_name = link.get("title").encode('utf-8')
-                if pysql.single("playlist163","link", play_link) == True:
+                if pysql.single("playlist163", "link", play_link) is True:
                     self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1, dsc="来源：热评"))
                     self.session.flush()
-        except:
-            self.session.rollback()
-            pylog.log.error("解析页面推荐时出现问题，歌曲ID：" + str(song_id))
-            raise
+        except Exception as e:
+            pylog.log.error("解析页面推荐时出现问题：{} 歌曲ID：{}".format(e, song_id))
 
     def auto_view(self, count=1):
         try:
@@ -140,10 +138,9 @@ class Comment:
                 for m in msc:
                     print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
                     self.views_capture(m.song_id, 1, 1)
-        except:
+        except Exception as e:
             self.session.rollback()
-            pylog.log.error("自动抓取热评出现异常，歌曲ID：" + str(m.song_id))
-            raise
+            pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
 
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)
@@ -180,16 +177,11 @@ class Comment:
                 tb.table_data.append([str(cnt), str(au), str(txt), liked])
             print(tb.table)
         except UnicodeEncodeError:
-            pylog.log.info("获取歌曲详情编码存在问题，转为非表格形式，歌曲ID：" + str(music_id))
+            pylog.log.info("获取歌曲详情编码存在问题，转为非表格形式，歌曲ID：{}".format(music_id))
             for cmt in comments:
                 print("评论： {}".format(cmt.txt.encode("utf-8")))
-                print("作者： {}   点赞：  {}".format(cmt.author.encode("utf-8"),str(cmt.liked)))
+                print("作者： {}   点赞：  {}".format(cmt.author.encode("utf-8"), str(cmt.liked)))
                 print("")
-        except Exception:
-            raise
+        except Exception as e:
+            pylog.print_warn("获取歌曲时出现异常： {} 歌曲ID：{}".format(e, music_id))
 
-
-if __name__ == "__main__":
-    tmp = Comment()
-    tmp.view_links(326735)
-    tmp.views_capture(28793140, 1, 1)

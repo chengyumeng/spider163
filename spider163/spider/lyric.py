@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import requests
 import json
+
 from bs4 import BeautifulSoup
 
 import settings as uapi
@@ -27,11 +27,10 @@ class Lyric:
                 self.session.add(pysql.Lyric163(song_id=song_id, txt=lrc))
                 self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "Y"})
                 self.session.commit()
-        except Exception:
+        except Exception as e:
             self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "E"})
             self.session.commit()
-            pylog.log.error("抓取歌词出现问题，歌曲ID：" + str(song_id))
-
+            pylog.log.error("抓取歌词出现问题：{} 歌曲ID：{}".format(e, song_id))
 
     def get_lyric(self, song_id):
         self.view_lyric(song_id)
@@ -48,9 +47,3 @@ class Lyric:
         for m in ms:
             print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode("utf-8"))))
             self.view_lyric(m.song_id)
-
-
-if __name__ == "__main__":
-    # tmp = Lyric()
-    # tmp.view_lyric(506092019)
-    Lyric().view_lyrics(19)

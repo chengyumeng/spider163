@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import settings as uapi
 import requests
 from terminaltables import AsciiTable
+
 from spider163.utils import pylog
+import settings as uapi
 
 offset = 0
 limit = 20
@@ -92,7 +92,3 @@ def searchPlaylist(key):
         song_table.table_data.append([id, name, creator, pcount, bcount])
     print(pylog.Blue("与 \"{}\" 有关的歌单".format(key)))
     print(song_table.table)
-
-
-if __name__ == "__main__":
-    searchSong("林依晨")
