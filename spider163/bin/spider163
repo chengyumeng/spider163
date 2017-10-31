@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import signal
 
 from cement.core.exc import CaughtSignal
-import signal
+
 from spider163.utils import pylog
 
 
@@ -14,8 +15,6 @@ if __name__ == '__main__':
         except CaughtSignal as e:
             print("控制台异常:"+ str(e))
             pylog.log.warn("控制台异常:"+ str(e))
-            exit()
-        except Exception:
-            print("异常")
-            raise
+        except Exception as e:
+            pylog.print_err("执行抓取任务遭遇配置异常： {}".format(e))
 

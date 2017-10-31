@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import random
 
 from sqlalchemy import Column, Integer, String, DateTime, Index, extract
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
-from spider163 import settings
-import random
 
-import re
+from spider163 import settings
+from spider163.utils import pylog
 
 Base = declarative_base()
 
@@ -103,21 +103,15 @@ def random_data():
 
 
 def initdb():
-    Base.metadata.create_all(settings.engine)
+    try:
+        Base.metadata.create_all(settings.engine)
+    except Exception as e:
+        pylog.print_warn("自动生成数据库表出现问题: {}".format(e))
 
 
 def dropdb():
-    Base.metadata.drop_all(settings.engine)
-
-emoji_pattern = re.compile(
-    u"(\ud83d[\ude00-\ude4f])|"  # emoticons
-    u"(\ud83c[\udf00-\uffff])|"  # symbols & pictographs (1 of 2)
-    u"(\ud83d[\u0000-\uddff])|"  # symbols & pictographs (2 of 2)
-    u"(\ud83d[\ude80-\udeff])|"  # transport & map symbols
-    u"(\ud83c[\udde0-\uddff])"  # flags (iOS)
-    "+", flags=re.UNICODE)
-
-
-def remove_emoji(text):
-    return emoji_pattern.sub(r'', text)
+    try:
+        Base.metadata.drop_all(settings.engine)
+    except Exception as e:
+        pylog.print_warn("自动删除数据库表出现问题: {}".format(e))
 

@@ -1,2 +1,3 @@
 graft spider163/www/templates
 graft spider163/www/static
+graft data/spider163.conf
