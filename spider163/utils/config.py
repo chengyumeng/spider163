@@ -5,6 +5,8 @@ import re
 
 import ConfigParser
 
+from spider163 import version
+
 
 PATH = os.environ.get("HOME") + "/spider163"
 if os.environ.get("SPIDER163_PATH") is not None:
@@ -15,7 +17,7 @@ if not os.path.exists(PATH):
 cf = ConfigParser.ConfigParser()
 if not os.path.exists(PATH + "/spider163.conf"):
     print("请在默认路径 " + PATH + " 下增加配置文件 spider163.conf 格式参照官方")
-    cf.read("data/spider163.conf")
+    cf.read("{}/template/spider163.conf".format(version.root_path))
 else:
     cf.read(PATH + "/spider163.conf")
 
