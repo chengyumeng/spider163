@@ -34,7 +34,6 @@ setup(
       author_email='792400644@qq.com',
       packages=find_packages(),
       include_package_data=True,
-      scripts=['spider163/bin/spider163'],
       license='MIT License',
       zip_safe=False,
       install_requires=[

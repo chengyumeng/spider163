@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask, request, json, jsonify
-from flask import render_template,make_response
+from flask import render_template, make_response
 
 from spider163.spider import playlist
 from spider163.utils import pysql

@@ -22,3 +22,5 @@ def configure_orm():
         pylog.print_err("初始化数据库出现问题： {}".format(e))
 
 
+
+
