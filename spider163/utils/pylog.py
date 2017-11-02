@@ -27,9 +27,21 @@ def Blue(msg):
     return Fore.BLUE + msg
 
 
+def green(msg):
+    return Fore.GREEN + msg
+
+
+def red(msg):
+    return Fore.RED + msg
+
+
 def print_err(msg):
     print(Fore.RED + msg)
 
 
 def print_warn(msg):
     print(Fore.YELLOW + msg)
+
+
+def print_info(msg):
+    print(Fore.BLUE + msg)
