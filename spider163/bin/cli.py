@@ -16,7 +16,7 @@ from spider163 import version
 from spider163.www import web
 from spider163.utils import config
 from spider163.utils import pylog
-
+from spider163.utils import healthz
 
 BANNER = """
 Spider163 Application v%s
@@ -34,6 +34,12 @@ class VersionController(CementBaseController):
         arguments = [
             (['-v', '--version'], dict(action='version', version=BANNER)),
             ]
+
+    @expose(help="运行前健康检查")
+    def healthz(self):
+        healthz.is_correct_config()
+        healthz.is_correct_db()
+        healthz.can_spider()
 
 
 class DatabaseController(CementBaseController):

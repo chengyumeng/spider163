@@ -35,6 +35,22 @@ def get_db():
         raise e
 
 
+def format_db():
+    """db=mysql://root:password@127.0.0.1/spider?charset=utf8mb4"""
+    link = get_db()
+    r = re.search("mysql:\/\/([^:]+):([^@]+)@((?:[0-9]{1,3}\.){3}[0-9]{1,3})/([^\?]+)\?charset=utf8mb4", link)
+    if r is None:
+        return r
+    else:
+        return {
+            "link": r.group(0),
+            "user": r.group(1),
+            "password": r.group(2),
+            "ip": r.group(3),
+            "database": r.group(4)
+        }
+
+
 def get_mysql():
     link = get_db()
     db = re.search('(?<=/)[^/]+(?=\?)', link).group(0)
