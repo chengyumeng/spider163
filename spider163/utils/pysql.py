@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import random
 
-from sqlalchemy import Column, Integer, String, DateTime, Index, extract
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Index, extract
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
@@ -21,7 +21,7 @@ class Playlist163(Base):
     link = Column(String(255), server_default="No Link")
     cnt = Column(Integer(), server_default="-1")
     dsc = Column(String(255), server_default="No Description")
-    create_time = Column(DateTime, server_default=func.now())
+    create_time = Column(TIMESTAMP, server_default=func.now())
     over = Column(String(255), server_default="N")
     over_link = Index("over_link", over, link)
 
@@ -31,10 +31,10 @@ class Music163(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     song_id = Column(Integer())
     song_name = Column(String(5000), server_default="No Name")
-    author = Column(String(5000), server_default="No Author")
+    author = Column(String(3000), server_default="No Author")
     over = Column(String(255), server_default="N")
     has_lyric = Column(String(255), server_default="N")
-    create_time = Column(DateTime, server_default=func.now())
+    create_time = Column(TIMESTAMP, server_default=func.now())
     comment = Column(Integer(), server_default="-1")
     over_id = Index("over_id", over,id)
     key_author = Index("author", author)
@@ -46,7 +46,7 @@ class Comment163(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     song_id = Column(Integer())
     txt = Column(MEDIUMTEXT)
-    author = Column(String(5000), server_default="No Author")
+    author = Column(String(3000), server_default="No Author")
     liked = Column(Integer(), server_default="0")
     Index("liked_song_id", liked, song_id)
     Index("song_id_liked", song_id, liked)
