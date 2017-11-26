@@ -97,7 +97,7 @@ class SpiderController(CementBaseController):
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
     def music(self):
         msc = music.Music()
-        if self.app.pargs.count is not None:
+        if self.app.pargs.count is None:
             msc.views_capture()
             return
         cnt = int(self.app.pargs.count)
