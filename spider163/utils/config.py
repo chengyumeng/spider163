@@ -60,7 +60,7 @@ def get_mysql():
 
 def get_port():
     try:
-        return cf.get("core", "port")
+        return int(cf.get("core", "port"))
     except Exception as e:
         print("配置文件存在问题，请在 {}/spider163.conf 中配置port=xxx选项".format(PATH))
         print("错误详情： {}".format(e))
