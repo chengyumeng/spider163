@@ -177,7 +177,7 @@ class WebController(CementBaseController):
     def webserver(self):
         try:
             webport = config.get_port()
-            web.app.run("0.0.0.0", webport)
+            web.app.run(host="0.0.0.0", port=webport, debug=True)
         except Exception as e:
             print("{} 退出web服务：{}".format(Fore.RED, e))
 

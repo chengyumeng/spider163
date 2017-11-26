@@ -4,6 +4,7 @@ from flask import Flask, request, json, jsonify
 from flask import render_template, make_response
 
 from spider163.spider import playlist
+from spider163.spider import music
 from spider163.utils import pysql
 
 app = Flask(__name__, static_path='/static')
@@ -25,6 +26,12 @@ def get_playlist():
     title = pl.view_capture(int(request.form['gdPage']),request.form["gdType"].encode("utf-8"))
     return jsonify({"type": request.form["gdType"],"title": title})
 
+
+@app.route("/spider/getMusic", methods=['POST'])
+def get_music():
+    mu = music.Music()
+    data = mu.views_capture(request.form["gdSource"].encode("utf-8"))
+    return jsonify({"type": request.form["gdSource"],"data": data})
 
 @app.route("/stat")
 def statistics():
