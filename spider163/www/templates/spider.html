@@ -34,38 +34,29 @@
                 </div>
             </div>
         </div>
-
-
     </div>
-   <div id="gdModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
 
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-          <h4 class="modal-title" id="myModalLabel">抓取歌单数据</h4>
-        </div>
-        <div class="modal-body">
-          <h4>抓取条件</h4>
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">类型</span>
-                <input type="text" class="form-control" id="gdType" placeholder="歌单类型：等等" aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon2">任务批量</span>
-                <input type="text" id="gdCount" class="form-control" placeholder="阿拉伯数字" aria-describedby="basic-addon2">
+    <div class="gdspider form-horizontal" style="visibility:hidden;">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">歌单类型</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="gdType" placeholder="text">
             </div>
         </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-primary" id="spiderPlaylist">提交任务</button>
-          </div>
-      </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">歌单页码</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="gdPage" placeholder="number">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="spiderPlaylist">提交</button>
     </div>
-   </div>
 
 
-    <div class="process"></div>
+    <div class="process">
+        <table class="table table-condensed" id="printTable">
+        </table>
+    </div>
 </div>
 
 

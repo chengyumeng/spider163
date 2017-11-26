@@ -36,6 +36,7 @@ class Playlist:
     def view_capture(self, page, type="全部"):
         s = requests.session()
         play_url = self.__play_url.format(type, page * 35)
+        titles = []
         try:
             acmsk = {'class': 'msk'}
             scnb = {'class': 'nb'}
@@ -51,6 +52,8 @@ class Playlist:
                     pl = pysql.Playlist163(title=title, link=link, cnt=int(cnt), dsc="曲风：{}".format(type))
                     self.session.add(pl)
                     self.session.commit()
+                    titles.append(title)
+            return titles
         except Exception as e:
             pylog.log.error("抓取歌单出现问题：{} 歌单类型：{} 页码：{}".format(e, type, page))
             raise

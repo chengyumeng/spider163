@@ -25,8 +25,8 @@ $(function () {
 	      playlist()
 	      music()
           setInterval(dataCount,10000);
-          setInterval(playlist,10000);
-          setInterval(music,10000);
+          setInterval(playlist,1000000);
+          setInterval(music,1000000);
 	}
 	this.init = function() {
 	    this.createDom();

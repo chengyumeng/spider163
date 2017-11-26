@@ -22,7 +22,8 @@ def spider(type=None):
 @app.route("/spider/getPlaylist", methods=['POST'])
 def get_playlist():
     pl = playlist.Playlist()
-    return jsonify({"test": request.form["gdType"]})
+    title = pl.view_capture(int(request.form['gdPage']),request.form["gdType"].encode("utf-8"))
+    return jsonify({"type": request.form["gdType"],"title": title})
 
 
 @app.route("/stat")
@@ -58,5 +59,7 @@ def scan_data():
 @app.route("/business")
 def business():
     return make_response(open('templates/business.html').read())
+
+
 
 
