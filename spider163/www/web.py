@@ -5,6 +5,8 @@ from flask import render_template, make_response
 
 from spider163.spider import playlist
 from spider163.spider import music
+from spider163.spider import lyric
+from spider163.spider import comment
 from spider163.utils import pysql
 
 app = Flask(__name__, static_path='/static')
@@ -32,6 +34,21 @@ def get_music():
     mu = music.Music()
     data = mu.views_capture(request.form["gdSource"].encode("utf-8"))
     return jsonify({"type": request.form["gdSource"],"data": data})
+
+
+@app.route("/spider/getLyric", methods=["POST"])
+def get_lyric():
+    ly = lyric.Lyric()
+    data = ly.view_lyrics(int(request.form["gqCount"]))
+    return jsonify({"count": request.form["gqCount"],"data": data})
+
+
+@app.route("/spider/getComment", methods=["POST"])
+def get_comment():
+    cm = comment.Comment()
+    data = cm.auto_view(int(request.form["gqCount"]))
+    return jsonify({"count": request.form["gqCount"],"data": data})
+
 
 @app.route("/stat")
 def statistics():

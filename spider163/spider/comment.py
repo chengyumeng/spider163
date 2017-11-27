@@ -123,26 +123,31 @@ class Comment:
             pylog.log.error("解析页面推荐时出现问题：{} 歌曲ID：{}".format(e, song_id))
 
     def auto_view(self, count=1):
+        song = []
         try:
             if count < 10:
                 msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count)
                 for m in msc:
                     print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
                     self.views_capture(m.song_id, 1, 1)
+                    song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
             else:
                 for i in range(count / 10):
                     msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
                     for m in msc:
                         print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
                         self.views_capture(m.song_id, 1, 1)
+                        song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
                 msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count % 10)
                 for m in msc:
                     print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
                     self.views_capture(m.song_id, 1, 1)
+                    song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
         except Exception as e:
             self.session.rollback()
             pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
-            raise
+            # raise
+        return song
 
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)

@@ -118,7 +118,7 @@
 margin-top:200px;
 }
 
-.gdspider {
+.gdspider, .gqspider, .gcspider, .rpspider {
 margin-top:20px;
 width:50%;
 min-width:400px;
