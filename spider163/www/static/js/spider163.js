@@ -7,21 +7,28 @@ $(function () {
     }
     this.documentEvent = function () {
 		var self = this;
+		 this.hideBox = function() {
+		    $(".gdspider").css({"display":"none"});
+		    $(".gqspider").css({"display":"none"});
+		    $(".gcspider").css({"display":"none"});
+		    $(".rpspider").css({"display":"none"});
+		}
 		$("#gd").click(function(){
-		    $(".gdspider").css("visibility","visible");
+		    self.hideBox();
+		    $(".gdspider").css({"display":"block"});
 		});
 		$("#gq").click(function(){
-		    $(".gdspider").css("visibility","hidden");
-		    $(".gqspider").css("visibility","visible");
+		    self.hideBox();
+		    $(".gqspider").css({"display":"block"});
 		});
 		$("#gc").click(function(){
-		    $(".gdspider").css("visibility","hidden");
-		    $(".gcspider").css("visibility","visible");
+		    self.hideBox();
+		    $(".gcspider").css({"display":"block"});
 		});
 
 		$("#rp").click(function(){
-		    $(".gdspider").css("visibility","hidden");
-		    $(".rpspider").css("visibility","visible");
+		    self.hideBox();
+		    $(".rpspider").css({"display":"block"});
 		});
 
 		this.spiderPlaylistObj.click(function() {

@@ -119,7 +119,7 @@ margin-top:200px;
 }
 
 .gdspider, .gqspider, .gcspider, .rpspider {
-margin-top:20px;
+margin:20px auto auto auto;
 width:50%;
 min-width:400px;
 }
