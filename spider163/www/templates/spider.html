@@ -11,26 +11,26 @@
 <body>
 <div class="container index-body">
     <h2 class="m-h2 m-h2-mb">智能抓取 <i>用户需求 · 智能定制</i></h2>
-    <div class="row"><!-- i-c-g index contract group -->
-        <div class="i-c-g" id="index-group"><!-- 股权 -->
-            <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_interest">
+    <div class="row">
+        <div id="index-group">
+            <div class="col-md-3 col-sm-4 col-xs-6">
                 <div class="i-c-item">
-                    <a id="gd" title="歌单"><div class="i-c-p i-c-p2"><h2 class="i-c-ph">歌单</h2></div></a>
+                    <a id="gd" title="歌单"><div class="i-c-p i-c-p1"><h2 class="i-c-ph">歌单</h2></div></a>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_cp">
+            <div class="col-md-3 col-sm-4 col-xs-6">
                 <div class="i-c-item">
-                    <a id="gq" title="歌曲"><div class="i-c-p i-c-p7"><h2 class="i-c-ph">歌曲</h2></div></a>
+                    <a id="gq" title="歌曲"><div class="i-c-p i-c-p2"><h2 class="i-c-ph">歌曲</h2></div></a>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_cp">
+            <div class="col-md-3 col-sm-4 col-xs-6">
                 <div class="i-c-item">
-                    <a id="gc" title="歌词"><div class="i-c-p i-c-p7"><h2 class="i-c-ph">歌词</h2></div></a>
+                    <a id="gc" title="歌词"><div class="i-c-p i-c-p3"><h2 class="i-c-ph">歌词</h2></div></a>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 i-c-item-outer" id="aic_cp">
+            <div class="col-md-3 col-sm-4 col-xs-6">
                 <div class="i-c-item">
-                    <a id="rp" title="热评"><div class="i-c-p i-c-p7"><h2 class="i-c-ph">热评</h2></div></a>
+                    <a id="rp" title="热评"><div class="i-c-p i-c-p4"><h2 class="i-c-ph">热评</h2></div></a>
                 </div>
             </div>
         </div>
@@ -40,13 +40,13 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">歌单类型</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="gdType" placeholder="text">
+                <input type="text" class="form-control" id="gdType" placeholder="全部,华语,欧美,日语,韩语,粤语,怀旧,清新,00后……">
             </div>
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">歌单页码</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" id="gdPage" placeholder="number">
+                <input type="number" class="form-control" id="gdPage" placeholder="一般为1-34">
             </div>
         </div>
         <button type="button" class="btn btn-primary btn-lg btn-block" id="spiderPlaylist">提交</button>
@@ -56,13 +56,13 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">歌单类型</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="gdSource" placeholder="曲风">
+                <input type="text" class="form-control" id="gdSource" placeholder="全部,华语,欧美,日语,韩语,粤语,怀旧,清新,00后……">
             </div>
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">歌单数量</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" id="gdCount" placeholder="number">
+                <input type="number" class="form-control" id="gdCount" placeholder="为避免系统卡死尽量1-300">
             </div>
         </div>
         <button type="button" class="btn btn-primary btn-lg btn-block" id="spiderMusic">提交</button>
@@ -72,7 +72,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">歌曲数量</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" id="gqCount" placeholder="number">
+                <input type="number" class="form-control" id="gqCount" placeholder="为避免系统卡死尽量1-300">
             </div>
         </div>
         <button type="button" class="btn btn-primary btn-lg btn-block" id="spiderLyric">提交</button>
@@ -82,7 +82,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">歌曲数量</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" id="gqCount-1" placeholder="number">
+                <input type="number" class="form-control" id="gqCount-1" placeholder="为避免系统卡死尽量1-300">
             </div>
         </div>
         <button type="button" class="btn btn-primary btn-lg btn-block" id="spiderComment">提交</button>
