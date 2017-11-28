@@ -3,12 +3,6 @@
     background-color: #a811b5;
     color: #fff;
     padding: 120px 0;
-    background-image: url(../imgs/grid.png);
-    background-image: url(../imgs/grid.png), -webkit-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
-    background-image: url(../imgs/grid.png), -webkit-linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
-    background-image: url(../imgs/grid.png), -moz-linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
-    background-image: url(../imgs/grid.png), -o-linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
-    background-image: url(../imgs/grid.png), linear-gradient(linear, left bottom, right top, from(#571c94), to(#e609cf));
     background-position: center center;
     background-repeat: no-repeat;
 }
@@ -63,12 +57,20 @@
     margin-bottom: 22px;
 }
 
-#index-group .i-c-p2 {
-    background: #e8b875 url(../pics/yue-sprit004.png) no-repeat 35px -47px;
+#index-group .i-c-p1 {
+    background: #A020F0  no-repeat 35px -47px;
 }
 
-#index-group .i-c-p7 {
-    background: #baa1e2 url(../pics/yue-sprit004.png) no-repeat 25px -260px;
+#index-group .i-c-p2 {
+    background: #FF1493  no-repeat 35px -47px;
+}
+
+#index-group .i-c-p3 {
+    background: #e8b875  no-repeat 35px -47px;
+}
+
+#index-group .i-c-p4 {
+    background: #baa1e2  no-repeat 25px -260px;
 }
 
 
