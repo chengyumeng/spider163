@@ -1,0 +1,29 @@
+{
+  "author": "Roman Shtylman <shtylman@gmail.com>",
+  "name": "localtunnel",
+  "description": "expose localhost to the world",
+  "version": "1.8.3",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/localtunnel/localtunnel.git"
+  },
+  "dependencies": {
+    "request": "2.81.0",
+    "yargs": "3.29.0",
+    "debug": "2.6.8",
+    "openurl": "1.1.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0"
+  },
+  "scripts": {
+    "test": "mocha --ui qunit --reporter list --timeout 10000 -- test/index.js"
+  },
+  "bin": {
+    "lt": "./bin/client"
+  },
+  "main": "./client.js",
+  "_from": "localtunnel@1.8.3",
+  "_resolved": "http://registry.npm.taobao.org/localtunnel/download/localtunnel-1.8.3.tgz"
+}
