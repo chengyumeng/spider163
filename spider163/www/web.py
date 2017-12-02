@@ -77,7 +77,12 @@ def scan():
 
 @app.route("/scan/data")
 def scan_data():
-    return jsonify(pysql.random_data())
+    comment = pysql.random_data()
+    if len(comment) > 0:
+        res = {"msg":"ok","num":len(comment),"comment":comment}
+        return jsonify(res)
+    else:
+        return jsonify({"msg":"ok","num":len(comment),"comment":[]})
 
 
 @app.route("/business")
