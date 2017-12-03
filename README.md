@@ -1,10 +1,8 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
 # spider163 v2.5.x
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
-[![GitHub release](http://img.shields.io/github/release/yudai/gotty.svg?style=flat-square)][release]
 
 [license]: https://github.com/Chengyumeng/spider163/blob/master/LICENSE
-[release]: https://github.com/Chengyumeng/spider163/releases
 ###### GitHub上最易用的网易云音乐爬虫系统
 
 
