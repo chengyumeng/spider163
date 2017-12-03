@@ -85,9 +85,9 @@ def scan_data():
         return jsonify({"msg":"ok","num":len(comment),"comment":[]})
 
 
-@app.route("/business")
-def business():
-    return make_response(open('templates/business.html').read())
+@app.route("/bussiness")
+def bussiness():
+    return render_template('bussiness.html')
 
 
 
