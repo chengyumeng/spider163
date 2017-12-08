@@ -43,11 +43,11 @@ class Music:
         songs = []
         try:
             s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
-            musics = json.loads(s.text)['result']['tracks']
+            musics = json.loads(s.text)['playlist']['tracks']
             exist = 0
             for music in musics:
                 name = music['name'].encode('utf-8')
-                author = music['artists'][0]['name'].encode('utf-8')
+                author = music['ar'][0]['name'].encode('utf-8')
                 if pysql.single("music163", "song_id", (music['id'])) is True:
                     self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author))
                     self.session.commit()
@@ -81,7 +81,7 @@ class Music:
         tb = [["ID", "歌曲名字", "艺术家", "唱片"]]
         for music in playlist['tracks']:
             artists = []
-            for s in music['artists']:
+            for s in music['ar']:
                 artists.append(s['name'])
             ms = music['name'].encode("utf-8")
             ar = ",".join(artists).encode("utf-8")
