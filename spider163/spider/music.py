@@ -43,11 +43,11 @@ class Music:
         songs = []
         try:
             s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
-            musics = json.loads(s.text)['playlist']['tracks']
+            musics = json.loads(s.text)['result']['tracks']
             exist = 0
             for music in musics:
                 name = music['name'].encode('utf-8')
-                author = music['ar'][0]['name'].encode('utf-8')
+                author = music['artists'][0]['name'].encode('utf-8')
                 if pysql.single("music163", "song_id", (music['id'])) is True:
                     self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author))
                     self.session.commit()
