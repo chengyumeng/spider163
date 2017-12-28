@@ -19,6 +19,7 @@ comment_url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_{}/?csrf_t
 lyric_url = "http://music.163.com/api/song/lyric?os=pc&id={}&lv=-1&kv=-1&tv=-1"
 play_url = "http://music.163.com/discover/playlist/?order=hot&cat={}&limit=35&offset={}"
 music_url = "http://music.163.com/api/playlist/detail?id="
+mp3_url = "http://music.163.com/weapi/song/enhance/player/url?csrf_token="
 
 playlist_api = "http://music.163.com/api/playlist/detail?id={}&upd"
 
