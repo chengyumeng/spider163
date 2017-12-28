@@ -8,6 +8,7 @@ from colorama import init
 
 from spider163.utils import pysql
 from spider163.spider import playlist
+from spider163.spider import mp3
 from spider163.spider import music
 from spider163.spider import comment
 from spider163.spider import lyric
@@ -93,6 +94,13 @@ class SpiderController(CementBaseController):
             for i in range(36):
                 print(Fore.GREEN + '正在抓取 曲风为 {} 的第 {} 页歌单……'.format(cf ,i + 1))
                 pl.view_capture(i + 1, cf)
+
+    @expose(help="根据指定的歌单下载歌单歌曲MP3（--playlist）")
+    def mp3(self):
+        if self.app.pargs.playlist is not None:
+            m = mp3.MP3()
+            m.view_down(self.app.pargs.playlist)
+
 
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
     def music(self):

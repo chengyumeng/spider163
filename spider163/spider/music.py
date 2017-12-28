@@ -81,7 +81,7 @@ class Music:
         tb = [["ID", "歌曲名字", "艺术家", "唱片"]]
         for music in playlist['tracks']:
             artists = []
-            for s in music['ar']:
+            for s in music['artists']:
                 artists.append(s['name'])
             ms = music['name'].encode("utf-8")
             ar = ",".join(artists).encode("utf-8")
