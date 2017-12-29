@@ -52,6 +52,8 @@ class MP3:
     def view_down(self, playlist_id):
         list = self.get_playlist(playlist_id)
         for music in list['tracks']:
+            pylog.print_info(
+                "正在下载歌曲 {}-{}.mp3".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8")))
             link = self.get_mp3_link(music["id"])
             r = requests.get(link)
             with open("{}-{}{}".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8"), ".mp3"), "wb") as code:
