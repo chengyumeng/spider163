@@ -49,14 +49,14 @@ class MP3:
     def create_secretKey(self, size):
         return (''.join(map(lambda xx: (hex(ord(xx))[2:]), os.urandom(size))))[0:16]
 
-    def view_down(self, playlist_id):
+    def view_down(self, playlist_id, path="."):
         list = self.get_playlist(playlist_id)
         for music in list['tracks']:
             pylog.print_info(
                 "正在下载歌曲 {}-{}.mp3".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8")))
             link = self.get_mp3_link(music["id"])
             r = requests.get(link)
-            with open("{}-{}{}".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8"), ".mp3"), "wb") as code:
+            with open("{}/{}-{}{}".format(path, music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8"), ".mp3"), "wb") as code:
                 code.write(r.content)
 
     def get_playlist(self, playlist_id):

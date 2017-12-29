@@ -22,11 +22,15 @@ class CleanCommand(Command):
 
 version = imp.load_source(
     'spider163.version', os.path.join('spider163', 'version.py')).VERSION
+desc = imp.load_source(
+    'spider163.version', os.path.join('spider163', 'version.py')).DESCRIPTION
 
 setup(
       version=version,
       name='spider163',
       author='ChengTian',
+      description='简单易用、功能强大的网易云音乐爬虫',
+      long_description=desc,
       entry_points={
         "console_scripts": ["spider163=spider163.bin.cli:main"]
       },

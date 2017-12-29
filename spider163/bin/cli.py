@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os, datetime
+
 from cement.core.foundation import CementApp
 from cement.core.controller import CementBaseController, expose
 from cement.core.exc import CaughtSignal
@@ -20,10 +22,10 @@ from spider163.utils import pylog
 from spider163.utils import healthz
 
 BANNER = """
-Spider163 Application v%s
-Copyright (c) 2017 Cheng Tian Enterprises
+Spider163 Application v{}
+Copyright (c) {} Cheng Tian Enterprises
 Welcome to Follow My 【微信公众账号】"程天写代码"
-""" % version.VERSION
+""".format( version.VERSION ,  datetime.datetime.now().year)
 
 init(autoreset=True)
 
@@ -74,6 +76,8 @@ class SpiderController(CementBaseController):
              dict(help="歌曲ID")),
             (['--classify'],
              dict(help="歌曲风格")),
+            (['--path'],
+             dict(help="存储路径"))
         ]
 
     @expose(help="获取全部歌曲风格列表(作为抓取歌单的参照)")
@@ -95,11 +99,16 @@ class SpiderController(CementBaseController):
                 print(Fore.GREEN + '正在抓取 曲风为 {} 的第 {} 页歌单……'.format(cf ,i + 1))
                 pl.view_capture(i + 1, cf)
 
-    @expose(help="根据指定的歌单下载歌单歌曲MP3（--playlist）")
+    @expose(help="根据指定的歌单下载歌单歌曲MP3（--playlist | --path）")
     def mp3(self):
+        path = "."
+        if self.app.pargs.path is not None:
+            path = self.app.pargs.path
+        if not os.path.exists(path):
+            os.makedirs(path)
         if self.app.pargs.playlist is not None:
             m = mp3.MP3()
-            m.view_down(self.app.pargs.playlist)
+            m.view_down(self.app.pargs.playlist, path)
 
 
     @expose(help="通过歌单抓取网易云音乐歌曲，单次抓取歌单10个(-c --count)")
