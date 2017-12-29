@@ -17,6 +17,7 @@
 - resetdb
 - classify
 - playlist
+- mp3
 - music
 - comment
 - lyric
@@ -41,6 +42,10 @@ $ # 获取已知曲风列表
 ```console
 $ spider163 playlist
 $ # 默认下载全部推荐歌单（1000+），也可以通过指定页码去下载（-p=1）,以及歌曲风格（--classify=小语种，默认为全部）
+```
+```console
+$ spider163 mp3 --playlist=2033391777
+$ # 默认下载指定歌单列表内的全部包含版权的歌曲
 ```
 ```console
 $ spider163 music
