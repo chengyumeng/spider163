@@ -11,7 +11,7 @@
 
 #### WEB UI
 * WEB UI支持实时检索
-* WEB UI支持推荐
+* WEB UI支持推荐 √
 * WEB UI支持在线抓取 √
 * ...
 
