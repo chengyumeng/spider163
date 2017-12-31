@@ -55,7 +55,7 @@ setup(
             "PyYAML==3.12",
             "requests==2.18.4",
             "shellescape==3.4.1",
-            "SQLAlchemy==1.1.14",
+            "SQLAlchemy==1.1.15",
             "SQLAlchemy-Utils==0.32.18",
             "terminaltables==3.1.0",
             "urllib3==1.22",
