@@ -56,7 +56,7 @@ class MP3:
                 "正在下载歌曲 {}-{}.mp3".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8")))
             link = self.get_mp3_link(music["id"])
             r = requests.get(link)
-            with open("{}/{}-{}{}".format(path, music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8"), ".mp3"), "wb") as code:
+            with open("{}/{}-{}{}".format(path, music['name'].encode("utf-8").replace("/","-"), music['artists'][0]['name'].encode("utf-8").replace("/","-"), ".mp3"), "wb") as code:
                 code.write(r.content)
 
     def get_playlist(self, playlist_id):
