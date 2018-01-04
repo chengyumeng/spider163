@@ -51,13 +51,27 @@ class MP3:
 
     def view_down(self, playlist_id, path="."):
         list = self.get_playlist(playlist_id)
+        msg  = {"success":0,"failed":0,"failed_list":[]}
         for music in list['tracks']:
             pylog.print_info(
                 "正在下载歌曲 {}-{}.mp3".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8")))
             link = self.get_mp3_link(music["id"])
+            if link is None:
+                msg["failed"] = msg["failed"] + 1
+                msg["failed_list"].append(music)
+                continue
             r = requests.get(link)
             with open("{}/{}-{}{}".format(path, music['name'].encode("utf-8").replace("/","-"), music['artists'][0]['name'].encode("utf-8").replace("/","-"), ".mp3"), "wb") as code:
                 code.write(r.content)
+                msg["success"] = msg["success"] + 1
+        pylog.print_warn("下载成功：{} 首，下载失败：{}首".format(msg["success"], msg["failed"]))
+        tb = [["歌曲名字", "艺术家", "ID"]]
+        for music in msg["failed_list"]:
+            n = music['name'].encode("utf-8")
+            a = music['artists'][0]['name'].encode("utf-8")
+            i = music['id']
+            tb.append([n,a,i])
+        print(AsciiTable(tb).table)
 
     def get_playlist(self, playlist_id):
         url = uapi.playlist_api.format(playlist_id)
