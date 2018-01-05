@@ -9,6 +9,7 @@ import settings as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
+from spider163.utils import tools
 from terminaltables import AsciiTable
 
 
@@ -74,9 +75,10 @@ class Music:
         sc = str(playlist['subscribedCount'])
         rc = str(playlist['shareCount'])
         cc = str(playlist['commentCount'])
-        print("维护者：{}  播放：{} 关注：{} 分享：{} 评论：{}".format(author, pc, sc, rc, cc))
-        print("描述：{}".format(playlist['description'].encode('utf-8')))
-        print("标签：{}".format(",".join(playlist['tags']).encode("utf-8")))
+        with tools.ignored(Exception):
+            print("维护者：{}  播放：{} 关注：{} 分享：{} 评论：{}".format(author, pc, sc, rc, cc))
+            print("描述：{}".format(playlist['description'].encode('utf-8')))
+            print("标签：{}".format(",".join(playlist['tags']).encode("utf-8")))
 
         tb = [["ID", "歌曲名字", "艺术家", "唱片"]]
         for music in playlist['tracks']:
