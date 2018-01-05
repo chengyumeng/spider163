@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-VERSION = "2.6.2"
+VERSION = "2.6.3"
 DESCRIPTION = """
 Spider163的数据基础，来源于网易公司的网易云音乐产品。其授权协议，包含《网易云音乐服务条款》但不包含其霸王条款。
 
