@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
 
 
-from spider163.spider import public as uapi
+import settings as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog

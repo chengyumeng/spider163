@@ -4,7 +4,7 @@ import requests
 from terminaltables import AsciiTable
 
 from spider163.utils import pylog
-from spider163.spider import public as uapi
+import settings as uapi
 
 offset = 0
 limit = 20
