@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
+
+PYTHON3 = False
+if sys.version > "3":
+    PYTHON3 = True
 
 VERSION = "2.6.3"
 DESCRIPTION = """
