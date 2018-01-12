@@ -36,7 +36,7 @@ class Comment:
             text = '{rid:"", offset:"%s", total:"%s", limit:"20", csrf_token:""}' %(offset,'false')
         nonce = '0CoJUm6Qyw8W8jud'
         nonce2 = 16 * 'F'
-        encText = self.aesEncrypt(self.aesEncrypt(text,nonce),nonce2)
+        encText = self.aesEncrypt(self.aesEncrypt(text,nonce).decode("utf-8"), nonce2)
         return encText
 
     def aesEncrypt(self, text, secKey):
@@ -49,7 +49,7 @@ class Comment:
 
     def rsaEncrypt(self, text, pubKey, modulus):
         text = text[::-1]
-        rs = int(text.encode('hex'), 16)**int(pubKey, 16) % int(modulus, 16)
+        rs = int(tools.hex(text), 16)**int(pubKey, 16) % int(modulus, 16)
         return format(rs, 'x').zfill(256)
 
     def createSecretKey(self, size):
@@ -69,7 +69,7 @@ class Comment:
             self.session.query(pysql.Comment163).filter(pysql.Comment163.song_id == song_id).delete()
             self.session.commit()
         data = {'params': self.createParams(page), 'encSecKey': self.__encSecKey}
-        url = uapi.comment_url.format(str(song_id))
+        url = uapi.comment_url.format(song_id)
         try:
             req = requests.post(url, headers=self.__headers, data=data, timeout=10)
             for comment in req.json()['comments']:
@@ -125,29 +125,37 @@ class Comment:
 
     def auto_view(self, count=1):
         song = []
-        try:
-            if count < 10:
-                msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count)
-                for m in msc:
+        if count < 10:
+            msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count)
+            for m in msc:
+                try:
                     print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                     self.views_capture(m.song_id, 1, 1)
                     song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
-            else:
-                for i in range(count / 10):
-                    msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
-                    for m in msc:
+                except Exception as e:
+                    self.session.rollback()
+                    pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
+        else:
+            for i in range(int(count / 10)):
+                msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
+                for m in msc:
+                    try:
                         print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                         self.views_capture(m.song_id, 1, 1)
                         song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
-                msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count % 10)
-                for m in msc:
+                    except Exception as e:
+                        self.session.rollback()
+                        pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
+            msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count % 10)
+            for m in msc:
+                try:
                     print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                     self.views_capture(m.song_id, 1, 1)
                     song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
-        except Exception as e:
-            self.session.rollback()
-            pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
-            # raise
+                except Exception as e:
+                    self.session.rollback()
+                    pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
+
         return song
 
     def get_music(self, music_id):
