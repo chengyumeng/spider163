@@ -14,6 +14,7 @@ from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
+from spider163.utils import tools
 
 
 class Comment:
@@ -73,15 +74,15 @@ class Comment:
             req = requests.post(url, headers=self.__headers, data=data, timeout=10)
             for comment in req.json()['comments']:
                 if comment['likedCount'] > 30:
-                    txt = comment['content'].encode('utf-8')
-                    author = comment['user']['nickname'].encode('utf-8')
+                    txt = tools.encode(comment['content'])
+                    author = tools.encode(comment['user']['nickname'])
                     liked = comment['likedCount']
                     self.session.add(pysql.Comment163(song_id=song_id, txt=txt, author=author, liked=liked))
                     self.session.flush()
             if page == 1:
                 for comment in req.json()['hotComments']:
-                    txt = comment['content'].encode('utf-8')
-                    author = comment['user']['nickname'].encode('utf-8')
+                    txt = tools.encode(comment['content'])
+                    author = tools.encode(comment['user']['nickname'])
                     liked = comment['likedCount']
                     self.session.add(pysql.Comment163(song_id=song_id, txt=txt, author=author, liked=liked))
                     self.session.flush()
@@ -107,15 +108,15 @@ class Comment:
             for link in sup.find_all('li', class_="f-cb"):
                 html = link.find('a', 's-fc1')
                 if html is not None:
-                    title = html.get('title').encode('utf-8')
+                    title = tools.encode(html.get('title'))
                     song_id = html.get('href')[9:]
-                    author = link.find('div', 'f-thide s-fc4').find('span').get('title').encode('utf-8')
+                    author = tools.encode(link.find('div', 'f-thide s-fc4').find('span').get('title'))
                     if pysql.single("music163","song_id",song_id) is True:
                         self.session.add(pysql.Music163(song_id=song_id, song_name=title, author=author))
                         self.session.flush()
             for link in sup.find_all('a', 'sname f-fs1 s-fc0'):
                 play_link = link.get("href").replace("/playlist?id=", "")
-                play_name = link.get("title").encode('utf-8')
+                play_name = tools.encode(link.get("title"))
                 if pysql.single("playlist163", "link", play_link) is True:
                     self.session.add(pysql.Playlist163(title=play_name, link=play_link, cnt=-1, dsc="来源：热评"))
                     self.session.flush()
@@ -128,19 +129,19 @@ class Comment:
             if count < 10:
                 msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count)
                 for m in msc:
-                    print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
+                    print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                     self.views_capture(m.song_id, 1, 1)
                     song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
             else:
                 for i in range(count / 10):
                     msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(10)
                     for m in msc:
-                        print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
+                        print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                         self.views_capture(m.song_id, 1, 1)
                         song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
                 msc = self.session.query(pysql.Music163).filter(pysql.Music163.over == "N").limit(count % 10)
                 for m in msc:
-                    print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode('utf-8'))))
+                    print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                     self.views_capture(m.song_id, 1, 1)
                     song.append({"name": m.song_name, "author": m.author, "song_id": m.song_id})
         except Exception as e:
@@ -155,11 +156,11 @@ class Comment:
         s = requests.session()
         s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
         music = json.loads(s.text)['songs']
-        print("《" + music[0]['name'].encode('utf-8') + "》")
+        print("《" + tools.encode(music[0]['name']) + "》")
         author = []
         for a in music[0]['artists']:
-            author.append(a['name'].encode('utf-8'))
-        album = str(music[0]['album']['name'].encode('utf-8'))
+            author.append(tools.encode(a['name']))
+        album = str(tools.encode(music[0]['album']['name']))
         print("演唱：{}     专辑：{}".format("，".join(author), album))
         comments = self.session.query(pysql.Comment163).filter(pysql.Comment163.song_id == int(music_id))
         tb = AsciiTable([["序号", "作者", "评论", "点赞"]])
@@ -168,7 +169,7 @@ class Comment:
         try:
             for cmt in comments:
                 cnt = cnt + 1
-                au = cmt.author.encode("utf-8")
+                au = tools.encode(cmt.author)
                 txt = ""
                 length = 0
                 for u in cmt.txt:
@@ -186,8 +187,8 @@ class Comment:
         except UnicodeEncodeError:
             pylog.log.info("获取歌曲详情编码存在问题，转为非表格形式，歌曲ID：{}".format(music_id))
             for cmt in comments:
-                print("评论： {}".format(cmt.txt.encode("utf-8")))
-                print("作者： {}   点赞：  {}".format(cmt.author.encode("utf-8"), str(cmt.liked)))
+                print("评论： {}".format(tools.encode(cmt.txt)))
+                print("作者： {}   点赞：  {}".format(tools.encode(cmt.author), str(cmt.liked)))
                 print("")
         except Exception as e:
             pylog.print_warn("获取歌曲时出现异常： {} 歌曲ID：{}".format(e, music_id))
