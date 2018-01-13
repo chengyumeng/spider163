@@ -53,7 +53,7 @@ install_requires = [
       ]
 if py3 is True:
     pass
-    # install_requires.append("")
+    install_requires.append("mysqlclient==1.3.12")
 else:
     install_requires.append("MySQL-python==1.2.5")
 
