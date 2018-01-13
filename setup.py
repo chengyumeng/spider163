@@ -34,15 +34,13 @@ install_requires = [
             "certifi==2017.7.27.1",
             "chardet==3.0.4",
             "idna==2.6",
-
             "Naked==0.1.31",
             "pprint==0.1",
-            # "progressbar==2.3",
             "pycrypto==2.6.1",
             "PyYAML==3.12",
             "requests==2.18.4",
             "shellescape==3.4.1",
-            "SQLAlchemy==1.1.14",
+            "SQLAlchemy==1.1.15",
             "SQLAlchemy-Utils==0.32.18",
             "terminaltables==3.1.0",
             "urllib3==1.22",
@@ -52,7 +50,6 @@ install_requires = [
 
       ]
 if py3 is True:
-    pass
     install_requires.append("mysqlclient==1.3.12")
 else:
     install_requires.append("MySQL-python==1.2.5")
