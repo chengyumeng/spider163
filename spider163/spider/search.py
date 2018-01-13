@@ -4,6 +4,7 @@ import requests
 from terminaltables import AsciiTable
 
 from spider163.utils import pylog
+from spider163.utils import tools
 from spider163.spider import public as uapi
 
 offset = 0
@@ -22,11 +23,11 @@ def searchSong(key):
     song_table = AsciiTable([["ID", "歌曲", "专辑", "演唱"]])
     for item in songs:
         id = item['id']
-        name = (item['name']).encode("utf-8")
-        album = (item['album']['name']).encode("utf-8")
+        name = tools.encode(item['name'])
+        album = tools.encode(item['album']['name'])
         artist = []
         for a in item['artists']:
-            artist.append(a['name'].encode("utf-8"))
+            artist.append(tools.encode(a['name']))
         song_table.table_data.append([str(id), name, album, ",".join(artist)])
     print(pylog.Blue("与 \"{}\" 有关的歌曲".format(key)))
     print(song_table.table)
@@ -43,13 +44,13 @@ def searchAlbum(key):
     song_table = AsciiTable([["ID", "专辑", "演唱","发行方"]])
     for item in albums:
         id = item['id']
-        name = item['name'].encode("utf-8")
+        name = tools.encode(item['name'])
         company = ""
         if item['company'] !=  None:
-            company = item['company'].encode("utf-8")
+            company = tools.encode(item['company'])
         artist = []
         for a in item['artists']:
-            artist.append(a['name'].encode("utf-8"))
+            artist.append(tools.encode(a['name']))
         song_table.table_data.append([str(id), name, ",".join(artist), company])
     print(pylog.Blue("与 \"{}\" 有关的专辑".format(key)))
     print(song_table.table)
@@ -66,7 +67,7 @@ def searchSinger(key):
     song_table = AsciiTable([["ID", "姓名", "专辑数量", "MV数量"]])
     for item in artists:
         id = str(item['id'])
-        name = item['name'].encode("utf-8")
+        name = tools.encode(item['name'])
         acount = str(item['albumSize'])
         mcount = str(item['mvSize'])
         song_table.table_data.append([id, name, acount, mcount])
@@ -85,8 +86,8 @@ def searchPlaylist(key):
     song_table = AsciiTable([["ID", "歌单", "维护者", "播放数量", "收藏数量"]])
     for item in playlists:
         id = str(item['id'])
-        name = item['name'].encode("utf-8")
-        creator = item['creator']['nickname'].encode("utf-8")
+        name = tools.encode(item['name'])
+        creator = tools.encode(item['creator']['nickname'])
         pcount = str(item['playCount'])
         bcount = str(item['bookCount'])
         song_table.table_data.append([id, name, creator, pcount, bcount])
