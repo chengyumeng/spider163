@@ -9,6 +9,7 @@ from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
+from spider163.utils import tools
 
 
 class Lyric:
@@ -40,15 +41,15 @@ class Lyric:
 
     def view_lyrics(self, count):
         song = []
-        for i in range(count/10):
+        for i in range(int(count/10)):
             ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(10)
             for m in ms:
-                print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode("utf-8"))))
+                print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                 self.view_lyric(m.song_id)
                 song.append({"name": m.song_name,"author": m.author,"comment": m.comment})
         ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(count%10)
         for m in ms:
-            print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(m.song_name.encode("utf-8"))))
+            print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
             self.view_lyric(m.song_id)
             song.append({"name": m.song_name, "author": m.author, "comment": m.comment})
         return song
