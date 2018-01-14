@@ -3,9 +3,12 @@
 import os
 import re
 
-import ConfigParser
-
 from spider163 import version
+if version.PYTHON3 is True:
+    import configparser as ConfigParser
+else:
+    import ConfigParser
+
 
 
 PATH = os.environ.get("HOME") + "/spider163"

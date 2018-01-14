@@ -10,10 +10,11 @@ from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
 
 
-import settings as uapi
+from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
+from spider163.utils import tools
 
 class MP3:
 
@@ -30,7 +31,7 @@ class MP3:
         text = '{"ids":['+ str(song_id) + '], br:"320000",csrf_token:"csrf"}'
         nonce = '0CoJUm6Qyw8W8jud'
         nonce2 = 16 * 'F'
-        encText = self.aes_encrypt(self.aes_encrypt(text,nonce),nonce2)
+        encText = self.aes_encrypt(self.aes_encrypt(text,nonce).decode("utf-8"),nonce2)
         return encText
 
     def aes_encrypt(self, text, secKey):
@@ -43,7 +44,7 @@ class MP3:
 
     def rsa_encrypt(self, text, pubKey, modulus):
         text = text[::-1]
-        rs = int(text.encode('hex'), 16)**int(pubKey, 16) % int(modulus, 16)
+        rs = int(tools.hex(text), 16)**int(pubKey, 16) % int(modulus, 16)
         return format(rs, 'x').zfill(256)
 
     def create_secretKey(self, size):
@@ -54,14 +55,14 @@ class MP3:
         msg  = {"success":0,"failed":0,"failed_list":[]}
         for music in list['tracks']:
             pylog.print_info(
-                "正在下载歌曲 {}-{}.mp3".format(music['name'].encode("utf-8"), music['artists'][0]['name'].encode("utf-8")))
+                "正在下载歌曲 {}-{}.mp3".format(tools.encode(music['name']), tools.encode(music['artists'][0]['name'])))
             link = self.get_mp3_link(music["id"])
             if link is None:
                 msg["failed"] = msg["failed"] + 1
                 msg["failed_list"].append(music)
                 continue
             r = requests.get(link)
-            with open("{}/{}-{}{}".format(path, music['name'].encode("utf-8").replace("/","-"), music['artists'][0]['name'].encode("utf-8").replace("/","-"), ".mp3"), "wb") as code:
+            with open("{}/{}-{}{}".format(path, tools.encode(music['name']).replace("/","-"), tools.encode(music['artists'][0]['name']).replace("/","-"), ".mp3"), "wb") as code:
                 code.write(r.content)
                 msg["success"] = msg["success"] + 1
         pylog.print_warn("下载成功：{} 首，下载失败：{}首".format(msg["success"], msg["failed"]))
