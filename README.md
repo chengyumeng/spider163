@@ -1,5 +1,5 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
-# spider163 v2.7.x
+# spider163 v2.6.x
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 
 [license]: https://github.com/Chengyumeng/spider163/blob/master/LICENSE
