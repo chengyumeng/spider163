@@ -16,7 +16,7 @@ def configure_orm():
         sessionmaker(autocommit=False, autoflush=False))
     try:
         if database_exists(config.get_db()) is False:
-            create_engine(config.get_mysql()['uri'], echo=False).execute("create database IF NOT EXISTS  {} DEFAULT CHARACTER SET utf8".format(config.get_mysql()['db']))
+            create_engine(config.get_mysql()['uri'], echo=False).execute("create database IF NOT EXISTS  {} DEFAULT CHARACTER SET utf8mb4".format(config.get_mysql()['db']))
         engine = create_engine(config.get_db(), **engine_args)
         Session = scoped_session(
             sessionmaker(autocommit=False, autoflush=False, bind=engine))
