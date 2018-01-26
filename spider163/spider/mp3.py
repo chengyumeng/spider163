@@ -1,19 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import requests
-import os
-import base64
-import json
 
-from Crypto.Cipher import AES
+import os
+import json
+import requests
+
 from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
 
-
-from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pylog
 from spider163.utils import tools
+from spider163.utils import encrypt
+from spider163.spider import public as uapi
 
 
 class MP3:
@@ -30,18 +29,10 @@ class MP3:
         text = '{"ids":[' + str(song_id) + '], br:"320000",csrf_token:"csrf"}'
         nonce = '0CoJUm6Qyw8W8jud'
         nonce2 = 16 * 'F'
-        encText = self.aes_encrypt(
-            self.aes_encrypt(text, nonce).decode("utf-8"), nonce2
+        encText = encrypt.aes(
+            encrypt.aes(text, nonce).decode("utf-8"), nonce2
         )
         return encText
-
-    def aes_encrypt(self, text, secKey):
-        pad = 16 - len(text) % 16
-        text = text + pad * chr(pad)
-        encryptor = AES.new(secKey, 2, '0102030405060708')
-        ciphertext = encryptor.encrypt(text)
-        ciphertext = base64.b64encode(ciphertext)
-        return ciphertext
 
     def rsa_encrypt(self, text, pubKey, modulus):
         text = text[::-1]
