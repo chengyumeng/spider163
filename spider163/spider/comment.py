@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import requests
-import os
-import base64
-import json
 
-from Crypto.Cipher import AES
+import os
+import json
+import requests
+
 from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
 
-from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
 from spider163.utils import pylog
 from spider163.utils import tools
+from spider163.utils import encrypt
+from spider163.spider import public as uapi
 
 
 class Comment:
@@ -39,18 +39,10 @@ class Comment:
             )
         nonce = '0CoJUm6Qyw8W8jud'
         nonce2 = 16 * 'F'
-        encText = self.aesEncrypt(
-            self.aesEncrypt(text, nonce).decode("utf-8"), nonce2
+        encText = encrypt.aes(
+            encrypt.aes(text, nonce).decode("utf-8"), nonce2
         )
         return encText
-
-    def aesEncrypt(self, text, secKey):
-        pad = 16 - len(text) % 16
-        text = text + pad * chr(pad)
-        encryptor = AES.new(secKey, 2, '0102030405060708')
-        ciphertext = encryptor.encrypt(text)
-        ciphertext = base64.b64encode(ciphertext)
-        return ciphertext
 
     def rsaEncrypt(self, text, pubKey, modulus):
         text = text[::-1]
