@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
-import json
-from bs4 import BeautifulSoup
-
 from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
@@ -40,11 +36,10 @@ class Music:
     def view_capture(self, link):
         self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == link).update({'over': 'Y'})
         url = self.__url + str(link)
-        s = requests.session()
         songs = []
         try:
-            s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
-            musics = json.loads(s.text)['result']['tracks']
+            data = tools.curl(url, self.__headers)
+            musics = data['result']['tracks']
             exist = 0
             for music in musics:
                 name = tools.encode(music['name'])
@@ -65,9 +60,8 @@ class Music:
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))
         url = uapi.playlist_api.format(playlist_id)
-        s = requests.session()
-        s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
-        playlist = json.loads(s.text)['result']
+        data = tools.curl(url, self.__headers)
+        playlist = data['result']
 
         print("《" + tools.encode(playlist['name']) + "》")
         author = tools.encode(playlist['creator']['nickname'])
