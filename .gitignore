@@ -87,3 +87,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# 开发者自定义
+.DS_Store
+.idea/
