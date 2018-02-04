@@ -36,13 +36,13 @@ def hex(s):
 def curl(url, headers, type = const.RETURN_JSON):
     try:
         s = requests.session()
-        s = BeautifulSoup(s.get(url, headers=headers).content, "html.parser")
+        bs = BeautifulSoup(s.get(url, headers=headers).content, "html.parser")
         if type == const.RETURN_JSON:
-            return json.loads(s.text)
+            return json.loads(bs.text)
         elif type == const.RETURE_HTML:
-            return s
+            return bs
         else:
-            return s.text
+            return bs.text
     except Exception:
         raise
 
