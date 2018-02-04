@@ -6,7 +6,7 @@ from terminaltables import AsciiTable
 
 from spider163.utils import pysql
 from spider163.utils import pylog
-from spider163.utils import tools
+from spider163.utils import tools,const
 
 from spider163.spider import public as uapi
 from spider163 import settings
@@ -36,7 +36,6 @@ class Playlist:
         print(AsciiTable(table).table)
 
     def view_capture(self, page, type="全部"):
-        s = requests.session()
         play_url = self.__play_url.format(type, page * 35)
         titles = []
         try:
@@ -44,8 +43,8 @@ class Playlist:
             scnb = {'class': 'nb'}
             dcu = {'class': 'u-cover u-cover-1'}
             ucm = {'class': 'm-cvrlst f-cb'}
-            s = BeautifulSoup(s.get(play_url, headers=self.__headers).content, "html.parser")
-            lst = s.find('ul', ucm)
+            data = tools.curl(play_url,self.__headers,type=const.RETURE_HTML)
+            lst = data.find('ul', ucm)
             for play in lst.find_all('div', dcu):
                 title = tools.encode(play.find('a', acmsk)['title'])
                 link = tools.encode(play.find('a', acmsk)['href']).replace("/playlist?id=", "")
