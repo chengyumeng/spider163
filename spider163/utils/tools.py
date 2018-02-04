@@ -3,7 +3,12 @@
 
 import contextlib
 import codecs
+import requests
+import json
+from bs4 import BeautifulSoup
+
 from spider163 import version
+from spider163.utils import const
 
 
 @contextlib.contextmanager
@@ -26,4 +31,18 @@ def hex(s):
         return codecs.encode(bytes(s, encoding = "utf8"), 'hex')
     else:
         return s.encode("hex")
+
+
+def curl(url, headers, type = const.RETURN_JSON):
+    try:
+        s = requests.session()
+        s = BeautifulSoup(s.get(url, headers=headers).content, "html.parser")
+        if type == const.RETURN_JSON:
+            return json.loads(s.text)
+        elif type == const.RETURE_HTML:
+            return s
+        else:
+            return s.text
+    except Exception:
+        raise
 
