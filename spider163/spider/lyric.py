@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import requests
-import json
-
-from bs4 import BeautifulSoup
-
 from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
@@ -20,10 +15,9 @@ class Lyric:
 
     def view_lyric(self, song_id):
         url = uapi.lyric_url.format(str(song_id))
-        s = requests.session()
         try:
-            s = BeautifulSoup(s.get(url, headers=self.__headers).content, "html.parser")
-            lrc = json.loads(s.text)['lrc']['lyric']
+            data = tools.curl(url,self.__headers)
+            lrc = data['lrc']['lyric']
             if pysql.single("lyric163", "song_id", song_id):
                 self.session.add(pysql.Lyric163(song_id=song_id, txt=lrc))
                 self.session.query(pysql.Music163).filter(pysql.Music163.song_id == song_id).update({"has_lyric": "Y"})

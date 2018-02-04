@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import json
 import requests
 
 from bs4 import BeautifulSoup
@@ -223,11 +222,8 @@ class Comment:
     def get_music(self, music_id):
         self.view_capture(int(music_id), 1)
         url = uapi.music_api.format(music_id, music_id)
-        s = requests.session()
-        s = BeautifulSoup(
-            s.get(url, headers=self.__headers).content, "html.parser"
-        )
-        music = json.loads(s.text)['songs']
+        data = tools.curl(url,self.__headers)
+        music = data['songs']
         print("《" + tools.encode(music[0]['name']) + "》")
         author = []
         for a in music[0]['artists']:
