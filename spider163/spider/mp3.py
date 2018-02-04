@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import json
 import requests
 
-from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
 
 from spider163 import settings
@@ -82,11 +80,8 @@ class MP3:
     def get_playlist(self, playlist_id):
         url = uapi.playlist_api.format(playlist_id)
         try:
-            s = requests.session()
-            s = BeautifulSoup(
-                s.get(url, headers=self.__headers).content, "html.parser"
-            )
-            playlist = json.loads(s.text)['result']
+            data = tools.curl(url,self.__headers)
+            playlist = data['result']
             return playlist
         except Exception as e:
             raise
