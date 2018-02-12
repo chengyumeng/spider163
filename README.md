@@ -77,6 +77,10 @@ $ # 阅读歌曲基本信息、歌词、热评
 $ spider163 get --playlist 922064582
 $ # 获取歌单的基本信息、歌曲等
 ```
+```console
+$ spider163 doc --palylist 922064582
+$ 歌单/歌曲信息汇总成word文档
+```
 
 
 ## TODO
