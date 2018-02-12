@@ -3,6 +3,7 @@
 
 from docx import Document
 from docx.shared import Inches
+from docx.enum.dml import MSO_THEME_COLOR_INDEX
 
 from spider163.spider import public as uapi
 from spider163.utils import tools
@@ -40,21 +41,19 @@ def print_pdf(id):
     document = Document()
     try:
         document.add_heading(data["result"]["name"], 0)
-        desc = document.add_paragraph(data["result"]["description"])
         tags = document.add_paragraph(" ".join(data["result"]["tags"]))
+        desc = document.add_paragraph(data["result"]["description"])
         for m in data["result"]["tracks"]:
-            p = document.add_paragraph()
-            p.add_run(m["name"])
+            document.add_paragraph().add_run(m["name"]).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_2
 
             lyric = read_lyric_data(m["id"])
-            document.add_paragraph(lyric["lrc"]["lyric"])
+            document.add_paragraph().add_run(lyric["lrc"]["lyric"]).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_3
 
             comments = read_comment_data(m["id"])
             for c in comments["hotComments"]:
+                author = document.add_paragraph().add_run(c["user"]["nickname"]).style = 'Emphasis'
                 content = document.add_paragraph(c["content"])
-                # liked = document.add_paragraph(c["likedCount"])
-                author = document.add_paragraph(c["user"]["nickname"])
     except Exception as e:
-        print(e)
+        pylog.print_warn(e)
 
-    document.save('demo.docx')
+    document.save("{}.docx".format(data["result"]["name"]))
