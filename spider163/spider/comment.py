@@ -53,6 +53,17 @@ class Comment:
             ''.join(map(lambda xx: (hex(ord(xx))[2:]), os.urandom(size)))
         )[0:16]
 
+    def post(self,song_id,page):
+        data = {
+            'params': self.createParams(page),
+            'encSecKey': self.__encSecKey
+        }
+        url = uapi.comment_url.format(song_id)
+        req = requests.post(
+            url, headers=self.__headers, data=data, timeout=10
+        )
+        return req.json()
+
     def views_capture(self, song_id, page=1, pages=1024):
         if pages > 1:
             while page < pages:
@@ -62,22 +73,16 @@ class Comment:
             self.view_capture(song_id, 1)
         self.view_links(song_id)
 
+
     def view_capture(self, song_id, page=1):
         if page == 1:
             self.session.query(pysql.Comment163).filter(
                 pysql.Comment163.song_id == song_id
             ).delete()
             self.session.commit()
-        data = {
-            'params': self.createParams(page),
-            'encSecKey': self.__encSecKey
-        }
-        url = uapi.comment_url.format(song_id)
         try:
-            req = requests.post(
-                url, headers=self.__headers, data=data, timeout=10
-            )
-            for comment in req.json()['comments']:
+            data = self.post(song_id,page)
+            for comment in data['comments']:
                 if comment['likedCount'] > 30:
                     txt = tools.encode(comment['content'])
                     author = tools.encode(comment['user']['nickname'])
@@ -87,7 +92,7 @@ class Comment:
                     ))
                     self.session.flush()
             if page == 1:
-                for comment in req.json()['hotComments']:
+                for comment in data['hotComments']:
                     txt = tools.encode(comment['content'])
                     author = tools.encode(comment['user']['nickname'])
                     liked = comment['likedCount']
@@ -95,7 +100,7 @@ class Comment:
                         song_id=song_id, txt=txt, author=author, liked=liked
                     ))
                     self.session.flush()
-            cnt = int(req.json()['total'])
+            cnt = int(data['total'])
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
             ).update({'over': 'Y', 'comment': cnt})
