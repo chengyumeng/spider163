@@ -5,6 +5,7 @@ import contextlib
 import codecs
 import requests
 import json
+import hashlib
 from bs4 import BeautifulSoup
 
 from spider163 import version
@@ -31,6 +32,12 @@ def hex(s):
         return codecs.encode(bytes(s, encoding = "utf8"), 'hex')
     else:
         return s.encode("hex")
+
+
+def md5(s):
+    m = hashlib.md5()
+    m.update(s.encode("utf-8"))
+    return m.hexdigest()
 
 
 def curl(url, headers, type = const.RETURN_JSON):
