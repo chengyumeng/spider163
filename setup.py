@@ -48,6 +48,7 @@ install_requires = [
     "Logbook==1.1.0",
     "colorama==0.3.9",
     "Flask==0.12.2",
+    "python-docx==0.8.6"
 ]
 
 if py3 is True:
@@ -72,7 +73,15 @@ setup(
       license='MIT License',
       zip_safe=False,
       install_requires=install_requires,
+      classifiers=[
+            'Development Status :: 5 - Production/Stable',
+            'Environment :: Console',
+            'Environment :: Web Environment',
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3.4',
+      ],
       cmdclass={
             'clean': CleanCommand,
       },
+
 )
