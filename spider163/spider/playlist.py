@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import requests
-from bs4 import BeautifulSoup
+
 from terminaltables import AsciiTable
 
 from spider163.utils import pysql
