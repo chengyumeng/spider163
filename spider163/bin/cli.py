@@ -15,6 +15,7 @@ from spider163.spider import music
 from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
+from spider163.spider import read
 from spider163 import version
 from spider163.www import web
 from spider163.utils import config
@@ -180,6 +181,11 @@ class QueryController(CementBaseController):
             search.searchAlbum(self.app.pargs.query)
             search.searchSinger(self.app.pargs.query)
             search.searchPlaylist(self.app.pargs.query)
+
+    @expose(help="生成文档（word）(--playlist)")
+    def doc(self):
+        if self.app.pargs.playlist is not None:
+            read.print_pdf(self.app.pargs.playlist)
 
 
 class WebController(CementBaseController):
