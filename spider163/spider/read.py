@@ -57,3 +57,4 @@ def print_pdf(id):
         pylog.print_warn(e)
 
     document.save("{}.docx".format(data["result"]["name"]))
+    pylog.print_info("文档 {}.docx 已经生成！".format(data["result"]["name"]))
