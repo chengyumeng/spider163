@@ -5,7 +5,7 @@ header = {
             'Referer': 'http://music.163.com/',
             'Host': 'music.163.com',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         }
 comment_text = {
         'username': '13393376853',
@@ -26,6 +26,10 @@ playlist_api = "http://music.163.com/api/playlist/detail?id={}&upd"
 music_api = "http://music.163.com/api/song/detail/?id={}&ids=[{}]"
 
 search_api = "http://music.163.com/api/search/pc"
+
+playlist_add_api = "http://music.163.com/weapi/playlist/manipulate/tracks?csrf_token={}"
+
+login_api = "http://music.163.com/weapi/login/cellphone"
 
 classify = {
     "语种":["华语", "欧美", "日语","韩语", "粤语", "小语种", ],
