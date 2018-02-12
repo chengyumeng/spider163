@@ -16,6 +16,7 @@ from spider163.spider import comment
 from spider163.spider import lyric
 from spider163.spider import search
 from spider163.spider import read
+from spider163.spider import authorize
 from spider163 import version
 from spider163.www import web
 from spider163.utils import config
@@ -205,11 +206,43 @@ class WebController(CementBaseController):
             print("{} 退出web服务：{}".format(Fore.RED, e))
 
 
+class AuthController(CementBaseController):
+    class Meta:
+        label = "auth"
+        stacked_on = 'base'
+        description = "登录授权操作"
+        arguments = [
+            (['--username'],
+             dict(help="登录账号（必须为中国大陆手机号）")),
+            (['--password'],
+             dict(help="登录密码")),
+        ]
+
+    @expose(help="维护评论Top 100 歌单")
+    def top100(self):
+        if self.app.pargs.username is None:
+            pylog.print_warn("没有指定用户名（--username）参数，无法执行任务！")
+            return
+        if self.app.pargs.password is None:
+            pylog.print_warn("没有指定密码（--password）参数，无法执行任务！")
+            return
+        if self.app.pargs.playlist is None:
+            pylog.print_warn("没有指定目标歌单ID（--playlist），无法执行任务！")
+            return
+        username = self.app.pargs.username
+        password = self.app.pargs.password
+        playlist_id = self.app.pargs.playlist
+
+        cmd = authorize.Command()
+        cmd.do_login(username, password)
+        cmd.create_playlist_comment_top100(playlist_id)
+
+
 class App(CementApp):
     class Meta:
         label = "Spider163"
         base_controller = "base"
-        handlers = [VersionController, DatabaseController, SpiderController, QueryController, WebController]
+        handlers = [VersionController, DatabaseController, SpiderController, QueryController, WebController, AuthController]
 
 
 def main():
