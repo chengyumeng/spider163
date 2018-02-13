@@ -5,6 +5,7 @@ import requests
 
 from spider163.utils import encrypt
 from spider163.spider import public as uapi
+from spider163.spider import music
 from spider163.utils import pysql
 from spider163.utils import pylog
 from spider163.utils import tools
@@ -89,6 +90,17 @@ class Command():
             raise Exception(res["msg"])
         return res
 
+    def clear_playlist(self,playlist_id=2098905487):
+        m = music.Music()
+        data = m.curl_playlist(playlist_id)
+        for d in data["tracks"]:
+            res = self.post_playlist_delete([str(d["id"]),],playlist_id)
+            if res["code"] == 200:
+                pylog.print_info("成功删除《{}》到指定歌单,歌单目前包含歌曲 {} 首".format(d["name"],res["count"]))
+            else:
+                pylog.print_warn("歌曲《{}》不存在于歌单中！".format(d["name"]))
+        pylog.print_warn("删除歌单歌曲任务完成，请检查！")
+
     def create_playlist_comment_top100(self,playlist_id=2098905487):
         data = settings.Session.query(pysql.Music163.song_name, pysql.Music163.song_id,pysql.Music163.comment.label("count")).order_by(
             pysql.Music163.comment.label("count").desc()).limit(5).all()
@@ -98,4 +110,4 @@ class Command():
                 pylog.print_warn("歌曲《{}》已经存在于歌单中！".format(d[0]))
             if res["code"] == 200:
                 pylog.print_info("成功添加《{}》到指定歌单,歌单目前包含歌曲 {} 首".format(d[0],res["count"]))
-        pylog.print_warn("任务完成，请检查！")
+        pylog.print_warn("增加歌单歌曲任务完成，请检查！")

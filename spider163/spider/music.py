@@ -57,11 +57,16 @@ class Music:
             pylog.log.error("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, url))
             raise
 
-    def get_playlist(self, playlist_id):
-        self.view_capture(int(playlist_id))
+    def curl_playlist(self,playlist_id):
         url = uapi.playlist_api.format(playlist_id)
         data = tools.curl(url, self.__headers)
         playlist = data['result']
+        return playlist
+
+
+    def get_playlist(self, playlist_id):
+        self.view_capture(int(playlist_id))
+        playlist = self.curl_playlist(playlist_id)
 
         print("《" + tools.encode(playlist['name']) + "》")
         author = tools.encode(playlist['creator']['nickname'])
