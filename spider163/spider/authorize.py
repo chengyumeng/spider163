@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import requests
+import time
 
 from spider163.utils import encrypt
 from spider163.spider import public as uapi
@@ -103,7 +104,7 @@ class Command():
 
     def create_playlist_comment_top100(self,playlist_id=2098905487):
         data = settings.Session.query(pysql.Music163.song_name, pysql.Music163.song_id,pysql.Music163.comment.label("count")).order_by(
-            pysql.Music163.comment.label("count").desc()).limit(5).all()
+            pysql.Music163.comment.label("count").desc()).limit(60).all()
         for d in data:
             res = self.post_playlist_add([str(d[1]),],playlist_id)
             if res["code"] == 502:
