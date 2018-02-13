@@ -218,8 +218,8 @@ class AuthController(CementBaseController):
              dict(help="登录密码")),
         ]
 
-    @expose(help="维护评论Top 100 歌单")
-    def top100(self):
+    @expose(help="维护评论Top 50 歌单")
+    def top50(self):
         if self.app.pargs.username is None:
             pylog.print_warn("没有指定用户名（--username）参数，无法执行任务！")
             return
