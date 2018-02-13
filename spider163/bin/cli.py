@@ -235,6 +235,7 @@ class AuthController(CementBaseController):
 
         cmd = authorize.Command()
         cmd.do_login(username, password)
+        cmd.clear_playlist(playlist_id)
         cmd.create_playlist_comment_top100(playlist_id)
 
 
