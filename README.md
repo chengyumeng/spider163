@@ -17,19 +17,12 @@
 - 第三步：pip install spider163
 - spider163 --help
 
-## 功能模块
-- initdb
-- resetdb
-- classify
-- playlist
-- mp3
-- music
-- comment
-- lyric
-- search
-- get
-- doc
-- top50
+## 历史文档
+- [不重要，2018年spider163发布的5个版本](https://mp.weixin.qq.com/s/pim5tYPHd0zBTKYQaijkbQ)
+- [Spider163同时支持python2.x和python3.x的演进之路](https://mp.weixin.qq.com/s/FFoD3gKM5touGVbvKebRlA)
+- [Spider163支持下载网易付费歌曲了](https://mp.weixin.qq.com/s/L8uvPV_CiAS6vcnaOaifJw)
+- [非重磅 | 网易云音乐爬虫Spider163更新v2.0](https://mp.weixin.qq.com/s?__biz=MzI2NTMxMDYxMg==&mid=2247483955&idx=1&sn=c1d8a38b4929cb298fc6172cf894e641&chksm=ea9e1ac8dde993de1d6095d000f289389ee92609bccebda3d2ebc88bfa1939eceb6b94cc3fce&scene=38#wechat_redirect)
+- ...
 
 
 ## 使用指南
