@@ -6,7 +6,7 @@ PYTHON3 = False
 if sys.version > "3":
     PYTHON3 = True
 
-VERSION = "2.7.1"
+VERSION = "2.7.2"
 DESCRIPTION = """
 Spider163的数据基础，来源于网易公司的网易云音乐产品。其授权协议，包含《网易云音乐服务条款》但不包含其霸王条款。
 
