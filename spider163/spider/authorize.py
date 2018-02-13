@@ -20,8 +20,8 @@ class Command():
         self.session = requests.session()
         self.session.headers = uapi.header
 
-    def createPlaylistAddParams(self, ids,playlist_id,csrf_token):
-        text = '{"trackIds":  ['+",".join(ids) + '],"pid": "{}","op": "add","csrf_token": "{}"'.format(playlist_id,csrf_token) + '}'
+    def createPlaylistParams(self,ids,playlist_id,cmd,csrf_token):
+        text = '{"trackIds":  ['+",".join(ids) + '],"pid": "{}","op": "{}","csrf_token": "{}"'.format(playlist_id,cmd,csrf_token) + '}'
         nonce = '0CoJUm6Qyw8W8jud'
         nonce2 = 16 * 'F'
         encText = encrypt.aes(
@@ -54,7 +54,18 @@ class Command():
 
     def post_playlist_add(self,ids, playlist_id=2098905487, csrf_token="da2216e4b4ca4efcfab94d8d4920ef9"):
         data = {
-            'params': self.createPlaylistAddParams(ids,playlist_id,csrf_token),
+            'params': self.createPlaylistParams(ids,playlist_id,"add",csrf_token),
+            'encSecKey': self.__encSecKey
+        }
+        url = uapi.playlist_add_api.format(csrf_token)
+        req = self.session.post(
+            url, data=data, timeout=10
+        )
+        return req.json()
+
+    def post_playlist_delete(self, ids, playlist_id=2098905487, csrf_token="da2216e4b4ca4efcfab94d8d4920ef9"):
+        data = {
+            'params': self.createPlaylistParams(ids, playlist_id, "delete", csrf_token),
             'encSecKey': self.__encSecKey
         }
         url = uapi.playlist_add_api.format(csrf_token)
