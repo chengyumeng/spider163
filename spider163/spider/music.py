@@ -44,8 +44,9 @@ class Music:
             for music in musics:
                 name = tools.encode(music['name'])
                 author = tools.encode(music['artists'][0]['name'])
+                play_time = music["bMusic"]["playTime"]
                 if pysql.single("music163", "song_id", (music['id'])) is True:
-                    self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author))
+                    self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author,playTime=play_time))
                     self.session.commit()
                     exist = exist + 1
                     songs.append({"name": name,"author": author})
