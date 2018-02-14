@@ -37,6 +37,7 @@ class Music163(Base):
     song_id = Column(Integer())
     song_name = Column(String(5000), server_default="No Name")
     author = Column(String(5000), server_default="No Author")
+    playTime = Column(Integer(), server_default="-1") # 歌曲播放次数
     done = Column(String(255), server_default="N")
     has_lyric = Column(String(255), server_default="N")
     create_time = Column(TIMESTAMP, server_default=func.now())
