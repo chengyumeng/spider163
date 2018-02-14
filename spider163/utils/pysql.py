@@ -53,6 +53,7 @@ class Comment163(Base):
     txt = Column(MEDIUMTEXT)
     author = Column(String(5000), server_default="No Author")
     liked = Column(Integer(), server_default="0")
+    create_time = Column(TIMESTAMP, server_default=func.now())
     Index("liked_song_id", liked, song_id)
     Index("song_id_liked", song_id, liked)
 
@@ -62,6 +63,7 @@ class Lyric163(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     song_id = Column(Integer())
     txt = Column(MEDIUMTEXT)
+    create_time = Column(TIMESTAMP, server_default=func.now())
     key_song_id = Index("song_id", song_id)
 
 
