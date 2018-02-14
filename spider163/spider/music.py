@@ -19,22 +19,22 @@ class Music:
     def views_capture(self,source=None):
         playlist = {}
         if source is None:
-            urls = self.session.query(pysql.Playlist163).filter(pysql.Playlist163.over == 'N').limit(10)
+            urls = self.session.query(pysql.Playlist163).filter(pysql.Playlist163.done == 'N').limit(10)
         else:
             if source.startswith("曲风：") is False:
                 source = "曲风：" + source
-            urls = self.session.query(pysql.Playlist163).filter(pysql.Playlist163.over == 'N',pysql.Playlist163.dsc==source).limit(1)
+            urls = self.session.query(pysql.Playlist163).filter(pysql.Playlist163.done == 'N',pysql.Playlist163.dsc==source).limit(1)
         for url in urls:
             print("正在抓取歌单《{}》的歌曲……".format(tools.encode(url.title)))
             songs = self.view_capture(url.link)
             playlist[tools.encode(url.title)] = songs
         for url in urls:
-            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url.link).update({'over': 'Y'})
+            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url.link).update({'done': 'Y'})
             self.session.commit()
         return playlist
 
     def view_capture(self, link):
-        self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == link).update({'over': 'Y'})
+        self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == link).update({'done': 'Y'})
         url = self.__url + str(link)
         songs = []
         try:
