@@ -36,6 +36,10 @@ $ spider163 resetdb
 $ # 重建相关数据库
 ```
 ```console
+$ spider163 updatedb
+$ # 根据时间重置过期数据重新抓取
+```
+```console
 $ spider163 classify
 $ # 获取已知曲风列表
 ```
