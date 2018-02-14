@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import datetime
+
 from spider163.spider import public as uapi
 from spider163 import settings
 from spider163.utils import pysql
@@ -93,4 +95,11 @@ class Music:
             id = music['id']
             tb.append([id, ms, ar, ab])
         print(AsciiTable(tb).table)
+
+    # date
+    def create_update_strategy(self, **kwargs):
+        date = (datetime.datetime.now() + datetime.timedelta(days=kwargs["date"])).strftime("%Y-%m-%d %H:%S:%M")
+        self.session.query(pysql.Music163).filter(pysql.Music163.done=="Y",pysql.Music163.update_time > date).update({ "done": "T","update_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
+        self.session.commit()
+        pylog.print_info("完成 重置时间 {} 之后的歌曲，可重新抓取评论".format(date))
 
