@@ -16,14 +16,19 @@ Base = declarative_base()
 class Playlist163(Base):
     __tablename__ = "playlist163"
 
-    id = Column(Integer(), primary_key=True, autoincrement=True)
-    title = Column(String(5000), server_default="System Title")
-    link = Column(String(255), server_default="No Link")
-    cnt = Column(Integer(), server_default="-1")
+    id = Column(Integer(), primary_key=True, autoincrement=True) # 歌曲ID
+    title = Column(String(5000), server_default="System Title") # 歌单名字
+    link = Column(String(255), server_default="No Link") # 歌曲链接
+    cnt = Column(Integer(), server_default="-1") # 歌曲数量
+    playCount = Column(Integer(), server_default="-1") # 播放次数
+    shareCount = Column(Integer(), server_default="-1") # 分享次数
+    commentCount = Column(Integer(), server_default="-1") # 评论数量
+    description = Column(MEDIUMTEXT)
+    tags = Column(String(255), server_default="")
     dsc = Column(String(255), server_default="No Description")
     create_time = Column(TIMESTAMP, server_default=func.now())
-    over = Column(String(255), server_default="N")
-    over_link = Index("over_link", over, link)
+    done = Column(String(255), server_default="N")
+    done_link = Index("done_link", done, link)
 
 
 class Music163(Base):
@@ -32,11 +37,12 @@ class Music163(Base):
     song_id = Column(Integer())
     song_name = Column(String(5000), server_default="No Name")
     author = Column(String(5000), server_default="No Author")
-    over = Column(String(255), server_default="N")
+    playTime = Column(Integer(), server_default="-1") # 歌曲播放次数
+    done = Column(String(255), server_default="N")
     has_lyric = Column(String(255), server_default="N")
     create_time = Column(TIMESTAMP, server_default=func.now())
     comment = Column(Integer(), server_default="-1")
-    over_id = Index("over_id", over,id)
+    done_id = Index("done_id", done,id)
     song_id_comment = Index("song_id_comment", song_id, comment)
 
 
@@ -47,6 +53,7 @@ class Comment163(Base):
     txt = Column(MEDIUMTEXT)
     author = Column(String(5000), server_default="No Author")
     liked = Column(Integer(), server_default="0")
+    create_time = Column(TIMESTAMP, server_default=func.now())
     Index("liked_song_id", liked, song_id)
     Index("song_id_liked", song_id, liked)
 
@@ -56,6 +63,7 @@ class Lyric163(Base):
     id = Column(Integer(), primary_key=True, autoincrement=True)
     song_id = Column(Integer())
     txt = Column(MEDIUMTEXT)
+    create_time = Column(TIMESTAMP, server_default=func.now())
     key_song_id = Index("song_id", song_id)
 
 
@@ -70,7 +78,7 @@ def single(table, k, v):
 def stat_playlist():
     data = {}
     data["gdType"] = settings.Session.query(func.substring(Playlist163.dsc, 4, 2).label('type'), func.count('*').label('count')).group_by("type").all()
-    data["gdOver"] = settings.Session.query(Playlist163.over.label('over'), func.count('*').label('count')).group_by("over").all()
+    data["gdOver"] = settings.Session.query(Playlist163.done.label('over'), func.count('*').label('count')).group_by("over").all()
     return data
 
 
@@ -85,8 +93,8 @@ def stat_music():
 
 def stat_data():
     data = {}
-    data["countPlaylist"] = int(settings.engine.execute("select(select count(*) from playlist163 where over = 'Y')*100 / count(*) from playlist163").fetchone()[0]);
-    data["countComment"] = int(settings.engine.execute("select(select count(*) from music163 where over = 'Y')*100 / count(*) from music163").fetchone()[0]);
+    data["countPlaylist"] = int(settings.engine.execute("select(select count(*) from playlist163 where done = 'Y')*100 / count(*) from playlist163").fetchone()[0]);
+    data["countComment"] = int(settings.engine.execute("select(select count(*) from music163 where done = 'Y')*100 / count(*) from music163").fetchone()[0]);
     data["countLyric"] = int(settings.engine.execute("select(select count(*) from music163 where has_lyric = 'Y')*100 / count(*) from music163").fetchone()[0]);
     return data
 

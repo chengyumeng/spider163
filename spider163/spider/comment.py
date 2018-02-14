@@ -103,14 +103,14 @@ class Comment:
             cnt = int(data['total'])
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
-            ).update({'over': 'Y', 'comment': cnt})
+            ).update({'done': 'Y', 'comment': cnt})
             self.session.commit()
             return cnt / 20
         except Exception as e:
             self.session.rollback()
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
-            ).update({'over': 'Y', 'comment': -2})
+            ).update({'done': 'Y', 'comment': -2})
             self.session.commit()
             pylog.log.error(
                 "解析歌曲评论的时候出现问题:{} 歌曲ID：{} 页码：{}".format(
@@ -157,7 +157,7 @@ class Comment:
         song = []
         if count < 10:
             msc = self.session.query(pysql.Music163).filter(
-                pysql.Music163.over == "N"
+                pysql.Music163.done == "N"
             ).limit(count)
             for m in msc:
                 try:
@@ -179,7 +179,7 @@ class Comment:
         else:
             for i in range(int(count / 10)):
                 msc = self.session.query(pysql.Music163).filter(
-                    pysql.Music163.over == "N"
+                    pysql.Music163.done == "N"
                 ).limit(10)
                 for m in msc:
                     try:
@@ -202,7 +202,7 @@ class Comment:
                             )
                         )
             msc = self.session.query(pysql.Music163).filter(
-                pysql.Music163.over == "N"
+                pysql.Music163.done == "N"
             ).limit(count % 10)
             for m in msc:
                 try:
