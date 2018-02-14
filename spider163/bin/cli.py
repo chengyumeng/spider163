@@ -51,7 +51,10 @@ class DatabaseController(CementBaseController):
     class Meta:
         label = "database"
         description = "数据库相关操作"
-        arguments = []
+        arguments = [
+            (['-d', '--date'], dict(help="时间限制（example：-1，-2）")),
+            (['-t', '--table'], dict(help="修改的表（example：playlist，music）")),
+        ]
 
     @expose(help="自动生成数据库相关依赖")
     def initdb(self):
@@ -63,6 +66,20 @@ class DatabaseController(CementBaseController):
         print("正在删除全部已下载数据……")
         pysql.dropdb()
         pysql.initdb()
+
+    @expose(help="重置过期的playlist/music数据，便于重新抓取")
+    def updatedb(self):
+        if self.app.pargs.date is None:
+            print(Fore.RED + '没有指定参数 date 无法进行操作')
+            return
+        if self.app.pargs.table == "music":
+            m = music.Music()
+            m.create_update_strategy(date=int(self.app.pargs.date))
+        elif self.app.pargs.table == "playlist":
+            p = playlist.Playlist()
+            p.create_update_strategy(date=int(self.app.pargs.date))
+        else:
+            print(Fore.RED + '指定参数 table 不正确！')
 
 
 class SpiderController(CementBaseController):
