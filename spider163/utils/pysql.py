@@ -16,10 +16,15 @@ Base = declarative_base()
 class Playlist163(Base):
     __tablename__ = "playlist163"
 
-    id = Column(Integer(), primary_key=True, autoincrement=True)
-    title = Column(String(5000), server_default="System Title")
-    link = Column(String(255), server_default="No Link")
-    cnt = Column(Integer(), server_default="-1")
+    id = Column(Integer(), primary_key=True, autoincrement=True) # 歌曲ID
+    title = Column(String(5000), server_default="System Title") # 歌单名字
+    link = Column(String(255), server_default="No Link") # 歌曲链接
+    cnt = Column(Integer(), server_default="-1") # 歌曲数量
+    playCount = Column(Integer(), server_default="-1") # 播放次数
+    shareCount = Column(Integer(), server_default="-1") # 分享次数
+    commentCount = Column(Integer(), server_default="-1") # 评论数量
+    description = Column(MEDIUMTEXT)
+    tags = Column(String(255), server_default="")
     dsc = Column(String(255), server_default="No Description")
     create_time = Column(TIMESTAMP, server_default=func.now())
     done = Column(String(255), server_default="N")
