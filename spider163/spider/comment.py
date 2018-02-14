@@ -73,7 +73,6 @@ class Comment:
             self.view_capture(song_id, 1)
         self.view_links(song_id)
 
-
     def view_capture(self, song_id, page=1):
         if page == 1:
             self.session.query(pysql.Comment163).filter(
@@ -158,7 +157,7 @@ class Comment:
         if count < 10:
             msc = self.session.query(pysql.Music163).filter(
                 pysql.Music163.done == "N"
-            ).limit(count)
+            ).order_by(pysql.Music163.id).limit(count)
             for m in msc:
                 try:
                     print(
@@ -203,7 +202,7 @@ class Comment:
                         )
             msc = self.session.query(pysql.Music163).filter(
                 pysql.Music163.done == "N"
-            ).limit(count % 10)
+            ).order_by(pysql.Music163.id).limit(count % 10)
             for m in msc:
                 try:
                     print(
