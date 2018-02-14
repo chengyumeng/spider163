@@ -38,8 +38,8 @@ class Music:
         url = self.__url + str(link)
         songs = []
         try:
-            data = tools.curl(url, self.__headers)
-            musics = data['result']['tracks']
+            data = self.curl_playlist(link)
+            musics = data['tracks']
             exist = 0
             for music in musics:
                 name = tools.encode(music['name'])
@@ -61,8 +61,10 @@ class Music:
         url = uapi.playlist_api.format(playlist_id)
         data = tools.curl(url, self.__headers)
         playlist = data['result']
+        self.session.query(pysql.Playlist163).\
+            filter(pysql.Playlist163.link == playlist_id).\
+            update({"playCount": playlist["playCount"], "shareCount": playlist["shareCount"],"commentCount": playlist["commentCount"],"description":playlist["description"],"tags":",".join(playlist["tags"])})
         return playlist
-
 
     def get_playlist(self, playlist_id):
         self.view_capture(int(playlist_id))

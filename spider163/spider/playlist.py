@@ -57,3 +57,4 @@ class Playlist:
         except Exception as e:
             pylog.log.error("抓取歌单出现问题：{} 歌单类型：{} 页码：{}".format(e, type, page))
             raise
+
