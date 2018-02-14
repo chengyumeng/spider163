@@ -58,6 +58,8 @@ class Music:
             return songs
         except Exception as e:
             pylog.log.error("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, url))
+            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url).update({'done': 'E'})
+            self.session.commit()
             raise
 
     def curl_playlist(self,playlist_id):
@@ -99,7 +101,7 @@ class Music:
     # date
     def create_update_strategy(self, **kwargs):
         date = (datetime.datetime.now() + datetime.timedelta(days=kwargs["date"])).strftime("%Y-%m-%d %H:%S:%M")
-        self.session.query(pysql.Music163).filter(pysql.Music163.done=="Y",pysql.Music163.update_time > date).update({ "done": "T","update_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
+        self.session.query(pysql.Music163).filter(pysql.Music163.done=="Y",pysql.Music163.update_time > date).update({ "done": "N","update_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
         self.session.commit()
         pylog.print_info("完成 重置时间 {} 之后的歌曲，可重新抓取评论".format(date))
 
