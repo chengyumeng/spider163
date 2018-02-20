@@ -109,7 +109,7 @@ class Comment:
             self.session.rollback()
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
-            ).update({'done': 'Y', 'comment': -2})
+            ).update({'done': 'E', 'comment': -2})
             self.session.commit()
             pylog.log.error(
                 "解析歌曲评论的时候出现问题:{} 歌曲ID：{} 页码：{}".format(
