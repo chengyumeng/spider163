@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from docx import Document
-from docx.shared import Inches
 from docx.enum.dml import MSO_THEME_COLOR_INDEX
+from sqlalchemy import desc
 
+from spider163 import settings
 from spider163.spider import public as uapi
 from spider163.utils import tools
 from spider163.utils import pylog
+from spider163.utils import pysql
 from spider163.spider import comment
 
 
@@ -58,3 +60,30 @@ def print_pdf(id):
 
     document.save("{}.docx".format(data["result"]["name"]))
     pylog.print_info("文档 {}.docx 已经生成！".format(data["result"]["name"]))
+
+
+def print_comment(count):
+    session = settings.Session()
+    comments = session.query(pysql.Comment163).order_by(
+        desc(pysql.Comment163.liked)).limit(count)
+    document = Document()
+    try:
+        document.add_heading("TOP {} 评论".format(count), 0)
+        i = 0
+        for c in comments:
+            i = i + 1
+            song = session.query(pysql.Music163).filter(pysql.Music163.song_id == c.song_id)
+            pylog.print_info("正在填充第 {} 条评论,歌曲：{}".format(i, song[0].song_name))
+            document.add_paragraph().add_run(
+                "作者：{}".format(c.author)).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_2
+            document.add_paragraph().add_run(
+                "内容：{}".format(c.txt)).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_2
+            document.add_paragraph().add_run(
+                "歌曲：《{}》 链接：http://music.163.com/#/song?id={}".format(song[0].song_name, c.song_id)).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_2
+            document.add_paragraph().add_run(
+                "赞同：{}".format(c.liked)).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_2
+            document.add_paragraph("")
+    except Exception as e:
+        pylog.print_warn(e)
+    document.save("TOP {} 评论.docx".format(count))
+    pylog.print_warn("\n完成文档 TOP {} 评论.docx 的生成！\n".format(count))
