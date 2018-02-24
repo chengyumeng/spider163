@@ -3,6 +3,7 @@
 
 import os
 import requests
+import datetime
 
 from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
@@ -102,7 +103,7 @@ class Comment:
             cnt = int(data['total'])
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
-            ).update({'done': 'Y', 'comment': cnt})
+            ).update({'done': 'Y', 'comment': cnt, 'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
             return cnt / 20
         except Exception as e:
