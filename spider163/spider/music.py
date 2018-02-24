@@ -54,12 +54,12 @@ class Music:
                 else:
                     pylog.log.info('{} : {} {}'.format("重复抓取歌曲", name, "取消持久化"))
             print("歌单包含歌曲 {} 首,数据库 merge 歌曲 {} 首 \r\n".format(len(musics), exist))
-            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == link).update({'done': 'Y'})
+            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == link).update({'done': 'Y','update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
             return songs
         except Exception as e:
             pylog.log.error("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, url))
-            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url).update({'done': 'E'})
+            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url).update({'done': 'E', 'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
             raise
 
@@ -79,7 +79,7 @@ class Music:
         except Exception as e:
             pylog.Log("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, playlist_id))
             # pylog.print_warn("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, playlist_id))
-            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == playlist_id).update({'done': 'E'})
+            self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == playlist_id).update({'done': 'E', 'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
 
     def get_playlist(self, playlist_id):
