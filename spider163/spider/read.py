@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from docx import Document
+from xlwt import Workbook
 from docx.enum.dml import MSO_THEME_COLOR_INDEX
 from sqlalchemy import desc
 
@@ -67,9 +68,16 @@ def print_comment(count):
     comments = session.query(pysql.Comment163).order_by(
         desc(pysql.Comment163.liked)).limit(count)
     document = Document()
+    workbook = Workbook()
     try:
         document.add_heading("TOP {} 评论".format(count), 0)
+        sheet = workbook.add_sheet("TOP {} 评论".format(count))
         i = 0
+        sheet.write(i, 0, "歌曲名字")
+        sheet.write(i, 1, "评论作者")
+        sheet.write(i, 2, "评论内容")
+        sheet.write(i, 3, "点赞数量")
+        sheet.write(i, 4, "歌曲链接")
         for c in comments:
             i = i + 1
             song = session.query(pysql.Music163).filter(pysql.Music163.song_id == c.song_id)
@@ -83,7 +91,17 @@ def print_comment(count):
             document.add_paragraph().add_run(
                 "赞同：{}".format(c.liked)).font.color.theme_color = MSO_THEME_COLOR_INDEX.ACCENT_2
             document.add_paragraph("")
+
+            sheet.write(i, 0, song[0].song_name)
+            sheet.write(i, 1, c.author)
+            sheet.write(i, 2, c.txt)
+            sheet.write(i, 3, c.liked)
+            sheet.write(i, 4, "http://music.163.com/#/song?id={}".format(c.song_id))
+
     except Exception as e:
         pylog.print_warn(e)
     document.save("TOP {} 评论.docx".format(count))
     pylog.print_warn("\n完成文档 TOP {} 评论.docx 的生成！\n".format(count))
+
+    workbook.save("TOP {} 评论.xls".format(count))
+    pylog.print_warn("\n完成文档 TOP {} 评论.xls 的生成！\n".format(count))
