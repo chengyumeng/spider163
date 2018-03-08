@@ -61,7 +61,6 @@ class Music:
             pylog.log.error("抓取歌单页面存在问题：{} 歌单ID：{}".format(e, url))
             self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == url).update({'done': 'E', 'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
-            raise
 
     def curl_playlist(self,playlist_id):
         url = uapi.playlist_api.format(playlist_id)
