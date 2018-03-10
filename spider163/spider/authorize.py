@@ -61,7 +61,7 @@ class Command():
         }
         url = uapi.playlist_add_api.format(csrf_token)
         req = self.session.post(
-            url, data=data, timeout=10
+            url, data=data, timeout=100
         )
         return req.json()
 
@@ -99,16 +99,20 @@ class Command():
             if res["code"] == 200:
                 pylog.print_info("成功删除《{}》到指定歌单,歌单目前包含歌曲 {} 首".format(d["name"],res["count"]))
             else:
+                time.sleep(5)
                 pylog.print_warn("歌曲《{}》不存在于歌单中！".format(d["name"]))
         pylog.print_warn("删除歌单歌曲任务完成，请检查！")
 
     def create_playlist_comment_top100(self,playlist_id=2098905487):
         data = settings.Session.query(pysql.Music163.song_name, pysql.Music163.song_id,pysql.Music163.comment.label("count")).order_by(
-            pysql.Music163.comment.label("count").desc()).limit(60).all()
+            pysql.Music163.comment.label("count").desc()).limit(200).all()
         for d in data:
             res = self.post_playlist_add([str(d[1]),],playlist_id)
             if res["code"] == 502:
                 pylog.print_warn("歌曲《{}》已经存在于歌单中！".format(d[0]))
-            if res["code"] == 200:
+            elif res["code"] == 200:
                 pylog.print_info("成功添加《{}》到指定歌单,歌单目前包含歌曲 {} 首".format(d[0],res["count"]))
+            else:
+                time.sleep(5)
+                pylog.print_warn("歌曲《{}》没有添加成功！".format(d[0]))
         pylog.print_warn("增加歌单歌曲任务完成，请检查！")
