@@ -77,11 +77,11 @@ $ spider163 get --playlist 922064582
 $ # 获取歌单的基本信息、歌曲等
 ```
 ```console
-$ spider163 doc --palylist 922064582
+$ spider163 doc --playlist 922064582
 $ # 歌单/歌曲信息汇总成word文档
 ```
 ```console
-$ spider163 top50 --palylist 922064582 --username=xxx --password=xxx
+$ spider163 top50 --playlist 922064582 --username=xxx --password=xxx
 $ # 创建TOP 50 歌单
 ```
 
