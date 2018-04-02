@@ -1,6 +1,6 @@
  ![spider163 logo](https://github.com/Chengyumeng/spider163/blob/master/logo.jpeg)
 # spider163
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license][![pyversions](https://img.shields.io/github/tag/Chengyumeng/Spider163.svg)][releases] [![pyversions](https://img.shields.io/pypi/pyversions/spider163.svg)][pyversions][![Build Status](https://travis-ci.org/Chengyumeng/spider163.svg?branch=master)][buildstatus]
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license] [![pyversions](https://img.shields.io/github/tag/Chengyumeng/Spider163.svg)][releases] [![pyversions](https://img.shields.io/pypi/pyversions/spider163.svg)][pyversions] [![Build Status](https://travis-ci.org/Chengyumeng/spider163.svg?branch=master)][buildstatus]
 
 [license]: https://github.com/Chengyumeng/spider163/blob/master/LICENSE
 
