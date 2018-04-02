@@ -5,6 +5,5 @@ python:
 
 install:
   - pip install -e .
-
-after_success:
+script:
   - spider163 --help
