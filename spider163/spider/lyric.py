@@ -36,12 +36,12 @@ class Lyric:
     def view_lyrics(self, count):
         song = []
         for i in range(int(count/10)):
-            ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(10)
+            ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").order_by(pysql.Music163.id).limit(10)
             for m in ms:
                 print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                 self.view_lyric(m.song_id)
                 song.append({"name": m.song_name,"author": m.author,"comment": m.comment})
-        ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").limit(count%10)
+        ms = self.session.query(pysql.Music163).filter(pysql.Music163.has_lyric == "N").order_by(pysql.Music163.id).limit(count%10)
         for m in ms:
             print("正在抓取歌词 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
             self.view_lyric(m.song_id)

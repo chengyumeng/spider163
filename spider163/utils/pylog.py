@@ -16,6 +16,7 @@ init(autoreset=True)
 
 
 def Log(msg):
+    print_warn(msg)
     log.warn(msg)
 
 

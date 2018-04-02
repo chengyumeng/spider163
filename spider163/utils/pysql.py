@@ -27,6 +27,7 @@ class Playlist163(Base):
     tags = Column(String(255), server_default="")
     dsc = Column(String(255), server_default="No Description")
     create_time = Column(TIMESTAMP, server_default=func.now())
+    update_time = Column(TIMESTAMP, server_default=func.now())
     done = Column(String(255), server_default="N")
     done_link = Index("done_link", done, link)
 
@@ -41,6 +42,7 @@ class Music163(Base):
     done = Column(String(255), server_default="N")
     has_lyric = Column(String(255), server_default="N")
     create_time = Column(TIMESTAMP, server_default=func.now())
+    update_time = Column(TIMESTAMP, server_default=func.now())
     comment = Column(Integer(), server_default="-1")
     done_id = Index("done_id", done,id)
     song_id_comment = Index("song_id_comment", song_id, comment)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import datetime
 
 from terminaltables import AsciiTable
 
@@ -58,3 +59,11 @@ class Playlist:
             pylog.log.error("抓取歌单出现问题：{} 歌单类型：{} 页码：{}".format(e, type, page))
             raise
 
+    # date
+    def create_update_strategy(self, **kwargs):
+        date = (datetime.datetime.now() + datetime.timedelta(days=kwargs["date"])).strftime("%Y-%m-%d %H:%S:%M")
+        self.session.query(pysql.Playlist163).filter(pysql.Playlist163.done == "Y",
+                                                pysql.Playlist163.update_time > date).update(
+            {"done": "N", "update_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
+        self.session.commit()
+        pylog.print_info("完成 重置时间 {} 之后的歌单，可重新抓取歌曲".format(date))
