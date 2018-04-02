@@ -48,7 +48,8 @@ install_requires = [
     "Logbook==1.1.0",
     "colorama==0.3.9",
     "Flask==0.12.2",
-    "python-docx==0.8.6"
+    "python-docx==0.8.6",
+    "xlwt==1.3.0"
 ]
 
 if py3 is True:

@@ -3,6 +3,7 @@
 
 import os
 import requests
+import datetime
 
 from bs4 import BeautifulSoup
 from terminaltables import AsciiTable
@@ -73,7 +74,6 @@ class Comment:
             self.view_capture(song_id, 1)
         self.view_links(song_id)
 
-
     def view_capture(self, song_id, page=1):
         if page == 1:
             self.session.query(pysql.Comment163).filter(
@@ -103,14 +103,14 @@ class Comment:
             cnt = int(data['total'])
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
-            ).update({'done': 'Y', 'comment': cnt})
+            ).update({'done': 'Y', 'comment': cnt, 'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
             return cnt / 20
         except Exception as e:
             self.session.rollback()
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
-            ).update({'done': 'Y', 'comment': -2})
+            ).update({'done': 'E', 'comment': -2})
             self.session.commit()
             pylog.log.error(
                 "解析歌曲评论的时候出现问题:{} 歌曲ID：{} 页码：{}".format(
@@ -158,7 +158,7 @@ class Comment:
         if count < 10:
             msc = self.session.query(pysql.Music163).filter(
                 pysql.Music163.done == "N"
-            ).limit(count)
+            ).order_by(pysql.Music163.id).limit(count)
             for m in msc:
                 try:
                     print(
@@ -203,7 +203,7 @@ class Comment:
                         )
             msc = self.session.query(pysql.Music163).filter(
                 pysql.Music163.done == "N"
-            ).limit(count % 10)
+            ).order_by(pysql.Music163.id).limit(count % 10)
             for m in msc:
                 try:
                     print(
@@ -271,3 +271,8 @@ class Comment:
                 print("")
         except Exception as e:
             pylog.print_warn("获取歌曲时出现异常： {} 歌曲ID：{}".format(e, music_id))
+
+
+"""
+curl 'http://music.163.com/eapi/v1/resource/hotcomments/R_SO_4_439915614?limit=30&offset=30' -H 'MUSIC_U=b14e134d57809f6f2cad59071320962f70351b98b979328186bab129f64585d877f086e4dccc2d68d4631490c2eade1fcb19b68a33677785; versioncode=114; mobilename=SM901; buildver=1517983086; resolution=1920x1080; __csrf=33a68d2b8c79270a8b770ef851ca322b; channel=chuizi; os=android' -H 'Connection: keep-alive' --data 'params=E8C4EA3B185998031030633EE8255315B179427FC8206489FBB24BB0592665FDDD3729945E06958F8E1D7E9D3B8336C82A051CA692ED4EAD270699F0CCFA87BE252577E9DBA7D4ACE1ECAFAB78C190513D439E46D2E62F125C771C5A05EBF5B7F8A9783A2721EE3894DFFE3AAF6751B7A7C412947A0C49CC73F7DBE0D285B45F97A16013F7B4576F2CD2D611150B0ABFF40C8FCE075ED7ED25BE61CCA9154A4F1CB23BF9C720A7BE0A952F25EC77E746B1688AE3FCDE73BC19600468DB7D9175013144D6D759C1660A471A66B8C42B171A2BB3AA48BA8638978B7299A10F08A472D1E13D071136C670A3E748E7DFD5F0E6819E725D793FB2D2BB6852002D1E30A850F90D7F6556C50394E83D4F3FCF79C9721E766D8758399F17538CA1DF87E32DF3468FC6EB592EF5AE7F0E5D295184AEC16C1019FD6F54B41AE835D1967CA7F7E892A6059B95EBACF785D1512402C13A3C8A491970030A1F8E97B35DEDEECFF34BA27F5869047DB5FAABBFEFDE833E3B7E8C7B15C6B1F0764A1CD298039BF6BC7C38832C5B8B4644714C25F4CE1F256AC2456B9D315941CF3CBF69224CF3F0DB7D4BE81486C72562C024C6EB3897D0DED5740A345CAE3592482BD36208DA99F197119A497DC736E58ABF7C80A338EA64059455FD065C61D46499586DDD6A4BEBAF431C2839D49EE192CAA3165B3B6B116FF45760DD0C94FCC5ED5E6E0B990662EC900671ED89AEEB6B7A2F73B7008FC711CB44F9EE23F53415A6C39DF781D13A11B9BEBC87156F67DEC8E6D023394953735006FD471F3A7885B57C0F826CBB3CD4F286BC407FDBA5B4D83ED8CAE4BF17E7F07C2DC3FD072A21727B2FDECB551EB05364287AB201904518E10007EED6' --compressed
+"""
