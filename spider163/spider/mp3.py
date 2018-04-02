@@ -43,7 +43,7 @@ class MP3:
         )[0:16]
 
     def view_down(self, playlist_id, path="."):
-        list = self.get_playlist(playlist_id)
+        list = self.get_playlist(str(playlist_id))
         msg = {"success": 0, "failed": 0, "failed_list": []}
         for music in list['tracks']:
             pylog.print_info(
