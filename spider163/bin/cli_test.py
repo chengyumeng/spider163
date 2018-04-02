@@ -19,7 +19,7 @@ class TestStringMethods(unittest.TestCase):
 
     def test_mp3(self):
         m = mp3.MP3()
-        m.view_down(2127220577, "./test")
+        # m.view_down(2127220577, ".")
 
     def test_search(self):
         search.searchSong("李荣浩")
