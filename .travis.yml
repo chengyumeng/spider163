@@ -6,4 +6,4 @@ python:
 install:
   - pip install -e .
 script:
-  - spider163 --help
+  - python -m unittest discover -p "*_test.py"
