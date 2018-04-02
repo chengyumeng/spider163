@@ -8,6 +8,8 @@
 
 [pyversions]:https://pypi.python.org/pypi/spider163
 
+![Build Status](https://travis-ci.org/Chengyumeng/spider163.svg?branch=master)](https://travis-ci.org/Chengyumeng/spider163)
+
 ###### GitHub上最易用的网易云音乐爬虫系统
 
 
