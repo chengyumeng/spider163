@@ -12,6 +12,4 @@ composer:
 	docker-compose -p "spider163-$(BRANCH)-$(USER)" up
 
 build:
-	pip install -r requirements.txt
-	python setup.py install
-	python setup.py clean
+	pip install -e .
