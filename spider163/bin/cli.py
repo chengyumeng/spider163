@@ -17,6 +17,7 @@ from spider163.spider import lyric
 from spider163.spider import search
 from spider163.spider import read
 from spider163.spider import authorize
+from spider163.mail import mail
 from spider163 import version
 from spider163.www import web
 from spider163.utils import config
@@ -182,6 +183,10 @@ class QueryController(CementBaseController):
              dict(help="")),
             (['-q', '--query'],
              dict(help="")),
+            (['--start'],
+             dict(help="")),
+            (['--stop'],
+             dict(help="")),
         ]
 
     @expose(help="通过歌单ID和歌曲ID获取歌单、歌曲相关信息（--song --playlist）")
@@ -208,6 +213,14 @@ class QueryController(CementBaseController):
         if self.app.pargs.count is not None:
             read.print_comment(int(self.app.pargs.count))
 
+    @expose(help="Spider163邮件系统")
+    def mail(self):
+        try:
+            start = int(self.app.pargs.start)
+            stop  = int(self.app.pargs.stop)
+            mail.music(start, stop)
+        except Exception as e:
+            print("{} 发送邮件发生意外 {}".format(Fore.RED, e))
 
 
 class WebController(CementBaseController):
