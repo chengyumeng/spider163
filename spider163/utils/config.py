@@ -38,6 +38,14 @@ def get_db():
         raise e
 
 
+def get_mail():
+    try:
+        return cf.get("mail", "host"),cf.get("mail", "port"),cf.get("mail", "users"),
+    except Exception as e:
+        print("配置文件存在问题，请在 {}/spider163.conf 中配置mail选项".format(PATH))
+        print("错误详情： {}".format(e))
+        raise e
+
 def format_db():
     """db=mysql://root:password@127.0.0.1/spider?charset=utf8mb4"""
     link = get_db()
