@@ -47,6 +47,10 @@ class VersionController(CementBaseController):
         healthz.is_correct_db()
         healthz.can_spider()
 
+    @expose(help="提供生态信息数据【for telegraf】")
+    def expose(self):
+        healthz.expose_data()
+
 
 class DatabaseController(CementBaseController):
     class Meta:
