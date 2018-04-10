@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import json
 
 from spider163.utils import config
 from spider163.utils import pylog
+from spider163.utils import pysql
+from spider163 import settings
 
 
 def is_correct_config():
@@ -43,3 +46,12 @@ def is_correct_db():
 def can_spider():
     print("抓取验证未完成")
 
+
+def expose_data():
+    playlist = settings.Session.query(pysql.Playlist163).count()
+    music = settings.Session.query(pysql.Music163).count()
+    comment = settings.Session.query(pysql.Comment163).count()
+    lyric = settings.Session.query(pysql.Lyric163).count()
+    data = {'playlist': playlist, 'music': music, 'comment': comment, 'lyric': lyric}
+    js = json.dumps(data)
+    print(js)
