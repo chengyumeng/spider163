@@ -48,6 +48,24 @@ class Music163(Base):
     song_id_comment = Index("song_id_comment", song_id, comment)
 
 
+class Toplist163(Base):
+    __table__ = "top163"
+    id = Column(Integer(), primary_key=True, autoincrement=True)
+    song_id = Column(Integer())
+    song_name = Column(String(5000), server_default="No Name")
+    author = Column(String(5000), server_default="No Author")
+    playTime = Column(Integer(), server_default="-1")  # 歌曲播放次数
+    done = Column(String(255), server_default="N")
+    has_lyric = Column(String(255), server_default="N")
+    create_time = Column(TIMESTAMP, server_default=func.now())
+    update_time = Column(TIMESTAMP, server_default=func.now())
+    comment = Column(Integer(), server_default="-1")
+    lastRank = Column(Integer(), server_default="1048576")  # 上次排名字段
+    listName = Column(Integer(), server_default="-1")    # 排行榜歌单ID
+    done_id = Index("done_id", done, id)
+    song_id_comment = Index("song_id_comment", song_id, comment)
+
+
 class Comment163(Base):
     __tablename__ = "comment163"
     id = Column(Integer(), primary_key=True, autoincrement=True)
