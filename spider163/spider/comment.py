@@ -17,9 +17,12 @@ from spider163.spider import public as uapi
 
 
 class Comment:
+    Common = 'common music'
+    Official = 'official music'
 
-    def __init__(self):
+    def __init__(self, music_type=Common):
         self.__headers = uapi.header
+        self.music_type = music_type
         self.session = settings.Session()
         modulus = uapi.comment_module
         pubKey = uapi.pubKey
@@ -54,7 +57,7 @@ class Comment:
             ''.join(map(lambda xx: (hex(ord(xx))[2:]), os.urandom(size)))
         )[0:16]
 
-    def post(self,song_id,page):
+    def post(self,song_id, page):
         data = {
             'params': self.createParams(page),
             'encSecKey': self.__encSecKey
@@ -104,6 +107,11 @@ class Comment:
             self.session.query(pysql.Music163).filter(
                 pysql.Music163.song_id == song_id
             ).update({'done': 'Y', 'comment': cnt, 'update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
+            if self.music_type == self.Official:
+                self.session.query(pysql.Toplist163).filter(
+                    pysql.Toplist163.song_id == song_id
+                ).update(
+                    {'done': 'Y', 'comment': cnt})
             self.session.commit()
             return cnt / 20
         except Exception as e:
@@ -155,72 +163,24 @@ class Comment:
 
     def auto_view(self, count=1):
         song = []
-        if count < 10:
-            msc = self.session.query(pysql.Music163).filter(
-                pysql.Music163.done == "N"
-            ).order_by(pysql.Music163.id).limit(count)
+        if self.music_type == self.Common:
+            msc = self.session.query(pysql.Music163).filter(pysql.Music163.done == "N").order_by(pysql.Music163.id).limit(count)
             for m in msc:
                 try:
-                    print(
-                        "抓取热评 ID {} 歌曲 {}".format(
-                            m.song_id, pylog.Blue(tools.encode(m.song_name))
-                        )
-                    )
+                    print("抓取热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
                     self.views_capture(m.song_id, 1, 1)
-                    song.append({
-                        "name": m.song_name, "author": m.author,
-                        "song_id": m.song_id
-                    })
+                    song.append({"name": m.song_name, "author": m.author,"song_id": m.song_id})
                 except Exception as e:
-                    self.session.rollback()
-                    pylog.log.error(
-                        "自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id)
-                    )
-        else:
-            for i in range(int(count / 10)):
-                msc = self.session.query(pysql.Music163).filter(
-                    pysql.Music163.done == "N"
-                ).limit(10)
-                for m in msc:
-                    try:
-                        print(
-                            "抓取热评 ID {} 歌曲 {}".format(
-                                m.song_id,
-                                pylog.Blue(tools.encode(m.song_name))
-                            )
-                        )
-                        self.views_capture(m.song_id, 1, 1)
-                        song.append({
-                            "name": m.song_name, "author": m.author,
-                            "song_id": m.song_id
-                        })
-                    except Exception as e:
-                        self.session.rollback()
-                        pylog.log.error(
-                            "自动抓取热评出现异常：{} 歌曲ID：{}".format(
-                                e, m.song_id
-                            )
-                        )
-            msc = self.session.query(pysql.Music163).filter(
-                pysql.Music163.done == "N"
-            ).order_by(pysql.Music163.id).limit(count % 10)
+                    pylog.log.error("自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
+        elif self.music_type == self.Official:
+            msc = self.session.query(pysql.Toplist163).filter(pysql.Toplist163.done == "N").order_by(pysql.Toplist163.id).limit(count)
             for m in msc:
                 try:
-                    print(
-                        "抓取热评 ID {} 歌曲 {}".format(
-                            m.song_id, pylog.Blue(tools.encode(m.song_name))
-                        )
-                    )
-                    self.views_capture(m.song_id, 1, 1)
-                    song.append({
-                        "name": m.song_name, "author": m.author,
-                        "song_id": m.song_id
-                    })
+                    print("抓取官方榜单歌曲热评 ID {} 歌曲 {}".format(m.song_id, pylog.Blue(tools.encode(m.song_name))))
+                    self.views_capture(m.song_id, 1, 2) # 意味着每一页的评论都抓取
+                    song.append({"name": m.song_name, "author": m.author,"song_id": m.song_id})
                 except Exception as e:
-                    self.session.rollback()
-                    pylog.log.error(
-                        "自动抓取热评出现异常：{} 歌曲ID：{}".format(e, m.song_id)
-                    )
+                    pylog.log.error("自动抓取官方榜单热评出现异常：{} 歌曲ID：{}".format(e, m.song_id))
 
         return song
 
