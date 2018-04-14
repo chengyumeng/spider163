@@ -149,6 +149,20 @@ class SpiderController(CementBaseController):
                 print(Fore.GREEN + '正在执行第 {} 批抓取计划，本次抓取歌单歌曲 10 个\r\n'.format(i + 1))
                 msc.views_capture()
 
+    @expose(help="抓取网易云音乐官方排行榜歌单（-c --count）")
+    def toplist(self):
+        msc = music.Music()
+        cmt = comment.Comment(comment.Comment.Official)
+        for id in music.top:
+            pylog.print_info('正在抓取官方排行榜 歌单ID：{} 歌单名字：{}'.format(id, music.top[id]))
+            msc.view_capture(id)
+        cnt = int(self.app.pargs.count)
+        if cnt <= 0:
+            print(Fore.RED + "不合法的--count -c 变量（ > 0 ）")
+        else:
+            cmt.auto_view(cnt)
+
+
     @expose(help="通过音乐列表抓取网易云音乐热评，单次抓取音乐1首(-c --count),也可以指定歌曲ID(-s --song)")
     def comment(self):
         cmt = comment.Comment()
@@ -187,10 +201,6 @@ class QueryController(CementBaseController):
              dict(help="")),
             (['-q', '--query'],
              dict(help="")),
-            (['--start'],
-             dict(help="")),
-            (['--stop'],
-             dict(help="")),
         ]
 
     @expose(help="通过歌单ID和歌曲ID获取歌单、歌曲相关信息（--song --playlist）")
@@ -217,12 +227,12 @@ class QueryController(CementBaseController):
         if self.app.pargs.count is not None:
             read.print_comment(int(self.app.pargs.count))
 
-    @expose(help="Spider163邮件系统")
+    @expose(help="Spider163邮件系统(--playlist)")
     def mail(self):
         try:
-            start = int(self.app.pargs.start)
-            stop  = int(self.app.pargs.stop)
-            mail.music(start, stop)
+            if self.app.pargs.playlist is not None:
+                playlist_id = int(self.app.pargs.playlist)
+                mail.music(playlist_id)
         except Exception as e:
             print("{} 发送邮件发生意外 {}".format(Fore.RED, e))
 
