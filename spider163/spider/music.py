@@ -41,18 +41,48 @@ class Music:
             exist = 0
             for music in musics:
                 name = tools.encode(music['name'])
-                author = tools.encode(music['artists'][0]['name'])
+                authors = []
+                for art in music['artists']:
+                    authors.append(tools.encode(art['name']))
                 if music["bMusic"] is None:
                     play_time = 0
                 else:
                     play_time = music["bMusic"]["playTime"]
                 if pysql.single("music163", "song_id", (music['id'])) is True:
-                    self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=author,playTime=play_time))
+                    self.session.add(pysql.Music163(song_id=music['id'],song_name=name,author=",".join(authors),playTime=play_time))
                     self.session.commit()
                     exist = exist + 1
-                    songs.append({"name": name,"author": author})
+                    songs.append({"name": name,"author": ",".join(authors)})
                 else:
                     pylog.log.info('{} : {} {}'.format("重复抓取歌曲", name, "取消持久化"))
+                # 处理官方榜单
+                if int(link) in uapi.top.keys():
+                    updateTime = datetime.datetime.fromtimestamp(data['updateTime'] / 1000).strftime(
+                        "%Y-%m-%d %H:%M:%S")
+                    createTime = datetime.datetime.fromtimestamp(data['createTime'] / 1000).strftime(
+                        "%Y-%m-%d %H:%M:%S")
+                    position = music['position']
+                    lastrank = 100000000
+                    with tools.ignored(Exception):
+                        lastrank = music['lastRank']
+                    cnt = self.session.query(pysql.Toplist163).filter(pysql.Toplist163.update_time == updateTime,
+                                                                      pysql.Toplist163.song_id == music['id'],
+                                                                      pysql.Toplist163.playlist_id == link).count()
+                    mcnt = self.session.query(pysql.Toplist163).filter(pysql.Toplist163.mailed == "Y",
+                                                                      pysql.Toplist163.song_id == music['id'],
+                                                                      pysql.Toplist163.playlist_id == link).count()
+                    if cnt == 0:
+                        mailed = "N"
+                        if mcnt > 0:
+                            mailed = "Y"
+                        self.session.add(pysql.Toplist163(song_id=music['id'],song_name=name,author=",".join(authors),
+                                                          playTime=play_time,position=position,playlist_id=link,
+                                                          lastRank=lastrank,
+                                                          mailed = mailed,
+                                                          create_time=createTime,
+                                                          update_time=updateTime))
+                        self.session.commit()
+
             print("歌单包含歌曲 {} 首,数据库 merge 歌曲 {} 首 \r\n".format(len(musics), exist))
             self.session.query(pysql.Playlist163).filter(pysql.Playlist163.link == link).update({'done': 'Y','update_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%S:%M")})
             self.session.commit()
