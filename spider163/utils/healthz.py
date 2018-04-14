@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+from sqlalchemy import func
 
 from spider163.utils import config
 from spider163.utils import pylog
@@ -49,9 +50,16 @@ def can_spider():
 
 def expose_data():
     playlist = settings.Session.query(pysql.Playlist163).count()
+    playlist_type = settings.Session.query(pysql.Playlist163, func.count(pysql.Playlist163.id)).group_by(pysql.Playlist163.id).all()
     music = settings.Session.query(pysql.Music163).count()
     comment = settings.Session.query(pysql.Comment163).count()
     lyric = settings.Session.query(pysql.Lyric163).count()
-    data = {'playlist': playlist, 'music': music, 'comment': comment, 'lyric': lyric}
-    js = json.dumps(data)
+    top = settings.Session.query(pysql.Toplist163).count()
+    data = {'playlist': {'count': playlist},
+            'music': {'count': music,},
+            'comment': {'count': comment},
+            'lyric': {'count': lyric},
+            'top':{'count': top}
+        }
+    js = json.dumps(data, ensure_ascii=False, indent=2)
     print(js)
