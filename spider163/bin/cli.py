@@ -17,6 +17,7 @@ from spider163.spider import lyric
 from spider163.spider import search
 from spider163.spider import read
 from spider163.spider import authorize
+from spider163.spider import public as uapi
 from spider163.mail import mail
 from spider163 import version
 from spider163.www import web
@@ -153,8 +154,8 @@ class SpiderController(CementBaseController):
     def toplist(self):
         msc = music.Music()
         cmt = comment.Comment(comment.Comment.Official)
-        for id in music.top:
-            pylog.print_info('正在抓取官方排行榜 歌单ID：{} 歌单名字：{}'.format(id, music.top[id]))
+        for id in uapi.top:
+            pylog.print_info('正在抓取官方排行榜 歌单ID：{} 歌单名字：{}'.format(id, uapi.top[id]))
             msc.view_capture(id)
         cnt = int(self.app.pargs.count)
         if cnt <= 0:
