@@ -37,7 +37,7 @@ install_requires = [
     "idna==2.6",
     "Naked==0.1.31",
     "pprint==0.1",
-    "cryptography==2.1.4",
+    "cryptography==2.3",
     "PyYAML==3.12",
     "requests==2.18.4",
     "shellescape==3.4.1",
@@ -47,7 +47,7 @@ install_requires = [
     "urllib3==1.22",
     "Logbook==1.1.0",
     "colorama==0.3.9",
-    "Flask==0.12.2",
+    "flask==0.12.3",
     "python-docx==0.8.6",
     "xlwt==1.3.0"
 ]
