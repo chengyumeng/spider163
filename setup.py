@@ -47,7 +47,7 @@ install_requires = [
     "urllib3==1.24.2",
     "Logbook==1.1.0",
     "colorama==0.3.9",
-    "flask==0.12.3",
+    "flask==1.0",
     "python-docx==0.8.6",
     "xlwt==1.3.0"
 ]
