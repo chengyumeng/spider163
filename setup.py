@@ -39,7 +39,7 @@ install_requires = [
     "pprint==0.1",
     "cryptography==2.3",
     "PyYAML==3.12",
-    "requests==2.18.4",
+    "requests==2.20.0",
     "shellescape==3.4.1",
     "SQLAlchemy==1.1.15",
     "SQLAlchemy-Utils==0.32.18",
