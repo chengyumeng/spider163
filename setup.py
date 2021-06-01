@@ -44,7 +44,7 @@ install_requires = [
     "SQLAlchemy==1.1.15",
     "SQLAlchemy-Utils==0.32.18",
     "terminaltables==3.1.0",
-    "urllib3==1.24.2",
+    "urllib3==1.26.5",
     "Logbook==1.1.0",
     "colorama==0.3.9",
     "flask==1.0",
