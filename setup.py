@@ -32,7 +32,7 @@ install_requires = [
     "beautifulsoup4==4.6.0",
     "bs4==0.0.1",
     "cement==2.10.2",
-    "certifi==2017.7.27.1",
+    "certifi==2022.12.7",
     "chardet==3.0.4",
     "idna==2.6",
     "Naked==0.1.31",
